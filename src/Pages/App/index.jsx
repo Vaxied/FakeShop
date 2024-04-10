@@ -5,6 +5,7 @@ import MyOrder from '../MyOrder'
 import MyOrders from '../MyOrders'
 import SignIn from '../SignIn'
 import NotFound from '../NotFound'
+import Layout from '../../Components/Layout'
 import './App.css'
 
 const AppRoutes = () => {
@@ -40,7 +41,9 @@ function App() {
     return (
         <>
             <BrowserRouter>
-                <AppRoutes />
+                <Layout>
+                    <AppRoutes />
+                </Layout>
             </BrowserRouter>
         </>
     )
