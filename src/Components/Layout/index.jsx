@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import Navbar from '../Navbar'
+import CartSideMenu from '../CartSideMenu'
 
 function Layout({ children }) {
     Layout.propTypes = {
@@ -8,9 +9,10 @@ function Layout({ children }) {
     return (
         <>
             <Navbar />
-            <div className='w-full flex justify-center items-center mt-20'>
+            <div className='w-full flex justify-center p-8 mt-20'>
                 {children}
             </div>
+            <CartSideMenu />
         </>
     )
 }
