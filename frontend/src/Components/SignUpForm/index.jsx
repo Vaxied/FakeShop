@@ -1,5 +1,6 @@
 import React from 'react'
 import { postData } from '../../services/fetchWrapper'
+import { useNavigate } from 'react-router-dom'
 
 function SignUpForm() {
     const [formState, setFormState] = React.useState({
@@ -8,14 +9,13 @@ function SignUpForm() {
         email: '',
         password: '',
     })
+    const navigate = useNavigate()
 
     async function handleSubmit(event) {
         event.preventDefault()
         console.log(formState)
-        const response = await postData(
-            'http://localhost:5600/register',
-            formState
-        )
+        const response = await postData(`${VITE_API}/register`, formState)
+        if (response) navigate('/')
         console.log(response)
     }
 

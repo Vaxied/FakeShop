@@ -10,6 +10,7 @@ function Orders() {
         return <p>You don&apos;t have any placed orders yet</p>
 
     const ordersHistory = [...orders].reverse()
+    console.log('ordersHistory', ordersHistory)
 
     return (
         <div className='flex flex-col'>

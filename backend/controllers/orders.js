@@ -1,12 +1,12 @@
 const connection = require('../database/connection')
 
 const createOrder = async (request, response, next) => {
-    const { productsList, productsCount, totalPrice, date } = request.body
-    console.log('request user', request.user)
-    console.log('request user id', request.user.user.id)
-    console.log(productsList)
+    const { productList, productCount, totalPrice, date } = request.body
+    // console.log('request user', request.user)
+    // console.log('request user id', request.user.user.id)
+    // console.log(productsList)
 
-    console.log('request body', request.body)
+    // console.log('request body', request.body)
     // Create a table for order_products with order_id, product_id, product_count
     try {
         await connection.transaction(async function (trx) {
@@ -15,12 +15,12 @@ const createOrder = async (request, response, next) => {
                 .insert([
                     {
                         user_id: request.user.user.id,
-                        products_count: productsCount,
+                        products_count: productCount,
                         total_price: totalPrice,
                         utc_date: date,
                     },
                 ])
-            const orderProductsData = productsList.map((product) => ({
+            const orderProductsData = productList.map((product) => ({
                 order_id: order[0].order_id,
                 product_id: product.product_id,
                 product_count: product.quantity,
@@ -85,7 +85,7 @@ async function getUserOrders(request, response) {
 
             return {
                 orderId: order.order_id,
-                productsCount: order.products_count,
+                productCount: order.products_count,
                 productList: productList,
                 totalPrice: order.total_price,
                 date: order.utc_date,
