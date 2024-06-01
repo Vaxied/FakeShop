@@ -57,10 +57,10 @@ function StoreProvider({ children }) {
     }
     async function addNewOrder() {
         const newOrder = {
-            productsList: shoppingCartProducts,
+            productList: shoppingCartProducts,
             // image: shoppingCartProducts.at(-1).image,
             // title: shoppingCartProducts.at(-1).title,
-            productsCount: shoppingCartProducts.length,
+            productCount: shoppingCartProducts.length,
             totalPrice: calculateTotalPrice(shoppingCartProducts),
             date: new Date().toISOString(),
         }
