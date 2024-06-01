@@ -13,7 +13,7 @@ function ProductDetail({
     ProductDetail.propTypes = {
         item: PropTypes.object.isRequired,
         image: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
+        price: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
         category: PropTypes.string.isRequired,
@@ -87,7 +87,7 @@ function ProductDetail({
                         {title}
                     </span>
                     <span className='text-lg text-green-500 font-semibold'>
-                        ${price.toFixed(2)}
+                        ${price}
                     </span>
                 </p>
                 <span className='px-2 border border-gray rounded-lg bg-gray-300 text-black'>

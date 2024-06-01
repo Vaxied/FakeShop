@@ -1,17 +1,19 @@
 /* eslint-disable no-debugger */
 import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { postData } from '../../Services/fetchWrapper'
+import { postData } from '../../services/fetchWrapper'
 import { StoreContext } from '../../Context/context'
 
 function LoginForm() {
     // debugger
-    const { setLoggedIn, setUsername } = React.useContext(StoreContext)
+    const { setLoggedIn, setUsername, setCookie } =
+        React.useContext(StoreContext)
     const navigate = useNavigate()
     const [formState, setFormState] = React.useState({
         username: '',
         password: '',
     })
+
     async function handleSubmit(event) {
         event.preventDefault()
         console.log(formState)
@@ -22,14 +24,13 @@ function LoginForm() {
         else if (response.status !== 201)
             navigate('/login') //show error message
         else {
+            console.log('loggin in')
             setLoggedIn(true)
             setUsername(response.username)
+            localStorage.setItem('accessToken', response.token)
+            setCookie('refreshToken', response.refresh)
             navigate('/')
         }
-        return console.log('response', response)
-        // }
-
-        // navigate('/')
     }
 
     return (
@@ -64,7 +65,7 @@ function LoginForm() {
                     type='password'
                     placeholder='**********'
                     name='password'
-                    value={formState.passowrd}
+                    value={formState.password}
                     onChange={(event) =>
                         setFormState({
                             ...formState,
@@ -85,11 +86,9 @@ function LoginForm() {
                 </button>
             </form>
             <p className='flex py-4 text-gray-700 font-light'>
+                <span>Don&apos;t have an account?</span>
                 <Link to={'/sign-up'}>
-                    <span>Don&apos;t have an account?</span>
-                    <span className='underline underline-offset-4 px-2'>
-                        Sign up!
-                    </span>
+                    <span className='pl-2 font-semibold'>Sign up!</span>
                 </Link>
             </p>
         </div>

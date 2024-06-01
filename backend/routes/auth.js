@@ -1,27 +1,47 @@
-import passport from 'passport'
+const connection = require('../database/connection')
+const express = require('express')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
 // import { pool } from '../connection.js'
-import bcrypt from 'bcrypt'
-import { connection } from '../connection.js'
 
-passport.serializeUser(function (user, done) {
-    process.nextTick(function () {
-        done(null, { id: user.id, username: user.username })
-    })
-})
+const bcrypt = require('bcrypt')
+const app = express()
+const jwt = require('jsonwebtoken')
+const secret = process.env.SECRET
 
-passport.deserializeUser(function (user, done) {
-    process.nextTick(function () {
-        return done(null, user.id)
-    })
-})
+app.use(passport.initialize())
+passport.use('local', new LocalStrategy(authUser))
+
+function isAuthenticated(request, response, next) {
+    // console.log(request.headers)
+    const accessToken = request.headers['authorization']
+    // const refreshToken = request.headers['cookie']
+    console.log('accessToken', accessToken)
+    // console.log('refreshToken', refreshToken)
+    // const refreshToken = request.cookies['refreshToken']
+    // if (!accessToken && refreshToken) {
+    if (!accessToken) {
+        response.status(401).send({
+            status: 401,
+            info: 'User not authenticated. No token present.',
+        })
+    }
+
+    try {
+        const decodedToken = jwt.verify(accessToken, secret)
+        request.user = decodedToken
+        next()
+    } catch (error) {
+        response.status(401).send({ status: 401, info: 'Invalid Token' })
+    }
+}
 
 async function authUser(username, password, done) {
     try {
         console.log(username, password)
         console.log('THIS IS LOCAL STRATEGY')
         const results = await connection('users')
-            .returning('email')
-            .select('id', 'password', 'email')
+            .select('user_id', 'password', 'email')
             .where({ email: username })
             .then((queryResult) => {
                 return queryResult
@@ -30,33 +50,20 @@ async function authUser(username, password, done) {
                 throw err
             })
 
-        // })
-        //         // const results = await pool.query(
-        //         //     'SELECT ID, PASSWORD, EMAIL from users WHERE EMAIL = $1',
-        //         //     [username]
-        //         // )
-        //         // console.log(results.rows)
-        //         // if (!results.rows.length) {
-        //         //     console.log('no results')
-        //         //     return done(null, false, {
-        //         //         message: 'Invalid username or password',
-        //         //     })
-        //         // }
-        //         //
         const match = await bcrypt.compare(password, results[0].password)
-        if (match) {
-            console.log('match is true')
-            return done(null, {
-                id: results[0].id,
-                username: results[0].email,
-            })
-        } else
-            return done(null, false, {
-                message: 'Invalid username or password',
-            })
+        if (!match) {
+            console.log('no match')
+            return done(null, false)
+        }
+        console.log('match is true')
+        const authenticatedUser = {
+            id: results[0].user_id,
+            username: results[0].email,
+        }
+        return done(null, authenticatedUser)
     } catch (error) {
         console.log('ERROR:', error)
     }
 }
 
-export default authUser
+module.exports = { authUser, isAuthenticated }

@@ -2,15 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext } from './context'
-import { postData } from '../Services/fetchWrapper'
+import { postData } from '../services/fetchWrapper'
+import { useCookies } from 'react-cookie'
 
 function StoreProvider({ children }) {
     StoreProvider.propTypes = {
         children: PropTypes.node.isRequired,
     }
+    const API = import.meta.env.VITE_API
 
     const navigate = useNavigate()
 
+    const [cookie, setCookie, removeCookie] = useCookies(['refreshToken'])
     const [shoppingCartProducts, setShoppingCartProducts] = React.useState([])
 
     const [isProductDetailOpen, setIsProductDetailOpen] = React.useState(false)
@@ -52,19 +55,26 @@ function StoreProvider({ children }) {
         })
         return total
     }
-    function addNewOrder() {
+    async function addNewOrder() {
         const newOrder = {
-            id: generateRandomUUID(),
-            date: new Date().toISOString(),
-            items: shoppingCartProducts,
-            image: shoppingCartProducts.at(-1).image,
-            title: shoppingCartProducts.at(-1).title,
-            count: shoppingCartProducts.length,
+            productsList: shoppingCartProducts,
+            // image: shoppingCartProducts.at(-1).image,
+            // title: shoppingCartProducts.at(-1).title,
+            productsCount: shoppingCartProducts.length,
             totalPrice: calculateTotalPrice(shoppingCartProducts),
+            date: new Date().toISOString(),
         }
-        setOrders([...orders, newOrder])
-        clearShoppingCart()
-        closeCartSideMenu()
+        const response = await postData(`${API}/new-order`, newOrder)
+        if (!response) console.log('no response')
+        // console.log('🚀 ~ handleSubmit ~ response:', response.status)
+        else if (response.status !== 200) console.log('Something went wrong')
+        else {
+            navigate('/my-orders')
+            clearShoppingCart()
+            closeCartSideMenu()
+            setOrders([...orders, newOrder])
+        }
+        return console.log('response', response)
     }
 
     function clearShoppingCart() {
@@ -75,20 +85,27 @@ function StoreProvider({ children }) {
         return self.crypto.randomUUID()
     }
 
-    async function logOut(event) {
+    function logOut(event) {
         event.preventDefault()
-        const response = await postData('http://localhost:5600/logout')
-        console.log('response.status', response.status)
-        if (!response) console.log('no response')
-        // console.log('🚀 ~ handleSubmit ~ response:', response.status)
-        else if (response.status !== 200)
-            // navigate('/login') //show error message
-            console.log('An Error has ocurred')
-        else {
-            setLoggedIn(false)
-            navigate('/')
-        }
-        return console.log('response', response)
+        localStorage.removeItem('accessToken')
+        console.log('user has been logged out')
+        setLoggedIn(false)
+        setUsername('')
+        removeCookie('refreshToken')
+        setShoppingCartProducts([])
+        navigate('/')
+        // const response = await postData('http://localhost:5600/logout')
+        // console.log('response.status', response.status)
+        // if (!response) console.log('no response')
+        // // console.log('🚀 ~ handleSubmit ~ response:', response.status)
+        // else if (response.status !== 200)
+        //     // navigate('/login') //show error message
+        //     console.log('An Error has ocurred')
+        // else {
+        //     setLoggedIn(false)
+        //     navigate('/')
+        // }
+        // return console.log('response', response)
     }
 
     return (
@@ -110,6 +127,8 @@ function StoreProvider({ children }) {
                 setLoggedIn,
                 logOut,
                 setUsername,
+                setCookie,
+                setOrders,
             }}
         >
             {children}

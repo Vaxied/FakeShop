@@ -59,7 +59,7 @@ function Card({ product }) {
                     {product.title}
                 </span>
                 <span className='text-lg text-black font-semibold'>
-                    ${product.price.toFixed(2)}
+                    ${product.price}
                 </span>
             </p>
             {productToShow === product &&

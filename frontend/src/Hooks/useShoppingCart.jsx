@@ -14,28 +14,32 @@ function useShoppingCart() {
     const navigate = useNavigate()
     function addItemToShoppingCart(event, product) {
         event.stopPropagation()
+        // console.log(product)
         if (!loggedIn) {
             navigate('/login')
             return
         }
+        console.log('user is logged in')
         const index = isProductInShoppingCart(product)
 
         if (index >= 0) {
+            console.log('item already in shopping cart')
             increaseShoppingCartProductQuantity(index)
         } else {
+            console.log('item has been added')
             product.quantity = 1
             setShoppingCartProducts([...shoppingCartProducts, product])
         }
         openCartSideMenu(event)
-
-        console.log('item has been added')
     }
-
     function isProductInShoppingCart(product) {
-        return shoppingCartProducts.findIndex((item) => item.id === product.id)
+        return shoppingCartProducts.findIndex(
+            (item) => item.product_id === product.product_id
+        )
     }
 
     function increaseShoppingCartProductQuantity(index) {
+        console.log(index)
         const newValue = shoppingCartProducts
         newValue[index].quantity++
         setShoppingCartProducts([...newValue])

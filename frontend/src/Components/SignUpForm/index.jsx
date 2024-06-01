@@ -1,5 +1,5 @@
 import React from 'react'
-import { postData } from '../../Services/fetchWrapper'
+import { postData } from '../../services/fetchWrapper'
 
 function SignUpForm() {
     const [formState, setFormState] = React.useState({
