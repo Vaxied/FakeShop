@@ -12,8 +12,8 @@ function ShoppingCart() {
     if (!Array.isArray(shoppingCartProducts) || !shoppingCartProducts.length) {
         return <p>You have not added any items</p>
     }
-    const totalPrice = calculateTotalPrice(shoppingCartProducts).toFixed(2)
-
+    const totalPrice = calculateTotalPrice(shoppingCartProducts)
+    console.log('shopping cart', shoppingCartProducts)
     // closeCartSideMenu()
     return (
         <div className='flex flex-col'>
@@ -34,11 +34,10 @@ function ShoppingCart() {
                         </div>
                         <div className='flex justify-between items-center h-8'>
                             <p className='flex items-center mr-8'>
-                                Quantity: {product?.quantity}
+                                Quantity: {product?.product_quantity}
                             </p>
                             <p className='flex items-center w-16 justify-end'>
-                                $
-                                {(product?.price * product.quantity).toFixed(2)}
+                                ${product?.price * product.product_quantity}
                             </p>
                             <button
                                 type='button'

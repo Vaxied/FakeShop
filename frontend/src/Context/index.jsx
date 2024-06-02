@@ -10,7 +10,6 @@ function StoreProvider({ children }) {
         children: PropTypes.node.isRequired,
     }
     const API = import.meta.env.VITE_API
-
     const navigate = useNavigate()
 
     const [cookie, setCookie, removeCookie] = useCookies(['refreshToken'])
@@ -25,6 +24,7 @@ function StoreProvider({ children }) {
     const [loggedIn, setLoggedIn] = React.useState(false)
     const [username, setUsername] = React.useState('')
 
+    console.log('cart products', shoppingCartProducts)
     function openProductDetail(product) {
         setIsProductDetailOpen(true)
         setproductToShow(product)
@@ -50,7 +50,7 @@ function StoreProvider({ children }) {
     function calculateTotalPrice(items) {
         let total = 0
         items.forEach((product) => {
-            const price = product.price * product.quantity
+            const price = product.price * product.product_quantity
             total = total + price
         })
         return total
@@ -74,6 +74,7 @@ function StoreProvider({ children }) {
             closeCartSideMenu()
             setOrders([...orders, newOrder])
         }
+        navigate('/my-orders')
         return console.log('response', response)
     }
 

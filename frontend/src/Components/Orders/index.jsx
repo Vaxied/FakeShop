@@ -33,7 +33,7 @@ function Orders() {
                         </div>
                         <div className='flex justify-between items-center h-8'>
                             <p className='flex items-center mr-8'>
-                                {order.productsCount} item(s)
+                                {order.productList.length} item(s)
                             </p>
                             <p className='flex items-center w-24 justify-end'>
                                 {order.date.substring(0, 10)}

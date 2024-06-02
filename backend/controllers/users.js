@@ -10,71 +10,49 @@ const cookieParser = require('cookie-parser')
 const app = express()
 app.use(cookieParser(process.env.SECRET))
 // if (!pool) console.log('no pool')
-
 const getSaltRounds = () => {
-    const saltRounds = 10
+    const saltRounds = process.env.SALT_ROUNDS
     return saltRounds
 }
+// const salt = process.env.SECRET
 
 const createUser = (request, response, next) => {
     const { firstName, lastName, email, password } = request.body
     const saltRounds = getSaltRounds()
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-        if (err) return err
-        bcrypt.hash(password, salt, function (err, hashedPassword) {
-            if (err) return next(err)
+    // bcrypt.genSalt(saltRounds, function (err, salt) {
+    //     if (err) return err
+    bcrypt.hash(password, saltRounds, function (err, hashedPassword) {
+        if (err) return next(err)
 
-            connection('users')
-                .returning('*')
-                .insert([
-                    {
-                        first_name: firstName,
-                        last_name: lastName,
-                        email: email,
-                        password: hashedPassword,
-                        salt: salt,
-                    },
-                ])
-                .then((queryResult) => {
-                    console.log(queryResult)
-                    response.status(200).send({
-                        status: 200,
-                        info: 'User added',
-                        username: queryResult[0].email,
-                    })
+        connection.transaction(async function (trx) {
+            try {
+                const user = await trx('users')
+                    .returning('*')
+                    .insert([
+                        {
+                            first_name: firstName,
+                            last_name: lastName,
+                            email: email,
+                            password: hashedPassword,
+                        },
+                    ])
+                console.log('user', user)
+                await trx('shopping_carts')
+                    .returning('*')
+                    .insert([
+                        {
+                            user_id: user[0].user_id,
+                            cart_status: 'active',
+                        },
+                    ])
+
+                response.status(200).send({
+                    username: user[0].email,
                 })
-                .catch((err) => {
-                    throw err
-                })
-            // Queries can be an object
-            //
-            // const createUserQuery = {
-            //     text: `INSERT INTO users (first_name, last_name, email, password, salt) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            //     values: [firstName, lastName, email, hashedPassword, salt],
-            // }
-            // Using a prepared statement
-            //
-            // const createUserQuery = {
-            //     name: 'create-user',
-            //     text: `INSERT INTO users (first_name, last_name, email, password, salt) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            //     values: [firstName, lastName, email, hashedPassword, salt],
-            // }
-
-            // pool.query(
-            //     // createUserQuery, Query object can be sent instead instead of the SQL string and the values array
-
-            //     // Queries are structured with a SQL formatted string and an array of values
-            //     `INSERT INTO users (first_name, last_name, email, password, salt) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            //     [firstName, lastName, email, hashedPassword, salt],
-            //     (error, results) => {
-            //         if (error) {
-            //             throw error
-            //         }
-            //         response.status(201).send({
-            //             info: `User added with ID: ${results.rows[0].id}`,
-            //         })
-            //     }
-            // )
+            } catch (error) {
+                console.log(error)
+                response.status(400).send(error)
+            }
         })
     })
 }

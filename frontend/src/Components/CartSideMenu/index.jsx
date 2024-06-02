@@ -90,12 +90,13 @@ function CartSideMenu() {
                             </div>
                             <div className='flex justify-between items-center h-8'>
                                 <p className='flex items-center'>
-                                    Qty: {product?.quantity}
+                                    Qty: {product?.product_quantity}
                                 </p>
                                 <p className='flex items-center w-16 justify-end'>
                                     $
                                     {(
-                                        product?.price * product.quantity
+                                        product?.price *
+                                        product.product_quantity
                                     ).toFixed(2)}
                                 </p>
                                 <button

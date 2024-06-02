@@ -1,6 +1,7 @@
 import React from 'react'
 import { StoreContext } from '../Context/context'
 import { useNavigate } from 'react-router-dom'
+import { postData } from '../services/fetchWrapper'
 
 function useShoppingCart() {
     const {
@@ -11,8 +12,10 @@ function useShoppingCart() {
         loggedIn,
     } = React.useContext(StoreContext)
 
+    const API = import.meta.env.VITE_API
+
     const navigate = useNavigate()
-    function addItemToShoppingCart(event, product) {
+    async function addItemToShoppingCart(event, product) {
         event.stopPropagation()
         // console.log(product)
         if (!loggedIn) {
@@ -26,8 +29,12 @@ function useShoppingCart() {
             console.log('item already in shopping cart')
             increaseShoppingCartProductQuantity(index)
         } else {
-            console.log('item has been added')
             product.quantity = 1
+            const response = await postData(`${API}/add-cart-product`, product)
+            console.log(response)
+            if (!response) return
+            console.log('item has been added')
+
             setShoppingCartProducts([...shoppingCartProducts, product])
         }
         openCartSideMenu(event)

@@ -6,6 +6,7 @@ const { createUser, verifyUser, logOut } = require('./controllers/users')
 const { createOrder, getUserOrders } = require('./controllers/orders')
 const { isAuthenticated } = require('./routes/auth')
 const getProducts = require('./routes/products')
+const { addProduct, loadShoppingCart } = require('./controllers/shoppingCarts')
 
 const app = express()
 app.use(cors())
@@ -19,6 +20,7 @@ app.use(
 
 app.get('/', (request, response) => {
     console.log('Tadaima')
+    console.log('getting products')
     return getProducts(request, response)
     // response.json({ info: 'Tadaima' })
 })
@@ -40,6 +42,16 @@ app.post('/new-order', isAuthenticated, (request, response, next) => {
     console.log('user', request.user)
     // response.status(200).send({ info: 'New order requested' })
     return createOrder(request, response, next)
+})
+
+app.post('/add-cart-product', isAuthenticated, (request, response, next) => {
+    console.log('\n add product request')
+    return addProduct(request, response)
+})
+
+app.get('/load-cart', isAuthenticated, (request, response, next) => {
+    console.log('LOADING CART')
+    return loadShoppingCart(request, response)
 })
 
 app.get('/get-orders', isAuthenticated, (request, response, next) => {

@@ -3,6 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.seed = async function (knex) {
+    return null
     const data = await fetch('https://fakestoreapi.com/products').then((res) =>
         res.json()
     )
@@ -17,6 +18,7 @@ exports.seed = async function (knex) {
             category: product.category,
             average_rating: product.rating.rate.toFixed(2),
             rating_count: product.rating.count,
+            created_at: new Date().toISOString(),
         }))
 
         // Deletes ALL existing entries

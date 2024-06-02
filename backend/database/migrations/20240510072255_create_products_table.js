@@ -12,7 +12,7 @@ exports.up = function (knex) {
         table.string('category').notNullable()
         table.decimal('average_rating').notNullable()
         table.integer('rating_count').notNullable()
-        table.timestamps(true, true)
+        table.string('created_at').notNullable()
     })
 }
 

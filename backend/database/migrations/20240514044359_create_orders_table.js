@@ -4,9 +4,8 @@
  */
 exports.up = function (knex) {
     return knex.schema.createTable('orders', function (table) {
-        table.increments('order_id').primary()
+        table.uuid('order_id').defaultTo(knex.fn.uuid()).primary()
         table.integer('user_id').notNullable()
-        table.integer('products_count').notNullable()
         table.decimal('total_price', 10, 2).notNullable()
         table.string('utc_date').notNullable()
 
