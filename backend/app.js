@@ -6,7 +6,12 @@ const { createUser, verifyUser, logOut } = require('./controllers/users')
 const { createOrder, getUserOrders } = require('./controllers/orders')
 const { isAuthenticated } = require('./routes/auth')
 const getProducts = require('./routes/products')
-const { addProduct, loadShoppingCart } = require('./controllers/shoppingCarts')
+const {
+    addProduct,
+    loadShoppingCart,
+    increaseProductQuantity,
+    removeProduct,
+} = require('./controllers/shoppingCarts')
 
 const app = express()
 app.use(cors())
@@ -50,9 +55,23 @@ app.post('/add-cart-product', isAuthenticated, (request, response, next) => {
 })
 
 app.get('/load-cart', isAuthenticated, (request, response, next) => {
-    console.log('LOADING CART')
+    console.log('load cart request')
     return loadShoppingCart(request, response)
 })
+
+app.delete('/remove-product', isAuthenticated, (request, response, next) => {
+    console.log('remove product request')
+    return removeProduct(request, response)
+})
+
+app.patch(
+    '/increase-product-quantity',
+    isAuthenticated,
+    (request, response, next) => {
+        console.log('increase quantity request')
+        return increaseProductQuantity(request, response)
+    }
+)
 
 app.get('/get-orders', isAuthenticated, (request, response, next) => {
     console.log('getting orders')

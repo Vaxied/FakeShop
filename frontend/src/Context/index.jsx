@@ -53,7 +53,7 @@ function StoreProvider({ children }) {
             const price = product.price * product.product_quantity
             total = total + price
         })
-        return total
+        return total.toFixed(2)
     }
     async function addNewOrder() {
         const newOrder = {
@@ -69,9 +69,9 @@ function StoreProvider({ children }) {
         // console.log('🚀 ~ handleSubmit ~ response:', response.status)
         else if (response.status !== 200) console.log('Something went wrong')
         else {
-            navigate('/my-orders')
             clearShoppingCart()
             closeCartSideMenu()
+            newOrder.orderId = response.order_id
             setOrders([...orders, newOrder])
         }
         navigate('/my-orders')
@@ -80,10 +80,6 @@ function StoreProvider({ children }) {
 
     function clearShoppingCart() {
         setShoppingCartProducts([])
-    }
-
-    function generateRandomUUID() {
-        return self.crypto.randomUUID()
     }
 
     function logOut(event) {
@@ -95,18 +91,12 @@ function StoreProvider({ children }) {
         removeCookie('refreshToken')
         setShoppingCartProducts([])
         navigate('/')
-        // const response = await postData('http://localhost:5600/logout')
-        // console.log('response.status', response.status)
-        // if (!response) console.log('no response')
-        // // console.log('🚀 ~ handleSubmit ~ response:', response.status)
-        // else if (response.status !== 200)
-        //     // navigate('/login') //show error message
-        //     console.log('An Error has ocurred')
-        // else {
-        //     setLoggedIn(false)
-        //     navigate('/')
-        // }
-        // return console.log('response', response)
+    }
+
+    function navigateWithClosing(to) {
+        closeCartSideMenu()
+        closeProductDetail()
+        navigate(to)
     }
 
     return (
@@ -130,6 +120,7 @@ function StoreProvider({ children }) {
                 setUsername,
                 setCookie,
                 setOrders,
+                navigateWithClosing,
             }}
         >
             {children}

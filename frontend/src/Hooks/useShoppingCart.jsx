@@ -1,7 +1,7 @@
 import React from 'react'
 import { StoreContext } from '../Context/context'
 import { useNavigate } from 'react-router-dom'
-import { postData } from '../services/fetchWrapper'
+import { postData, updateData, deleteData } from '../services/fetchWrapper'
 
 function useShoppingCart() {
     const {
@@ -29,7 +29,7 @@ function useShoppingCart() {
             console.log('item already in shopping cart')
             increaseShoppingCartProductQuantity(index)
         } else {
-            product.quantity = 1
+            product.product_quantity = 1
             const response = await postData(`${API}/add-cart-product`, product)
             console.log(response)
             if (!response) return
@@ -45,18 +45,27 @@ function useShoppingCart() {
         )
     }
 
-    function increaseShoppingCartProductQuantity(index) {
+    async function increaseShoppingCartProductQuantity(index) {
         console.log(index)
-        const newValue = shoppingCartProducts
-        newValue[index].quantity++
-        setShoppingCartProducts([...newValue])
+        const newProducts = shoppingCartProducts
+        newProducts[index].product_quantity++
+        const product = newProducts[index]
+        const response = await updateData(
+            `${API}/increase-product-quantity`,
+            product
+        )
+        if (!response) return
+        setShoppingCartProducts([...newProducts])
         console.log('quantity increased')
     }
 
-    function removeProductFromShoppingCart(index) {
-        let newValue = shoppingCartProducts
-        const left = newValue.slice(0, index)
-        const right = newValue.slice(index + 1, newValue.length)
+    async function removeProductFromShoppingCart(index) {
+        let newProducts = shoppingCartProducts
+        const product = newProducts[index]
+        const response = await deleteData(`${API}/remove-product`, product)
+        if (!response) return
+        const left = newProducts.slice(0, index)
+        const right = newProducts.slice(index + 1, newProducts.length)
         setShoppingCartProducts([...left, ...right])
     }
 

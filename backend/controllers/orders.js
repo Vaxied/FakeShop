@@ -1,17 +1,12 @@
 const connection = require('../database/connection')
+const { setCartInactive, createShoppingCart } = require('./shoppingCarts')
 
 const createOrder = async (request, response) => {
-    const { productList, productCount, totalPrice, date } = request.body
-    // console.log('request user', request.user)
-    // console.log('request user id', request.user.user.id)
-    // console.log(productsList)
-
-    // console.log('request body', request.body)
-    // Create a table for order_products with order_id, product_id, product_count
+    const { productList, totalPrice, date } = request.body
     try {
         await connection.transaction(async function (trx) {
             const order = await trx('orders')
-                .returning('*')
+                .returning('order_id')
                 .insert([
                     {
                         user_id: request.user.user.id,
@@ -19,9 +14,11 @@ const createOrder = async (request, response) => {
                         utc_date: date,
                     },
                 ])
+            // console.log('PRODUCT LIST', productList)
             const orderProductsData = productList.map((product) => ({
                 order_id: order[0].order_id,
-                product_quantity: product.quantity,
+                product_quantity: product.product_quantity,
+                price: product.price,
                 title: product.title,
                 description: product.description,
                 image: product.image,
@@ -29,16 +26,19 @@ const createOrder = async (request, response) => {
                 average_rating: product.average_rating,
                 rating_count: product.rating_count,
             }))
-            console.log(order)
+            // console.log(order)
             const result = await trx('order_products')
                 .returning('*')
                 .insert(orderProductsData)
 
-            console.log('result', result)
-
+            // console.log('result', result)
+            const inactive = await setCartInactive(request.user.user.id, trx)
+            console.log('set cart inactive response', inactive)
+            const newCart = await createShoppingCart(request.user.user.id, trx)
+            console.log('newCart operation', newCart)
             response.status(200).send({
                 status: 200,
-                info: `Order ${order[0].order_id} has been placed successfully`,
+                order_id: order[0].order_id,
             })
         })
     } catch (error) {
@@ -72,7 +72,7 @@ async function getUserOrders(request, response) {
             )
             .where('user_id', request.user.user.id)
 
-        console.log('PRODUCTS', products)
+        // console.log('PRODUCTS', products)
         // console.log(products)
         const orders = await connection('orders')
             .select('*')
@@ -92,7 +92,7 @@ async function getUserOrders(request, response) {
             }
         })
 
-        console.log(formattedOrders)
+        // console.log(formattedOrders)
 
         response.status(200).send(formattedOrders)
     } catch (error) {

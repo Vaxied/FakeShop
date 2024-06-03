@@ -40,7 +40,7 @@ function MyOrder() {
                     Placed on {order.date.substring(0, 10)} at{' '}
                     {order.date.substring(11, 16)}
                 </p>
-                <p>{order.productsCount} item(s)</p>
+                <p>{order.productList.length} item(s)</p>
                 {order.productList.map((product, index) => (
                     <div
                         key={index}
@@ -56,10 +56,10 @@ function MyOrder() {
                         </div>
                         <div className='flex justify-between items-center h-8'>
                             <p className='flex items-center mr-8'>
-                                Quantity: {product?.product_count}
+                                Quantity: {product?.product_quantity}
                             </p>
                             <p className='flex items-center w-16 justify-end'>
-                                ${product?.price * product.product_count}
+                                ${product?.price * product.product_quantity}
                             </p>
                         </div>
                     </div>
@@ -67,7 +67,7 @@ function MyOrder() {
                 <div className='w-full flex justify-end'>
                     <div className='w-32 py-2'>
                         <p className='font-semibold flex justify-end'>
-                            Total: {order.totalPrice}
+                            Total: ${order.totalPrice}
                         </p>
                     </div>
                 </div>

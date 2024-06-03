@@ -41,9 +41,10 @@ exports.seed = async function (knex) {
     console.log('testPW', testPW)
     const hashedUsers = await Promise.all(
         users.map(async (user) => ({
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
+            // first_name: user.first_name,
+            // last_name: user.last_name,
+            // email: user.email,
+            ...user,
             password: await hashPW(user.password),
         }))
     )
