@@ -138,6 +138,7 @@ const setCartInactive = async (user_id, trx) => {
         const cart = await trx('shopping_carts')
             .select('cart_id')
             .where('user_id', user_id)
+            .andWhere('cart_status', 'active')
         console.log('state changing in cart', cart)
         const result = await trx('shopping_carts')
             .returning('cart_status')
@@ -146,7 +147,7 @@ const setCartInactive = async (user_id, trx) => {
 
         console.log('query result', result)
 
-        response.status(200).send(result)
+        return result
         // })
     } catch (error) {
         console.log('error updating cart status', error)
