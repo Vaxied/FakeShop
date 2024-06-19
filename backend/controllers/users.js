@@ -1,30 +1,35 @@
 const bcrypt = require('bcrypt')
 const express = require('express')
 const passport = require('passport')
-const connection = require('../database/connection')
+const knex = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
 const cookieParser = require('cookie-parser')
-// import { connection } from '../connection.js'
-// import { pool } from '../connection.js'
+const { isEveryFieldValid } = require('./signUpValidations')
 const app = express()
 app.use(cookieParser(process.env.SECRET))
-// if (!pool) console.log('no pool')
-const getSaltRounds = () => {
-    const saltRounds = process.env.SALT_ROUNDS
-    return saltRounds
-}
-// const salt = process.env.SECRET
 
 const createUser = (request, response, next) => {
-    const { firstName, lastName, email, password } = request.body
-    const saltRounds = getSaltRounds()
+    const formData = request.body
+    const { firstName, lastName, email, password, confirmedPassword } =
+        request.body
+    console.log('body', request.body)
+
+    if (!isEveryFieldValid(formData)) {
+        response
+            .status(418)
+            .send({ status: 418, message: 'Invalid data provided' })
+        return
+    }
+
+    const saltRounds = Number(process.env.SALT_ROUNDS)
+    console.log('salt', saltRounds)
     // bcrypt.genSalt(saltRounds, function (err, salt) {
     //     if (err) return err
     bcrypt.hash(password, saltRounds, function (err, hashedPassword) {
         if (err) return next(err)
-
-        connection.transaction(async function (trx) {
+        console.log('hashed', hashedPassword)
+        knex.transaction(async function (trx) {
             try {
                 const user = await trx('users')
                     .returning('*')

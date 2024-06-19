@@ -37,7 +37,10 @@ function ShoppingCart() {
                                 Quantity: {product?.product_quantity}
                             </p>
                             <p className='flex items-center w-16 justify-end'>
-                                ${product?.price * product.product_quantity}
+                                $
+                                {(
+                                    product?.price * product.product_quantity
+                                ).toFixed(2)}
                             </p>
                             <button
                                 type='button'

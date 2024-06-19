@@ -8,6 +8,7 @@ const addProduct = async (request, response) => {
             const shoppingCart = await trx('shopping_carts')
                 .select('cart_id')
                 .where('user_id', request.user.user.id)
+                .andWhere('cart_status', 'active')
 
             console.log('shopping cart', shoppingCart)
             const result = await trx('shopping_cart_products')
@@ -44,6 +45,7 @@ const increaseProductQuantity = async (request, response) => {
             const cart = await trx('shopping_carts')
                 .select('cart_id')
                 .where('user_id', user_id)
+                .andWhere('cart_status', 'active')
             console.log('cart to increase', cart)
             const result = await trx('shopping_cart_products')
                 .returning('product_quantity')

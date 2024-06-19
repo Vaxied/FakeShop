@@ -59,7 +59,7 @@ function MyOrder() {
                                 Quantity: {product?.product_quantity}
                             </p>
                             <p className='flex items-center w-16 justify-end'>
-                                ${product?.price * product.product_quantity}
+                                ${product?.price.toFixed(2)}
                             </p>
                         </div>
                     </div>
