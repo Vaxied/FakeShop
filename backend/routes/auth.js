@@ -41,7 +41,7 @@ async function authUser(username, password, done) {
         console.log(username, password)
         console.log('THIS IS LOCAL STRATEGY')
         const results = await connection('users')
-            .select('user_id', 'password', 'email')
+            .select('user_id', 'first_name', 'password', 'email')
             .where({ email: username })
             .then((queryResult) => {
                 return queryResult
@@ -58,6 +58,7 @@ async function authUser(username, password, done) {
         console.log('match is true')
         const authenticatedUser = {
             id: results[0].user_id,
+            firstName: results[0].first_name,
             username: results[0].email,
         }
         return done(null, authenticatedUser)

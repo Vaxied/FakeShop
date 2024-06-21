@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import Home from '../Pages/Home'
 import MyAccount from '../Pages/MyAccount'
 import MyOrder from '../Pages/MyOrder'
@@ -14,6 +14,32 @@ export const AppRoutes = () => {
         {
             path: '/',
             element: <Home />,
+        },
+        {
+            path: '/category',
+            element: <Outlet />,
+            children: [
+                {
+                    path: '',
+                    element: <Navigate to={'/'} />,
+                },
+                {
+                    path: '*',
+                    element: <Home />,
+                },
+                // {
+                //     path: 'women',
+                //     element: <Home />,
+                // },
+                // {
+                //     path: 'electronics',
+                //     element: <Home />,
+                // },
+                // {
+                //     path: 'jewelry',
+                //     element: <Home />,
+                // },
+            ],
         },
         {
             path: '/login',

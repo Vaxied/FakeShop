@@ -19,10 +19,6 @@ const inputErrMsgs = {
 }
 
 function sanitizeData(formData) {
-    // const sanitizedData = Object.keys(formData).forEach(
-    //     (key) => (formData[key] = formData[key].trim())
-    // )
-    // console.log('sanitized data', sanitizedData)
     const trimmedData = Object.keys(formData).reduce((acc, curr) => {
         acc[curr] = typeof (formData[curr] === 'string')
             ? formData[curr].trim()

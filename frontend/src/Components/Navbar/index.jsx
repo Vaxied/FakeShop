@@ -7,7 +7,7 @@ function Navbar() {
         return isActive ? activeStyle : ''
     }
 
-    const { shoppingCartProducts, loggedIn, logOut } =
+    const { username, shoppingCartProducts, loggedIn, logOut } =
         React.useContext(StoreContext)
 
     return (
@@ -19,23 +19,23 @@ function Navbar() {
                     </li>
                     <li>
                         <NavLink
-                            to='/clothes'
+                            to='/category/men'
                             className={({ isActive }) => isLinkActive(isActive)}
                         >
-                            Clothes
+                            Men
                         </NavLink>
                     </li>
                     <li>
                         <NavLink
-                            to='/furnitures'
+                            to='/category/women'
                             className={({ isActive }) => isLinkActive(isActive)}
                         >
-                            Furnitures
+                            Women
                         </NavLink>
                     </li>
                     <li>
                         <NavLink
-                            to='/electronics'
+                            to='/category/electronics'
                             className={({ isActive }) => isLinkActive(isActive)}
                         >
                             Electronics
@@ -43,24 +43,16 @@ function Navbar() {
                     </li>
                     <li>
                         <NavLink
-                            to='/toys'
+                            to='/category/jewelry'
                             className={({ isActive }) => isLinkActive(isActive)}
                         >
-                            Toys
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to='others'
-                            className={({ isActive }) => isLinkActive(isActive)}
-                        >
-                            Others
+                            Jewelery
                         </NavLink>
                     </li>
                 </ul>
                 <ul className='flex items-center gap-3'>
                     {loggedIn && (
-                        <li className='text-black/80'>Whatever@platzi.com</li>
+                        <li className='text-black/80'>Hi, {username}!</li>
                     )}
                     <li>
                         <NavLink

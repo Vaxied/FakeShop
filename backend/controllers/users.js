@@ -83,6 +83,7 @@ const verifyUser = async (request, response, next) => {
             response.status(201).send({
                 status: 201,
                 token: accessToken,
+                firstName: user.firstName,
                 // refresh: refreshToken,
                 info: `Login succesful with user ${user.username}`,
                 // username: user.email,

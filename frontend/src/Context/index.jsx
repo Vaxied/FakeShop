@@ -12,6 +12,7 @@ function StoreProvider({ children }) {
     const API = import.meta.env.VITE_API
     const navigate = useNavigate()
 
+    const [items, setItems] = React.useState([] || null)
     const [cookie, setCookie, removeCookie] = useCookies(['refreshToken'])
     const [shoppingCartProducts, setShoppingCartProducts] = React.useState([])
 
@@ -24,6 +25,14 @@ function StoreProvider({ children }) {
     const [loggedIn, setLoggedIn] = React.useState(false)
     const [username, setUsername] = React.useState('')
 
+    const [searchByTitle, setSearchByTitle] = React.useState('')
+
+    const productCategories = {
+        men: "men's clothing",
+        women: "women's clothing",
+        electronics: 'electronics',
+        jewelry: 'jewelery',
+    }
     console.log('cart products', shoppingCartProducts)
     function openProductDetail(product) {
         setIsProductDetailOpen(true)
@@ -99,15 +108,48 @@ function StoreProvider({ children }) {
         navigate(to)
     }
 
+    function filterItems(searchTerm = '', category = '') {
+        console.log('searchTerm', searchTerm)
+        console.log('category', category)
+        const newItems = [...items]
+        let filteredItems
+        if (searchTerm && category) {
+            console.log('filtrado doble')
+            filteredItems = newItems.filter(
+                (item) =>
+                    item.title
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) &&
+                    item.category.toLowerCase() === category.toLowerCase()
+            )
+            console.log('post filtro')
+        } else if (searchTerm && !category) {
+            filteredItems = newItems.filter((item) =>
+                item.title.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        } else if (!searchTerm && category) {
+            filteredItems = newItems.filter(
+                (item) => item.category.toLowerCase() === category.toLowerCase()
+            )
+        }
+        console.log('filteredItems', filteredItems)
+        return filteredItems
+    }
+
     return (
         <StoreContext.Provider
             value={{
+                items,
+                username,
                 isProductDetailOpen,
                 productToShow,
                 shoppingCartProducts,
                 isCartSideMenuOpen,
                 orders,
                 loggedIn,
+                searchByTitle,
+                productCategories,
+                setItems,
                 openProductDetail,
                 closeProductDetail,
                 setShoppingCartProducts,
@@ -121,6 +163,8 @@ function StoreProvider({ children }) {
                 setCookie,
                 setOrders,
                 navigateWithClosing,
+                setSearchByTitle,
+                filterItems,
             }}
         >
             {children}

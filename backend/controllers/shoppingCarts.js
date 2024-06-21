@@ -70,6 +70,7 @@ const removeProduct = async (request, response) => {
             const cart = await trx('shopping_carts')
                 .select('cart_id')
                 .where('user_id', user_id)
+                .andWhere('cart_status', 'active')
             console.log('cart where product is', cart)
             const result = await trx('shopping_cart_products')
                 .where('product_id', product.product_id)

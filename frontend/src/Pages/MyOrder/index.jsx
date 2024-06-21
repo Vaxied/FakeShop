@@ -3,7 +3,7 @@ import { StoreContext } from '../../Context/context'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 
 function MyOrder() {
-    const { orders, shoppingCartProducts } = React.useContext(StoreContext)
+    const { orders } = React.useContext(StoreContext)
     const orderId = useParams().id
     const navigate = useNavigate()
 
@@ -59,7 +59,7 @@ function MyOrder() {
                                 Quantity: {product?.product_quantity}
                             </p>
                             <p className='flex items-center w-16 justify-end'>
-                                ${product?.price.toFixed(2)}
+                                ${product?.price}
                             </p>
                         </div>
                     </div>

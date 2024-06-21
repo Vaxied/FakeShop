@@ -13,20 +13,22 @@ function LoginForm() {
         username: '',
         password: '',
     })
+    const API = import.meta.env.VITE_API
 
     async function handleSubmit(event) {
         event.preventDefault()
         console.log(formState)
-        const response = await postData('http://localhost:5600/auth', formState)
-        console.log('response.status', response.status)
+        const response = await postData(`${API}/auth`, formState)
+        console.log('response', response)
         if (!response) console.log('no response')
         // console.log('🚀 ~ handleSubmit ~ response:', response.status)
-        else if (response.status !== 201)
-            navigate('/login') //show error message
-        else {
+        else if (response.status !== 201) {
+            navigate('/login')
+            console.log(response.info) //show error message
+        } else {
             console.log('loggin in')
             setLoggedIn(true)
-            setUsername(response.username)
+            setUsername(response.firstName)
             localStorage.setItem('accessToken', response.token)
             setCookie('refreshToken', response.refresh)
             navigate('/')

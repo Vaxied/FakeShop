@@ -6,8 +6,8 @@ import { StoreContext } from '../Context/context'
 function useApi() {
     // const DATA = JSON.parse(import.meta.env.VITE_API_DATA)
     const API = import.meta.env.VITE_API
+    const { items, setItems } = React.useContext(StoreContext)
     // const [items, setItems] = React.useState(DATA || null)
-    const [items, setItems] = React.useState([] || null)
     const {
         shoppingCartProducts,
         setShoppingCartProducts,
