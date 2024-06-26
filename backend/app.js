@@ -1,11 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
 
 const { createUser, verifyUser, logOut } = require('./controllers/users')
 const { createOrder, getUserOrders } = require('./controllers/orders')
-const { isAuthenticated } = require('./routes/auth')
+const { isAuthenticated, authUser } = require('./routes/auth')
 const getProducts = require('./routes/products')
+
 const {
     addProduct,
     loadShoppingCart,
@@ -22,6 +25,8 @@ app.use(
         extended: true,
     })
 )
+app.use(passport.initialize())
+passport.use('local', new LocalStrategy(authUser))
 
 app.get('/', (request, response) => {
     console.log('Tadaima')
@@ -77,8 +82,5 @@ app.get('/get-orders', isAuthenticated, (request, response, next) => {
     console.log('getting orders')
     return getUserOrders(request, response)
 })
-// app.post('/refresh', (request, response) => {
-//     return refreshAcessToken(request, response)
-// })
 
 module.exports = app

@@ -46,7 +46,6 @@ export async function updateData(url, body) {
         redirect: 'follow',
     })
         .then((response) => {
-            console.log('response headers', ...response.headers)
             return response.json()
         })
         .then((result) => {
@@ -59,7 +58,6 @@ export async function updateData(url, body) {
 
 export async function deleteData(url, body) {
     const headers = formatRequestHeader()
-    // console.log(headers)
 
     const data = await fetch(url, {
         method: 'DELETE',
@@ -74,9 +72,6 @@ export async function deleteData(url, body) {
         .catch((error) => console.log('error: ', error))
     return data
 }
-// function getRefreshToken() {
-//     return document.cookie
-// }
 
 function getAccessToken() {
     return localStorage.getItem('accessToken')
@@ -84,16 +79,10 @@ function getAccessToken() {
 
 function formatRequestHeader() {
     const accessToken = getAccessToken()
-    // const refreshToken = getRefreshToken()
     let headers = {
         'Content-Type': 'application/json',
     }
+
     if (accessToken) headers.Authorization = accessToken
     return headers
-
-    // if (accessToken && refreshToken) {
-    //     headers.Authorization = accessToken
-    //     // headers.Cookie = refreshToken
-    // }
-    // return headers
 }

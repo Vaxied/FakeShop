@@ -3,6 +3,7 @@ import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { postData } from '../../services/fetchWrapper'
 import { StoreContext } from '../../Context/context'
+import InputError from '../InputError'
 
 function LoginForm() {
     // debugger
@@ -13,9 +14,13 @@ function LoginForm() {
         username: '',
         password: '',
     })
+    const [isloginErr, isSetLoginErr] = React.useState(false)
     const API = import.meta.env.VITE_API
+    const errMsg = 'Invalid username or password.'
+    const inputStyle =
+        'border border-gray-400 rounded-lg mb-6 px-4 py-2 outline-none w-full'
 
-    async function handleSubmit(event) {
+    async function handleLogin(event) {
         event.preventDefault()
         console.log(formState)
         const response = await postData(`${API}/auth`, formState)
@@ -23,14 +28,15 @@ function LoginForm() {
         if (!response) console.log('no response')
         // console.log('🚀 ~ handleSubmit ~ response:', response.status)
         else if (response.status !== 201) {
-            navigate('/login')
+            isSetLoginErr(true)
+            // navigate('/login')
             console.log(response.info) //show error message
         } else {
             console.log('loggin in')
+            isSetLoginErr(false)
             setLoggedIn(true)
             setUsername(response.firstName)
             localStorage.setItem('accessToken', response.token)
-            setCookie('refreshToken', response.refresh)
             navigate('/')
         }
     }
@@ -38,7 +44,7 @@ function LoginForm() {
     return (
         <div className='flex flex-col items-center justify-center w-[400px] h-[calc(100vh-134px)]'>
             <form
-                onSubmit={(event) => handleSubmit(event)}
+                onSubmit={(event) => handleLogin(event)}
                 className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-gray-100'
             >
                 <p className='font-bold text-lg text-center'>Sign In</p>
@@ -57,7 +63,7 @@ function LoginForm() {
                         })
                     }
                     placeholder='something@domain.tld'
-                    className='border border-gray-400 rounded-lg mb-6 px-4 py-2 outline-none w-full'
+                    className={inputStyle}
                 />
                 <label htmlFor='password' className='py-2 font-semibold'>
                     password
@@ -74,8 +80,9 @@ function LoginForm() {
                             password: event.target.value,
                         })
                     }
-                    className='border border-gray-400 rounded-lg mb-6 px-4 py-2 outline-none w-full'
+                    className={inputStyle}
                 />
+                <InputError errMsg={errMsg} condition={isloginErr} />
                 <p className='text-end mb-6'>
                     <NavLink>Forgot password</NavLink>
                 </p>

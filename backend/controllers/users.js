@@ -4,10 +4,9 @@ const passport = require('passport')
 const knex = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
-const cookieParser = require('cookie-parser')
+// const cookieParser = require('cookie-parser')
 const { isEveryFieldValid } = require('./signUpValidations')
-const app = express()
-app.use(cookieParser(process.env.SECRET))
+// const app = express()
 
 const createUser = (request, response, next) => {
     const formData = request.body
@@ -74,19 +73,12 @@ const verifyUser = async (request, response, next) => {
         else {
             console.log('this is user', user)
             const accessToken = jwt.sign({ user }, secret, { expiresIn: '1h' })
-            // const refreshToken = jwt.sign({ user }, secret, { expiresIn: '1d' })
-            // response.cookie('refreshToken', refreshToken, {
-            //     httpOnly: true,
-            //     sameSite: 'strict',
-            // })
-            response.header('Authorization', accessToken)
-            response.status(201).send({
+
+            return response.status(200).send({
                 status: 201,
                 token: accessToken,
                 firstName: user.firstName,
-                // refresh: refreshToken,
                 info: `Login succesful with user ${user.username}`,
-                // username: user.email,
             })
         }
     })(request, response, next)

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { StoreContext } from '../../Context/context'
 import ProductDetail from '../ProductDetail'
 import useShoppingCart from '../../Hooks/useShoppingCart'
-import CartSideMenu from '../CartSideMenu'
 
 function Card({ product }) {
     Card.propTypes = {

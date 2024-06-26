@@ -1,7 +1,6 @@
 const connection = require('../database/connection')
 const express = require('express')
-const passport = require('passport')
-const LocalStrategy = require('passport-local')
+const cookieParser = require('cookie-parser')
 // import { pool } from '../connection.js'
 
 const bcrypt = require('bcrypt')
@@ -9,19 +8,15 @@ const app = express()
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
 
-app.use(passport.initialize())
-passport.use('local', new LocalStrategy(authUser))
+// app.use(cookieParser(secret))
 
 function isAuthenticated(request, response, next) {
-    // console.log(request.headers)
+    console.log('IS AUTHENTICATED')
+    console.log('request header', request.headers['whatever'])
     const accessToken = request.headers['authorization']
-    // const refreshToken = request.headers['cookie']
     console.log('accessToken', accessToken)
-    // console.log('refreshToken', refreshToken)
-    // const refreshToken = request.cookies['refreshToken']
-    // if (!accessToken && refreshToken) {
     if (!accessToken) {
-        response.status(401).send({
+        return response.status(401).send({
             status: 401,
             info: 'User not authenticated. No token present.',
         })
@@ -32,7 +27,8 @@ function isAuthenticated(request, response, next) {
         request.user = decodedToken
         next()
     } catch (error) {
-        response.status(401).send({ status: 401, info: 'Invalid Token' })
+        console.log('ERORR:', error)
+        return response.status(400).send({ info: 'Invalid access token' })
     }
 }
 
