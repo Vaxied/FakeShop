@@ -2,6 +2,7 @@ import React from 'react'
 import { StoreContext } from '../../Context/context'
 import useShoppingCart from '../../Hooks/useShoppingCart'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { StoreContextType } from '../../@types/store'
 
 function CartSideMenu() {
     const {
@@ -10,7 +11,7 @@ function CartSideMenu() {
         closeCartSideMenu,
         shoppingCartProducts,
         loggedIn,
-    } = React.useContext(StoreContext)
+    } = React.useContext(StoreContext) as StoreContextType
 
     const { calculateTotalPrice, removeProductFromShoppingCart } =
         useShoppingCart()
@@ -38,8 +39,8 @@ function CartSideMenu() {
                 >
                     <button
                         type='button'
-                        onClick={(event) => {
-                            closeCartSideMenu(event)
+                        onClick={() => {
+                            closeCartSideMenu()
                         }}
                         className='flex justify-center items-center text-md font-bold w-6 h-6 p-1 mr-auto bg-white cursor-pointer border border-gray rounded-full z-10'
                     >
@@ -94,10 +95,11 @@ function CartSideMenu() {
                                 </p>
                                 <p className='flex items-center w-16 justify-end'>
                                     $
-                                    {(
-                                        product?.price *
-                                        product.product_quantity
-                                    ).toFixed(2)}
+                                    {product.product_quantity &&
+                                        (
+                                            product?.price *
+                                            product.product_quantity
+                                        ).toFixed(2)}
                                 </p>
                                 <button
                                     type='button'

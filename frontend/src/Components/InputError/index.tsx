@@ -1,4 +1,5 @@
-function ErrorMsg({ errMsg, condition }) {
+type props = { errMsg: string | object; condition: boolean }
+function ErrorMsg({ errMsg, condition }: props) {
     console.log('input err check', errMsg, condition)
     return (
         <div
@@ -20,7 +21,7 @@ function ErrorMsg({ errMsg, condition }) {
                 text-sm ${!!condition ? 'flex flex-col' : 'hidden'}
                 `}
                 >
-                    {Object.values(errMsg).map((value) => (
+                    {Object.values(errMsg).map((value: any) => (
                         <span>{value}</span>
                     ))}
                     {/* <span>{errMsg?.length}</span>

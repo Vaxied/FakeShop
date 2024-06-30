@@ -1,24 +1,22 @@
 import PropTypes from 'prop-types'
 import useShoppingCart from '../../Hooks/useShoppingCart'
+import { IProduct } from '../../@types/product'
 
-function ProductDetail({
-    item,
-    image,
-    title,
-    price,
-    description,
-    category,
-    closeProductDetail,
-}) {
-    ProductDetail.propTypes = {
-        item: PropTypes.object.isRequired,
-        image: PropTypes.string.isRequired,
-        price: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        category: PropTypes.string.isRequired,
-        closeProductDetail: PropTypes.func.isRequired,
-    }
+type props = {
+    product: IProduct
+    closeProductDetail: (event: React.MouseEvent) => void
+}
+
+function ProductDetail({ product, closeProductDetail }: props) {
+    // ProductDetail.propTypes = {
+    //     item: PropTypes.object.isRequired,
+    //     image: PropTypes.string.isRequired,
+    //     price: PropTypes.string.isRequired,
+    //     title: PropTypes.string.isRequired,
+    //     description: PropTypes.string.isRequired,
+    //     category: PropTypes.string.isRequired,
+    //     closeProductDetail: PropTypes.func.isRequired,
+    // }
 
     const { addItemToShoppingCart } = useShoppingCart()
 
@@ -53,13 +51,13 @@ function ProductDetail({
                 <figure className='relative mb-2 w-full h-1/2'>
                     <img
                         className='w-full h-full object-cover rounded-lg border border-gray'
-                        src={image}
-                        alt={title}
+                        src={product.image}
+                        alt={product.title}
                     />
                     <button
                         type='button'
                         onClick={(event) => {
-                            addItemToShoppingCart(event, item)
+                            addItemToShoppingCart(event, product)
                         }}
                         className='flex justify-center items-center absolute text-md h-6 bottom-0 right-0 mb-1 mr-1 p-3 bg-green-500 cursor-pointer border border-gray rounded-lg text-white'
                     >
@@ -84,16 +82,16 @@ function ProductDetail({
                 </figure>
                 <p className='flex justify-between items-center p-2'>
                     <span className='text-sm text-black/60 font-bold mr-2'>
-                        {title}
+                        {product.title}
                     </span>
                     <span className='text-lg text-green-500 font-semibold'>
-                        ${price}
+                        ${product.price}
                     </span>
                 </p>
                 <span className='px-2 border border-gray rounded-lg bg-gray-300 text-black'>
-                    {category}
+                    {product.category}
                 </span>
-                <p className='px-2 pb-4 pt-2'>{description}</p>
+                <p className='px-2 pb-4 pt-2'>{product.description}</p>
             </div>
         </aside>
     )

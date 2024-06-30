@@ -1,9 +1,10 @@
 import React from 'react'
 import { StoreContext } from '../../Context/context'
 import { useNavigate, useParams, Link } from 'react-router-dom'
+import { StoreContextType } from '../../@types/store'
 
 function MyOrder() {
-    const { orders } = React.useContext(StoreContext)
+    const { orders } = React.useContext(StoreContext) as StoreContextType
     const orderId = useParams().id
     const navigate = useNavigate()
 
@@ -37,8 +38,9 @@ function MyOrder() {
                     <p className='font-semibold'>My Order</p>
                 </div>
                 <p>
-                    Placed on {order.date.substring(0, 10)} at{' '}
-                    {order.date.substring(11, 16)}
+                    {order.date &&
+                        `Placed on ${order.date.substring(0, 10)} at{' '}
+                    ${order.date.substring(11, 16)}`}
                 </p>
                 <p>{order.productList.length} item(s)</p>
                 {order.productList.map((product, index) => (

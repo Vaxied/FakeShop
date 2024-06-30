@@ -1,14 +1,15 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { StoreContext } from '../../Context/context'
+import { StoreContextType } from '../../@types/store'
 function Navbar() {
     const activeStyle = 'underline underline-offset-4 font-semibold'
-    const isLinkActive = (isActive) => {
+    const isLinkActive = (isActive: boolean) => {
         return isActive ? activeStyle : ''
     }
 
     const { username, shoppingCartProducts, loggedIn, logOut } =
-        React.useContext(StoreContext)
+        React.useContext(StoreContext) as StoreContextType
 
     return (
         <>
@@ -84,10 +85,7 @@ function Navbar() {
                     )}
                     {loggedIn && (
                         <li>
-                            <NavLink
-                                to={'/'}
-                                onClick={(event) => logOut(event)}
-                            >
+                            <NavLink to={'/'} onClick={() => logOut()}>
                                 Logout
                             </NavLink>
                         </li>

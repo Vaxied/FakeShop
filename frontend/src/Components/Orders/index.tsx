@@ -1,9 +1,10 @@
 import React from 'react'
 import { StoreContext } from '../../Context/context'
 import { useNavigate } from 'react-router-dom'
+import { StoreContextType } from '../../@types/store'
 
 function Orders() {
-    const { orders } = React.useContext(StoreContext)
+    const { orders } = React.useContext(StoreContext) as StoreContextType
     const navigate = useNavigate()
     console.log('orders', orders)
     if (!Array.isArray(orders) || !orders.length)
@@ -36,7 +37,7 @@ function Orders() {
                                 {order.productList.length} item(s)
                             </p>
                             <p className='flex items-center w-24 justify-end'>
-                                {order.date.substring(0, 10)}
+                                {order.date && order.date.substring(0, 10)}
                             </p>
                             <button
                                 type='button'

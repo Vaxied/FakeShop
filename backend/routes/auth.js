@@ -11,8 +11,6 @@ const secret = process.env.SECRET
 // app.use(cookieParser(secret))
 
 function isAuthenticated(request, response, next) {
-    console.log('IS AUTHENTICATED')
-    console.log('request header', request.headers['whatever'])
     const accessToken = request.headers['authorization']
     console.log('accessToken', accessToken)
     if (!accessToken) {

@@ -4,11 +4,13 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { postData } from '../../services/fetchWrapper'
 import { StoreContext } from '../../Context/context'
 import InputError from '../InputError'
+import { StoreContextType } from '../../@types/store'
 
 function LoginForm() {
     // debugger
-    const { setLoggedIn, setUsername, setCookie } =
-        React.useContext(StoreContext)
+    const { setLoggedIn, setUsername } = React.useContext(
+        StoreContext
+    ) as StoreContextType
     const navigate = useNavigate()
     const [formState, setFormState] = React.useState({
         username: '',
@@ -20,7 +22,7 @@ function LoginForm() {
     const inputStyle =
         'border border-gray-400 rounded-lg mb-6 px-4 py-2 outline-none w-full'
 
-    async function handleLogin(event) {
+    async function handleLogin(event: React.FormEvent) {
         event.preventDefault()
         console.log(formState)
         const response = await postData(`${API}/auth`, formState)
@@ -84,7 +86,8 @@ function LoginForm() {
                 />
                 <InputError errMsg={errMsg} condition={isloginErr} />
                 <p className='text-end mb-6'>
-                    <NavLink>Forgot password</NavLink>
+                    {/* <NavLink>Forgot password</NavLink> */}
+                    <span>Forgot password</span>
                 </p>
                 <button
                     className='border border-gray px-4 py-2 w-full bg-black

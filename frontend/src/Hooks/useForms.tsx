@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { postData } from '../services/fetchWrapper'
+type formState = {
+    [key: string]: string
+}
+
+type inputErrs = {
+    [key: string]: boolean
+}
 
 function useForms() {
     const navigate = useNavigate()
     const API = import.meta.env.VITE_API
 
-    async function handleSubmit(event, formState, inputErrs) {
+    async function handleSubmit(
+        event: React.FormEvent<HTMLFormElement>,
+        formState: formState,
+        inputErrs: inputErrs
+    ) {
         event.preventDefault()
         console.log(formState)
         if (!isFormFilledCorrectly(formState, inputErrs)) return
@@ -16,30 +27,30 @@ function useForms() {
         console.log('sending Data')
     }
 
-    function isNameValid(firstName) {
+    function isNameValid(firstName: string) {
         console.log(firstName)
         if (!firstName) return true
         return /^[a-zA-Z]+$/.test(firstName)
     }
 
-    function isEmailValid(email) {
+    function isEmailValid(email: string) {
         if (!email) return true
         return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
     }
 
-    function isPasswordValid(password) {
+    function isPasswordValid(password: string) {
         if (!password) return true
         return /(?=.{8,20})(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "])/g.test(
             password
         )
     }
 
-    function arePasswordsEqual(confirmedPassword, password) {
+    function arePasswordsEqual(confirmedPassword: string, password?: string) {
         console.log(confirmedPassword, password)
         return password === confirmedPassword
     }
 
-    function isAnyFieldEmpty(formData) {
+    function isAnyFieldEmpty(formData: formState) {
         for (let key in formData) {
             console.log('Comparing', formData[key], formData[key] === '')
             if (formData[key] === '') return true
@@ -48,7 +59,7 @@ function useForms() {
         return false
     }
 
-    function isAnyInputError(inputErrs) {
+    function isAnyInputError(inputErrs: inputErrs) {
         for (let key in inputErrs) {
             if (inputErrs[key] === true) return true
             console.log('input error found')
@@ -57,7 +68,7 @@ function useForms() {
         return false
     }
 
-    function isFormFilledCorrectly(formData, inputErrs) {
+    function isFormFilledCorrectly(formData: formState, inputErrs: inputErrs) {
         if (isAnyFieldEmpty(formData)) return false
         if (isAnyInputError(inputErrs)) return false
         console.log('form is filled correcly')

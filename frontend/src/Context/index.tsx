@@ -1,26 +1,30 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext } from './context'
 import { postData } from '../services/fetchWrapper'
-import { useCookies } from 'react-cookie'
+import { Order } from '../@types/order'
+import { IProduct } from '../@types/product'
 
-function StoreProvider({ children }) {
-    StoreProvider.propTypes = {
-        children: PropTypes.node.isRequired,
-    }
+type props = {
+    children: React.ReactNode
+}
+
+function StoreProvider({ children }: props) {
     const API = import.meta.env.VITE_API
     const navigate = useNavigate()
 
-    const [items, setItems] = React.useState([] || null)
-    const [cookie, setCookie, removeCookie] = useCookies(['refreshToken'])
-    const [shoppingCartProducts, setShoppingCartProducts] = React.useState([])
+    const [items, setItems] = React.useState<IProduct[] | []>([])
+    const [shoppingCartProducts, setShoppingCartProducts] = React.useState<
+        IProduct[] | []
+    >([])
 
     const [isProductDetailOpen, setIsProductDetailOpen] = React.useState(false)
-    const [productToShow, setproductToShow] = React.useState(null)
+    const [productToShow, setProductToShow] = React.useState<IProduct | null>(
+        null
+    )
 
     const [isCartSideMenuOpen, setIsCartSideMenuOpen] = React.useState(false)
-    const [orders, setOrders] = React.useState([])
+    const [orders, setOrders] = React.useState<Order[] | []>([])
 
     const [loggedIn, setLoggedIn] = React.useState(false)
     const [username, setUsername] = React.useState('')
@@ -31,22 +35,23 @@ function StoreProvider({ children }) {
         men: "men's clothing",
         women: "women's clothing",
         electronics: 'electronics',
-        jewelry: 'jewelery',
+        jewelery: 'jewelery',
     }
+
     console.log('cart products', shoppingCartProducts)
-    function openProductDetail(product) {
+    function openProductDetail(product: IProduct) {
         setIsProductDetailOpen(true)
-        setproductToShow(product)
+        setProductToShow(product)
         setIsCartSideMenuOpen(false)
     }
 
-    function closeProductDetail(event) {
+    function closeProductDetail(event: React.MouseEvent) {
         event.stopPropagation()
         setIsProductDetailOpen(false)
-        setproductToShow(null)
+        setProductToShow(null)
     }
 
-    function openCartSideMenu(event) {
+    function openCartSideMenu(event: React.MouseEvent<HTMLButtonElement>) {
         event.stopPropagation()
         closeProductDetail(event)
         setIsCartSideMenuOpen(true)
@@ -56,55 +61,61 @@ function StoreProvider({ children }) {
         setIsCartSideMenuOpen(false)
     }
 
-    function calculateTotalPrice(items) {
+    function calculateTotalPrice(items: IProduct[]) {
         let total = 0
         items.forEach((product) => {
+            if (!product.product_quantity) return
             const price = product.price * product.product_quantity
             total = total + price
         })
         return total.toFixed(2)
     }
     async function addNewOrder() {
+        if (
+            !shoppingCartProducts.length ||
+            !Array.isArray(shoppingCartProducts)
+        )
+            return
         const newOrder = {
+            orderId: '',
             productList: shoppingCartProducts,
-            // image: shoppingCartProducts.at(-1).image,
-            // title: shoppingCartProducts.at(-1).title,
+            title: '',
+            image: '',
             productCount: shoppingCartProducts.length,
             totalPrice: calculateTotalPrice(shoppingCartProducts),
             date: new Date().toISOString(),
         }
         const response = await postData(`${API}/new-order`, newOrder)
         if (!response) console.log('no response')
-        // console.log('🚀 ~ handleSubmit ~ response:', response.status)
         else if (response.status !== 200) console.log('Something went wrong')
         else {
             clearShoppingCart()
             closeCartSideMenu()
             newOrder.orderId = response.order_id
             setOrders([...orders, newOrder])
+            navigate('/my-orders')
         }
-        navigate('/my-orders')
-        return console.log('response', response)
     }
 
     function clearShoppingCart() {
         setShoppingCartProducts([])
     }
 
-    function logOut(event) {
-        event.preventDefault()
+    function logOut() {
         localStorage.removeItem('accessToken')
         console.log('user has been logged out')
         setLoggedIn(false)
         setUsername('')
-        removeCookie('refreshToken')
         setShoppingCartProducts([])
         navigate('/')
     }
 
-    function navigateWithClosing(to) {
+    function navigateWithClosing(
+        event: React.MouseEvent<HTMLAnchorElement>,
+        to: string
+    ) {
         closeCartSideMenu()
-        closeProductDetail()
+        closeProductDetail(event)
         navigate(to)
     }
 
@@ -112,11 +123,11 @@ function StoreProvider({ children }) {
         console.log('searchTerm', searchTerm)
         console.log('category', category)
         const newItems = [...items]
-        let filteredItems
+        let filteredItems = newItems
         if (searchTerm && category) {
             console.log('filtrado doble')
             filteredItems = newItems.filter(
-                (item) =>
+                (item: IProduct) =>
                     item.title
                         .toLowerCase()
                         .includes(searchTerm.toLowerCase()) &&
@@ -124,16 +135,28 @@ function StoreProvider({ children }) {
             )
             console.log('post filtro')
         } else if (searchTerm && !category) {
-            filteredItems = newItems.filter((item) =>
+            filteredItems = newItems.filter((item: IProduct) =>
                 item.title.toLowerCase().includes(searchTerm.toLowerCase())
             )
         } else if (!searchTerm && category) {
             filteredItems = newItems.filter(
-                (item) => item.category.toLowerCase() === category.toLowerCase()
+                (item: IProduct) =>
+                    item.category.toLowerCase() === category.toLowerCase()
             )
         }
         console.log('filteredItems', filteredItems)
         return filteredItems
+    }
+
+    function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+            /[xy]/g,
+            function (c) {
+                var r = (Math.random() * 16) | 0,
+                    v = c == 'x' ? r : (r & 0x3) | 0x8
+                return v.toString(16)
+            }
+        )
     }
 
     return (
@@ -150,6 +173,8 @@ function StoreProvider({ children }) {
                 searchByTitle,
                 productCategories,
                 setItems,
+                setProductToShow,
+                setIsProductDetailOpen,
                 openProductDetail,
                 closeProductDetail,
                 setShoppingCartProducts,
@@ -160,7 +185,6 @@ function StoreProvider({ children }) {
                 setLoggedIn,
                 logOut,
                 setUsername,
-                setCookie,
                 setOrders,
                 navigateWithClosing,
                 setSearchByTitle,

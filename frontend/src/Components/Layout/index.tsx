@@ -1,11 +1,9 @@
-import PropTypes from 'prop-types'
 import Navbar from '../Navbar'
 import CartSideMenu from '../CartSideMenu'
 
-function Layout({ children }) {
-    Layout.propTypes = {
-        children: PropTypes.node,
-    }
+type props = { children: React.ReactNode }
+
+function Layout({ children }: props) {
     return (
         <>
             <Navbar />

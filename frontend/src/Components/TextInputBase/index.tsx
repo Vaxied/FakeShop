@@ -1,53 +1,59 @@
 import React from 'react'
-function TextInputBase(props) {
-    const { inputProps, stateProps } = props
-    console.log('input props:', inputProps)
+import { InputProp, StateProps } from '../SignUpForm/Interfaces'
+
+type props = {
+    inputProp: InputProp
+    stateProps: StateProps
+}
+
+function TextInputBase(props: props) {
+    const { inputProp, stateProps } = props
     console.log('state props:', stateProps)
     return (
         <>
-            <label htmlFor={inputProps.id} className='py-2 font-semibold'>
-                {inputProps?.label}
+            <label htmlFor={inputProp.id} className='py-2 font-semibold'>
+                {inputProp?.label}
             </label>
             <div
                 className={`relative ${
                     stateProps?.showInputErr.password &&
-                    inputProps?.id === 'password'
+                    inputProp?.id === 'password'
                         ? 'pb-16 mb-2'
                         : 'mb-2'
                 }`}
             >
                 <input
-                    id={inputProps?.id}
-                    name={inputProps?.name}
-                    type={inputProps?.type}
-                    placeholder={inputProps?.placeholder}
+                    id={inputProp?.id}
+                    name={inputProp?.name}
+                    type={inputProp?.type}
+                    placeholder={inputProp?.placeholder}
                     onChange={(event) => {
                         stateProps.setFormState({
                             ...stateProps?.formState,
-                            [inputProps.value]: event.target.value,
+                            [inputProp.value]: event.target.value,
                         })
                         stateProps.setShowInputErr({
                             ...stateProps?.showInputErr,
-                            [inputProps.value]: !inputProps.validationFunc(
+                            [inputProp.value]: !inputProp.validationFunc(
                                 event.target.value
                             ),
                         })
                     }}
                     className='border border-gray-400 rounded-lg mb-4 px-4 py-2 outline-none w-full'
                 />
-                {typeof inputProps?.inputErr === 'string' && (
+                {typeof inputProp?.inputErr === 'string' && (
                     <span
                         className={`after:content-[""] block text-red-500 absolute
                 bottom-[-8px] left-2 text-sm ${
-                    stateProps.showInputErr[inputProps.value]
+                    stateProps.showInputErr[inputProp.value]
                         ? 'block'
                         : 'hidden'
                 }`}
                     >
-                        {inputProps?.inputErr}
+                        {inputProp?.inputErr}
                     </span>
                 )}
-                {typeof inputProps?.inputErr === 'object' && (
+                {typeof inputProp?.inputErr === 'object' && (
                     <p
                         className={`after:content-[""] block text-red-500 absolute
                 bottom-[-8px] left-2 text-sm ${
@@ -56,10 +62,10 @@ function TextInputBase(props) {
                         : 'hidden'
                 }`}
                     >
-                        <span>{inputProps?.inputErr.length}</span>
-                        <span>{inputProps?.inputErr.uppercase}</span>
-                        <span>{inputProps?.inputErr.lowercase}</span>
-                        <span>{inputProps?.inputErr.special}</span>
+                        <span>{inputProp?.inputErr.length}</span>
+                        <span>{inputProp?.inputErr.uppercase}</span>
+                        <span>{inputProp?.inputErr.lowercase}</span>
+                        <span>{inputProp?.inputErr.special}</span>
                     </p>
                 )}
             </div>

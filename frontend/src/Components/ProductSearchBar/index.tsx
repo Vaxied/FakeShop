@@ -1,6 +1,11 @@
 import React from 'react'
 
-function ProductSearchBar(props) {
+type searchProps = {
+    searchByTitle: string
+    setSearchByTitle: (string: string) => void
+}
+
+function ProductSearchBar(props: searchProps) {
     const { searchByTitle, setSearchByTitle } = props
     return (
         <div className='flex justify-center items-center mb-8'>

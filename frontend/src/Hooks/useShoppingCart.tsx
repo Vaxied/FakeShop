@@ -2,6 +2,8 @@ import React from 'react'
 import { StoreContext } from '../Context/context'
 import { useNavigate } from 'react-router-dom'
 import { postData, updateData, deleteData } from '../services/fetchWrapper'
+import { StoreContextType } from '../@types/store'
+import { IProduct } from '../@types/product'
 
 function useShoppingCart() {
     const {
@@ -10,20 +12,24 @@ function useShoppingCart() {
         openCartSideMenu,
         calculateTotalPrice,
         loggedIn,
-    } = React.useContext(StoreContext)
+    } = React.useContext(StoreContext) as StoreContextType
 
     const API = import.meta.env.VITE_API
 
     const navigate = useNavigate()
-    async function addItemToShoppingCart(event, product) {
+    async function addItemToShoppingCart(
+        event: React.MouseEvent<HTMLButtonElement>,
+        product: IProduct
+    ) {
         event.stopPropagation()
-        // console.log(product)
+        console.log('product', product)
         if (!loggedIn) {
             navigate('/login')
             return
         }
         console.log('user is logged in')
         const index = isProductInShoppingCart(product)
+        console.log('index number', index)
 
         if (index >= 0) {
             console.log('item already in shopping cart')
@@ -39,17 +45,18 @@ function useShoppingCart() {
         }
         openCartSideMenu(event)
     }
-    function isProductInShoppingCart(product) {
+    function isProductInShoppingCart(product: IProduct) {
         return shoppingCartProducts.findIndex(
             (item) => item.product_id === product.product_id
         )
     }
 
-    async function increaseShoppingCartProductQuantity(index) {
+    async function increaseShoppingCartProductQuantity(index: number) {
         console.log(index)
+        if (!shoppingCartProducts.length) return null
         const newProducts = shoppingCartProducts
-        newProducts[index].product_quantity++
         const product = newProducts[index]
+        if (product.product_quantity) product.product_quantity++
         const response = await updateData(
             `${API}/increase-product-quantity`,
             product
@@ -59,7 +66,7 @@ function useShoppingCart() {
         console.log('quantity increased')
     }
 
-    async function removeProductFromShoppingCart(index) {
+    async function removeProductFromShoppingCart(index: number) {
         let newProducts = shoppingCartProducts
         const product = newProducts[index]
         const response = await deleteData(`${API}/remove-product`, product)

@@ -1,12 +1,10 @@
 const bcrypt = require('bcrypt')
-const express = require('express')
 const passport = require('passport')
 const knex = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
 // const cookieParser = require('cookie-parser')
 const { isEveryFieldValid } = require('./signUpValidations')
-// const app = express()
 
 const createUser = (request, response, next) => {
     const formData = request.body
@@ -84,7 +82,4 @@ const verifyUser = async (request, response, next) => {
     })(request, response, next)
 }
 
-const logOut = (request, response, next) => {
-    response.status(200).send({ status: 200, info: 'user has been logged out' })
-}
-module.exports = { createUser, verifyUser, logOut }
+module.exports = { createUser, verifyUser }

@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom'
 import StoreProvider from '../../Context'
 import Layout from '../../Components/Layout'
 import './App.css'
-import { AppRoutes } from '../../Pages/routes'
+import { AppRoutes } from '../routes'
 
 function App() {
     return (

@@ -1,4 +1,4 @@
-export async function getData(url) {
+export async function getData(url: string) {
     const headers = formatRequestHeader()
     const data = await fetch(url, {
         method: 'GET',
@@ -15,7 +15,7 @@ export async function getData(url) {
     return data
 }
 
-export async function postData(url, body) {
+export async function postData(url: string, body: object) {
     const headers = formatRequestHeader()
     // console.log(headers)
 
@@ -37,7 +37,7 @@ export async function postData(url, body) {
     return data
 }
 
-export async function updateData(url, body) {
+export async function updateData(url: string, body: object) {
     const headers = formatRequestHeader()
     const data = await fetch(url, {
         method: 'PATCH',
@@ -56,7 +56,7 @@ export async function updateData(url, body) {
     return data
 }
 
-export async function deleteData(url, body) {
+export async function deleteData(url: string, body: object) {
     const headers = formatRequestHeader()
 
     const data = await fetch(url, {
@@ -81,6 +81,7 @@ function formatRequestHeader() {
     const accessToken = getAccessToken()
     let headers = {
         'Content-Type': 'application/json',
+        Authorization: '',
     }
 
     if (accessToken) headers.Authorization = accessToken

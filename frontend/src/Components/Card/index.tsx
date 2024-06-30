@@ -1,20 +1,25 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
-import PropTypes from 'prop-types'
 import { StoreContext } from '../../Context/context'
 import ProductDetail from '../ProductDetail'
 import useShoppingCart from '../../Hooks/useShoppingCart'
+import { IProduct } from '../../@types/product'
+import { StoreContextType } from '../../@types/store'
 
-function Card({ product }) {
-    Card.propTypes = {
-        product: PropTypes.object.isRequired,
-    }
+type props = {
+    key: number
+    // items: IProduct[]
+    product: IProduct
+    // index: number
+}
+
+function Card({ product }: props) {
     const {
         productToShow,
         isProductDetailOpen,
         openProductDetail,
         closeProductDetail,
-    } = React.useContext(StoreContext)
+    } = React.useContext(StoreContext) as StoreContextType
 
     const { addItemToShoppingCart } = useShoppingCart()
 
@@ -65,12 +70,7 @@ function Card({ product }) {
                 isProductDetailOpen &&
                 createPortal(
                     <ProductDetail
-                        item={product}
-                        image={product.image}
-                        price={product.price}
-                        title={product.title}
-                        description={product.description}
-                        category={product.category}
+                        product={product}
                         closeProductDetail={closeProductDetail}
                     />,
                     document.body

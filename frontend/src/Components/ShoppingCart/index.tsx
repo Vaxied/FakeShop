@@ -1,10 +1,11 @@
 import React from 'react'
 import { StoreContext } from '../../Context/context'
 import useShoppingCart from '../../Hooks/useShoppingCart'
+import { StoreContextType } from '../../@types/store'
 
 function ShoppingCart() {
     const { shoppingCartProducts, addNewOrder, closeCartSideMenu } =
-        React.useContext(StoreContext)
+        React.useContext(StoreContext) as StoreContextType
 
     const { removeProductFromShoppingCart, calculateTotalPrice } =
         useShoppingCart()
@@ -38,9 +39,11 @@ function ShoppingCart() {
                             </p>
                             <p className='flex items-center w-16 justify-end'>
                                 $
-                                {(
-                                    product?.price * product.product_quantity
-                                ).toFixed(2)}
+                                {product.product_quantity &&
+                                    (
+                                        product?.price *
+                                        product.product_quantity
+                                    ).toFixed(2)}
                             </p>
                             <button
                                 type='button'

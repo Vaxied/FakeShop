@@ -1,7 +1,8 @@
 import React from 'react'
 import { StoreContext } from '../Context/context'
+import { StoreContextType } from '../@types/store'
 function useAuth() {
-    const { loggedIn } = React.useContext(StoreContext)
+    const { loggedIn } = React.useContext(StoreContext) as StoreContextType
 
     function isAuthenticated() {
         return loggedIn

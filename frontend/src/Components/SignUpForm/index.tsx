@@ -1,6 +1,14 @@
 import React from 'react'
 import useForms from '../../Hooks/useForms'
 import TextInputBase from '../TextInputBase'
+import {
+    InputProp,
+    InputProps,
+    StateProps,
+    errString,
+    errObject,
+    InputErr,
+} from './Interfaces'
 
 function SignUpForm() {
     const {
@@ -27,7 +35,7 @@ function SignUpForm() {
         diffPassword: false,
     })
 
-    const inputProps = [
+    const inputProps: InputProps = [
         {
             id: 'first-name',
             name: 'firstName',
@@ -86,11 +94,12 @@ function SignUpForm() {
             validationFunc: arePasswordsEqual,
         },
     ]
+
     const stateProps = {
-        formState: formState,
-        setFormState: setFormState,
-        showInputErr: showInputErr,
-        setShowInputErr: setShowInputErr,
+        formState,
+        setFormState,
+        showInputErr,
+        setShowInputErr,
     }
 
     return (
@@ -103,11 +112,11 @@ function SignUpForm() {
                 }
             >
                 <p className='font-bold text-lg text-center'>Sign Up</p>
-                {inputProps.map((object) => (
+                {inputProps.map((inputProp: InputProp) => (
                     <TextInputBase
-                        inputProps={object}
+                        inputProp={inputProp}
                         stateProps={stateProps}
-                        key={object.id}
+                        key={inputProp.id}
                     />
                 ))}
                 <button
