@@ -1,16 +1,12 @@
+import { RequestHandler } from 'express'
+
 const connection = require('../database/connection')
-const express = require('express')
-const cookieParser = require('cookie-parser')
-// import { pool } from '../connection.js'
 
 const bcrypt = require('bcrypt')
-const app = express()
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
 
-// app.use(cookieParser(secret))
-
-function isAuthenticated(request, response, next) {
+const isAuthenticated: RequestHandler = async (request, response, next) => {
     const accessToken = request.headers['authorization']
     console.log('accessToken', accessToken)
     if (!accessToken) {
@@ -30,17 +26,17 @@ function isAuthenticated(request, response, next) {
     }
 }
 
-async function authUser(username, password, done) {
+async function authUser(username: string, password: string, done: any) {
     try {
         console.log(username, password)
         console.log('THIS IS LOCAL STRATEGY')
         const results = await connection('users')
             .select('user_id', 'first_name', 'password', 'email')
             .where({ email: username })
-            .then((queryResult) => {
+            .then((queryResult: any) => {
                 return queryResult
             })
-            .catch((err) => {
+            .catch((err: any) => {
                 throw err
             })
 
@@ -51,9 +47,9 @@ async function authUser(username, password, done) {
         }
         console.log('match is true')
         const authenticatedUser = {
-            id: results[0].user_id,
-            firstName: results[0].first_name,
-            username: results[0].email,
+            user_id: results[0].user_id,
+            first_name: results[0].first_name,
+            email: results[0].email,
         }
         return done(null, authenticatedUser)
     } catch (error) {

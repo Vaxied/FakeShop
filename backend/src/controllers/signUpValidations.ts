@@ -1,3 +1,5 @@
+import { SignUpForm } from '../@types/signUpForm'
+
 const expectedFormDataStructure = {
     firstName: '',
     lastName: '',
@@ -18,8 +20,8 @@ const inputErrMsgs = {
     differentPasswords: 'Passwords must be equal.',
 }
 
-function sanitizeData(formData) {
-    const trimmedData = Object.keys(formData).reduce((acc, curr) => {
+function sanitizeData(formData: SignUpForm) {
+    const trimmedData = Object.keys(formData).reduce((acc: any, curr: any) => {
         acc[curr] = typeof (formData[curr] === 'string')
             ? formData[curr].trim()
             : formData[curr]
@@ -29,30 +31,30 @@ function sanitizeData(formData) {
     return trimmedData
 }
 
-function isNameValid(firstName) {
+function isNameValid(firstName: string) {
     console.log(firstName)
     if (!firstName) return true
     return /^[a-zA-Z]+$/.test(firstName)
 }
 
-function isEmailValid(email) {
+function isEmailValid(email: string) {
     if (!email) return true
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
 }
 
-function isPasswordValid(password) {
+function isPasswordValid(password: string) {
     if (!password) return true
     return /(?=.{8,20})(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "])/g.test(
         password
     )
 }
 
-function arePasswordsEqual(confirmedPassword, password) {
+function arePasswordsEqual(confirmedPassword: string, password: string) {
     console.log('passwords', confirmedPassword, password)
     return password === confirmedPassword
 }
 
-function isAnyFieldEmpty(formData) {
+function isAnyFieldEmpty(formData: SignUpForm) {
     // TODO Change and test each individual field
     for (let key in formData) {
         console.log('Comparing is empty', formData[key] === '')
@@ -62,25 +64,27 @@ function isAnyFieldEmpty(formData) {
     return false
 }
 
-function areFormFieldKeysEqual(formData) {
+function areFormFieldKeysEqual(
+    formData: SignUpForm,
+    expectedFormDataStructure: SignUpForm
+) {
     const receivedKeys = Object.keys(formData)
     const expectedKeys = Object.keys(expectedFormDataStructure)
 
     // if (formData === expectedFormData) return true
-    if (formData == null || expectedFormDataStructure == null) return false
-    if (formData.length !== expectedFormDataStructure.length) return false
+    if (receivedKeys.length !== expectedKeys.length) return false
 
-    for (let i = 0; i < receivedKeys; ++i) {
+    for (let i = 0; i < receivedKeys.length; ++i) {
         if (receivedKeys[i] !== expectedKeys[i]) return false
     }
     return true
 }
 
-function isEveryFieldString(formData) {
+function isEveryFieldString(formData: SignUpForm) {
     // TODO Change and test each individual field
     for (let key in formData) {
         console.log(
-            ('Comparing is type string', typeof formData[key] !== 'string')
+            `Comparing is type string, ${typeof formData[key] !== 'string'}`
         )
         if (typeof formData[key] !== 'string') return false
     }
@@ -96,8 +100,8 @@ function isEveryFieldString(formData) {
 //     return false
 // }
 
-function isEveryFieldValid(rawInputData) {
-    const formData = sanitizeData(rawInputData)
+function isEveryFieldValid(rawInputData: any) {
+    const formData: SignUpForm = sanitizeData(rawInputData)
     if (!formData) return false
     console.log('form Data exists')
     if (!areFormFieldKeysEqual(formData, expectedFormDataStructure))

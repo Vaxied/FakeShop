@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-    return knex.schema.createTable('order_products', function (table) {
+exports.up = function (knex: any) {
+    return knex.schema.createTable('order_products', function (table: any) {
         table.uuid('order_id').defaultTo(knex.fn.uuid())
         table.integer('product_quantity').notNullable()
         table.string('title').notNullable()
@@ -24,6 +24,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
+exports.down = function (knex: any) {
     return knex.schema.dropTableIfExists('order_products')
 }

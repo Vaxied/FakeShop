@@ -1,13 +1,22 @@
-const connection = require('../database/connection')
+import { Knex } from 'knex'
+import { RequestHandler } from 'express'
+import { AuthToken } from '../@types/user'
+const knex = require('../database/connection')
 
-const addProduct = async (request, response) => {
+const addProduct: RequestHandler = async (request, response) => {
     const product = request.body
 
     try {
-        await connection.transaction(async function (trx) {
+        if (!request.user) {
+            return null
+        }
+        const tokenInfo = request.user as AuthToken
+        const user = tokenInfo.user
+        await knex.transaction(async function (trx: Knex.Transaction) {
+            if (!request.user) throw Error('no user in request object')
             const shoppingCart = await trx('shopping_carts')
                 .select('cart_id')
-                .where('user_id', request.user.user.id)
+                .where('user_id', user.user_id)
                 .andWhere('cart_status', 'active')
 
             console.log('shopping cart', shoppingCart)
@@ -32,19 +41,24 @@ const addProduct = async (request, response) => {
 }
 
 // TO DO
-const increaseProductQuantity = async (request, response) => {
+const increaseProductQuantity: RequestHandler = async (request, response) => {
     //     SELECT sc.cart_id, scp.product_id, product_quantity
     // from shopping_cart_products as scp
     // join shopping_carts as sc on scp.cart_id = sc.cart_id
     // where user_id = 75 AND product_id = 824
     const product = request.body
     console.log('product to increase', product)
-    const user_id = request.user.user.id
     try {
-        await connection.transaction(async function (trx) {
+        if (!request.user) {
+            return null
+        }
+        const tokenInfo = request.user as AuthToken
+        const user = tokenInfo.user
+        if (!request.user) throw Error('no user in request object')
+        await knex.transaction(async function (trx: Knex.Transaction) {
             const cart = await trx('shopping_carts')
                 .select('cart_id')
-                .where('user_id', user_id)
+                .where('user_id', user.user_id)
                 .andWhere('cart_status', 'active')
             console.log('cart to increase', cart)
             const result = await trx('shopping_cart_products')
@@ -61,15 +75,20 @@ const increaseProductQuantity = async (request, response) => {
     }
 }
 
-const removeProduct = async (request, response) => {
+const removeProduct: RequestHandler = async (request, response) => {
     const product = request.body
     console.log('product to increase', product)
-    const user_id = request.user.user.id
     try {
-        await connection.transaction(async function (trx) {
+        // if (!request.user) throw Error('no user in request object')
+        if (!request.user) {
+            return null
+        }
+        const tokenInfo = request.user as AuthToken
+        const user = tokenInfo.user
+        await knex.transaction(async function (trx: Knex.Transaction) {
             const cart = await trx('shopping_carts')
                 .select('cart_id')
-                .where('user_id', user_id)
+                .where('user_id', user.user_id)
                 .andWhere('cart_status', 'active')
             console.log('cart where product is', cart)
             const result = await trx('shopping_cart_products')
@@ -85,10 +104,16 @@ const removeProduct = async (request, response) => {
     }
 }
 
-const loadShoppingCart = async (request, response) => {
+const loadShoppingCart: RequestHandler = async (request, response) => {
     try {
-        console.log('USER ID', request.user.user.id)
-        const products = await connection('shopping_carts')
+        if (!request.user) throw Error('no user in request object')
+        if (!request.user) {
+            return null
+        }
+        const tokenInfo = request.user as AuthToken
+        const user = tokenInfo.user
+        console.log('USER ID', user.user_id)
+        const products = await knex('shopping_carts')
             .select(
                 'shopping_cart_products.product_id',
                 'product_quantity',
@@ -110,7 +135,7 @@ const loadShoppingCart = async (request, response) => {
                 'shopping_cart_products.product_id',
                 'products.product_id'
             )
-            .where('user_id', request.user.user.id)
+            .where('user_id', user.user_id)
             .andWhere('cart_status', 'active')
 
         console.log('PRODUCTS', products)
@@ -122,7 +147,7 @@ const loadShoppingCart = async (request, response) => {
     }
 }
 
-const createShoppingCart = async (user_id, trx) => {
+const createShoppingCart = async (user_id: number, trx: Knex.Transaction) => {
     const result = await trx('shopping_carts')
         .returning('*')
         .insert([
@@ -134,10 +159,11 @@ const createShoppingCart = async (user_id, trx) => {
     return result
 }
 
-const setCartInactive = async (user_id, trx) => {
+const setCartInactive = async (user_id: number, trx: Knex.Transaction) => {
     console.log('SETTING CART INACTIVE')
     try {
         // await connection.transaction(async function (trx) {
+
         const cart = await trx('shopping_carts')
             .select('cart_id')
             .where('user_id', user_id)

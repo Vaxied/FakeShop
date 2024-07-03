@@ -28,7 +28,7 @@ const users = [
     },
 ]
 
-async function hashPW(password) {
+async function hashPW(password: string) {
     console.log('inside hashing function')
     console.log('password', password)
     const hash = await bcrypt.hash(password, saltRounds)
@@ -36,7 +36,7 @@ async function hashPW(password) {
     return hash
 }
 
-exports.seed = async function (knex) {
+exports.seed = async function (knex: any) {
     const testPW = await hashPW('123')
     console.log('testPW', testPW)
     const hashedUsers = await Promise.all(

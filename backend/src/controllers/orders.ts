@@ -1,22 +1,34 @@
+import { RequestHandler } from 'express'
+import { Knex } from 'knex'
+import { AuthToken } from '../@types/user'
+import { Product } from '../@types/product'
+
 const knex = require('../database/connection')
 const { setCartInactive, createShoppingCart } = require('./shoppingCarts')
 
-const createOrder = async (request, response) => {
+const createOrder: RequestHandler = async (request, response) => {
     const { productList, totalPrice, date } = request.body
     try {
-        await knex.transaction(async function (trx) {
-            const order = await trx('orders')
+        await knex.transaction(async function (trx: Knex.Transaction) {
+            if (!request.user) {
+                return null
+            }
+            const tokenInfo = request.user as AuthToken
+            const user = tokenInfo.user
+
+            const inserResult = await trx('orders')
                 .returning('order_id')
                 .insert([
                     {
-                        user_id: request.user.user.id,
+                        user_id: user.user_id,
                         total_price: totalPrice,
                         utc_date: date,
                     },
                 ])
+            const order = { order_id: inserResult[0] }
             // console.log('PRODUCT LIST', productList)
-            const orderProductsData = productList.map((product) => ({
-                order_id: order[0].order_id,
+            const orderProductsData = productList.map((product: Product) => ({
+                order_id: order.order_id,
                 product_quantity: product.product_quantity,
                 price: product.price,
                 title: product.title,
@@ -32,13 +44,13 @@ const createOrder = async (request, response) => {
                 .insert(orderProductsData)
 
             // console.log('result', result)
-            const inactive = await setCartInactive(request.user.user.id, trx)
+            const inactive = await setCartInactive(user.user_id, trx)
             console.log('set cart inactive response', inactive)
-            const newCart = await createShoppingCart(request.user.user.id, trx)
+            const newCart = await createShoppingCart(user.user_id, trx)
             console.log('newCart operation', newCart)
             response.status(200).send({
                 status: 200,
-                order_id: order[0].order_id,
+                order_id: order.order_id,
             })
         })
     } catch (error) {
@@ -46,12 +58,18 @@ const createOrder = async (request, response) => {
     }
 }
 
-async function getUserOrders(request, response) {
+const getUserOrders: RequestHandler = async (request, response) => {
     // select ord.order_id, utc_date, json_agg(json_build_object('title', title, 'price', price, 'image', image)) as productList
     // from orders as ord inner join order_products as op on ord.order_id = op.order_id
     // where ord.user_id = 75
     // group by ord.user_id, ord.order_id
     try {
+        if (!request.user) {
+            return null
+        }
+        const tokenInfo = request.user as AuthToken
+        const user = tokenInfo.user
+        // if (!request.user) throw Error('no user in request object')
         const result = await knex(knex.ref('orders').as('ord'))
             .select(
                 'ord.order_id as orderId',
@@ -76,7 +94,7 @@ async function getUserOrders(request, response) {
                     .as('productList')
             )
             .innerJoin('order_products as op', 'op.order_id', 'ord.order_id')
-            .where('user_id', request.user.user.id)
+            .where('user_id', user.user_id)
             .groupBy('ord.order_id')
         console.log('result of getting orders', result)
         response.status(200).send(result)

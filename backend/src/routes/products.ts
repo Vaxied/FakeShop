@@ -1,13 +1,14 @@
+import { Request, Response } from 'express'
 const connection = require('../database/connection')
 
-function getProducts(request, response) {
+function getProducts(request: Request, response: Response) {
     connection
         .select('*')
         .from('products')
-        .then((result) =>
+        .then((result: any) =>
             response.status(200).send({ status: 200, info: result })
         )
-        .catch((err) => {
+        .catch((err: any) => {
             throw err
         })
 }
