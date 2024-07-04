@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express'
 
-const connection = require('../database/connection')
+import { knex } from '../database/connection'
 
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const secret = process.env.SECRET
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+const secret = process.env.SECRET as string
 
-const isAuthenticated: RequestHandler = async (request, response, next) => {
+export const isAuthenticated: RequestHandler = (request, response, next) => {
     const accessToken = request.headers['authorization']
     console.log('accessToken', accessToken)
     if (!accessToken) {
@@ -26,11 +26,11 @@ const isAuthenticated: RequestHandler = async (request, response, next) => {
     }
 }
 
-async function authUser(username: string, password: string, done: any) {
+export async function authUser(username: string, password: string, done: any) {
     try {
         console.log(username, password)
         console.log('THIS IS LOCAL STRATEGY')
-        const results = await connection('users')
+        const results = await knex('users')
             .select('user_id', 'first_name', 'password', 'email')
             .where({ email: username })
             .then((queryResult: any) => {
@@ -39,6 +39,10 @@ async function authUser(username: string, password: string, done: any) {
             .catch((err: any) => {
                 throw err
             })
+        console.log(results)
+        if (!results.length) {
+            return done(null, false)
+        }
 
         const match = await bcrypt.compare(password, results[0].password)
         if (!match) {
@@ -57,4 +61,4 @@ async function authUser(username: string, password: string, done: any) {
     }
 }
 
-module.exports = { authUser, isAuthenticated }
+// module.exports = { authUser, isAuthenticated }

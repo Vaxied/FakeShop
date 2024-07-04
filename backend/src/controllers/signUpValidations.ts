@@ -8,7 +8,7 @@ const expectedFormDataStructure = {
     passwordConfirmation: '',
 }
 
-const inputErrMsgs = {
+export const inputErrMsgs = {
     invalidName: '* Please input letters only.',
     invalidEmail: '* Please input a valid email format.',
     invalidPassword: {
@@ -100,7 +100,7 @@ function isEveryFieldString(formData: SignUpForm) {
 //     return false
 // }
 
-function isEveryFieldValid(rawInputData: any) {
+export function isEveryFieldValid(rawInputData: any) {
     const formData: SignUpForm = sanitizeData(rawInputData)
     if (!formData) return false
     console.log('form Data exists')
@@ -128,7 +128,7 @@ function isEveryFieldValid(rawInputData: any) {
     return true
 }
 
-module.exports = {
-    inputErrMsgs,
-    isEveryFieldValid,
-}
+// module.exports = {
+//     inputErrMsgs,
+//     isEveryFieldValid,
+// }

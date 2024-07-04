@@ -1,9 +1,9 @@
 import { Knex } from 'knex'
+import { knex } from '../database/connection'
 import { RequestHandler } from 'express'
 import { AuthToken } from '../@types/user'
-const knex = require('../database/connection')
 
-const addProduct: RequestHandler = async (request, response) => {
+export const addProduct: RequestHandler = async (request, response) => {
     const product = request.body
 
     try {
@@ -40,8 +40,10 @@ const addProduct: RequestHandler = async (request, response) => {
     }
 }
 
-// TO DO
-const increaseProductQuantity: RequestHandler = async (request, response) => {
+export const increaseProductQuantity: RequestHandler = async (
+    request,
+    response
+) => {
     //     SELECT sc.cart_id, scp.product_id, product_quantity
     // from shopping_cart_products as scp
     // join shopping_carts as sc on scp.cart_id = sc.cart_id
@@ -75,7 +77,7 @@ const increaseProductQuantity: RequestHandler = async (request, response) => {
     }
 }
 
-const removeProduct: RequestHandler = async (request, response) => {
+export const removeProduct: RequestHandler = async (request, response) => {
     const product = request.body
     console.log('product to increase', product)
     try {
@@ -104,7 +106,7 @@ const removeProduct: RequestHandler = async (request, response) => {
     }
 }
 
-const loadShoppingCart: RequestHandler = async (request, response) => {
+export const loadShoppingCart: RequestHandler = async (request, response) => {
     try {
         if (!request.user) throw Error('no user in request object')
         if (!request.user) {
@@ -147,7 +149,10 @@ const loadShoppingCart: RequestHandler = async (request, response) => {
     }
 }
 
-const createShoppingCart = async (user_id: number, trx: Knex.Transaction) => {
+export const createShoppingCart = async (
+    user_id: number | undefined,
+    trx: Knex.Transaction
+) => {
     const result = await trx('shopping_carts')
         .returning('*')
         .insert([
@@ -159,7 +164,10 @@ const createShoppingCart = async (user_id: number, trx: Knex.Transaction) => {
     return result
 }
 
-const setCartInactive = async (user_id: number, trx: Knex.Transaction) => {
+export const setCartInactive = async (
+    user_id: number | undefined,
+    trx: Knex.Transaction
+) => {
     console.log('SETTING CART INACTIVE')
     try {
         // await connection.transaction(async function (trx) {
@@ -182,11 +190,11 @@ const setCartInactive = async (user_id: number, trx: Knex.Transaction) => {
         console.log('error updating cart status', error)
     }
 }
-module.exports = {
-    createShoppingCart,
-    addProduct,
-    loadShoppingCart,
-    increaseProductQuantity,
-    removeProduct,
-    setCartInactive,
-}
+// module.exports = {
+//     createShoppingCart,
+//     addProduct,
+//     loadShoppingCart,
+//     increaseProductQuantity,
+//     removeProduct,
+//     setCartInactive,
+// }

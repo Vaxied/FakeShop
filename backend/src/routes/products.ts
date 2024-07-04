@@ -1,10 +1,9 @@
 import { Request, Response } from 'express'
-const connection = require('../database/connection')
+import { knex } from '../database/connection'
 
-function getProducts(request: Request, response: Response) {
-    connection
+export function getProducts(request: Request, response: Response) {
+    knex('products')
         .select('*')
-        .from('products')
         .then((result: any) =>
             response.status(200).send({ status: 200, info: result })
         )
@@ -13,4 +12,4 @@ function getProducts(request: Request, response: Response) {
         })
 }
 
-module.exports = getProducts
+// module.exports = getProducts

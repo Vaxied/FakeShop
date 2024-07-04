@@ -1,18 +1,16 @@
 import { RequestHandler } from 'express'
+import { knex } from '../database/connection'
 import { Knex } from 'knex'
 import { User } from '../@types/user'
-const bcrypt = require('bcrypt')
-const passport = require('passport')
-const knex = require('../database/connection')
-const jwt = require('jsonwebtoken')
-const secret = process.env.SECRET
-// const cookieParser = require('cookie-parser')
-const { isEveryFieldValid } = require('./signUpValidations')
+import bcrypt from 'bcrypt'
+import passport from 'passport'
+import jwt from 'jsonwebtoken'
+const secret = process.env.SECRET as string
+import { isEveryFieldValid } from './signUpValidations'
 
-const createUser: RequestHandler = (request, response, next) => {
+export const createUser: RequestHandler = (request, response, next) => {
     const formData = request.body
-    const { firstName, lastName, email, password, confirmedPassword } =
-        request.body
+    const { firstName, lastName, email, password } = request.body
     console.log('body', request.body)
 
     if (!isEveryFieldValid(formData)) {
@@ -67,7 +65,7 @@ const createUser: RequestHandler = (request, response, next) => {
     )
 }
 
-const verifyUser: RequestHandler = async (request, response, next) => {
+export const verifyUser: RequestHandler = (request, response, next) => {
     passport.authenticate('local', function (err: any, user: User) {
         console.log('user result', user)
         console.log('SUPPOSEDLY AUTHENTICATING')
@@ -90,4 +88,4 @@ const verifyUser: RequestHandler = async (request, response, next) => {
     })(request, response, next)
 }
 
-module.exports = { createUser, verifyUser }
+// module.exports = { createUser, verifyUser }

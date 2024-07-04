@@ -1,12 +1,11 @@
-import { RequestHandler } from 'express'
-import { Knex } from 'knex'
 import { AuthToken } from '../@types/user'
 import { Product } from '../@types/product'
+import { RequestHandler } from 'express'
+import { knex } from '../database/connection'
+import { Knex } from 'knex'
+import { setCartInactive, createShoppingCart } from './shoppingCarts'
 
-const knex = require('../database/connection')
-const { setCartInactive, createShoppingCart } = require('./shoppingCarts')
-
-const createOrder: RequestHandler = async (request, response) => {
+export const createOrder: RequestHandler = async (request, response) => {
     const { productList, totalPrice, date } = request.body
     try {
         await knex.transaction(async function (trx: Knex.Transaction) {
@@ -58,7 +57,7 @@ const createOrder: RequestHandler = async (request, response) => {
     }
 }
 
-const getUserOrders: RequestHandler = async (request, response) => {
+export const getUserOrders: RequestHandler = async (request, response) => {
     // select ord.order_id, utc_date, json_agg(json_build_object('title', title, 'price', price, 'image', image)) as productList
     // from orders as ord inner join order_products as op on ord.order_id = op.order_id
     // where ord.user_id = 75
@@ -69,12 +68,14 @@ const getUserOrders: RequestHandler = async (request, response) => {
         }
         const tokenInfo = request.user as AuthToken
         const user = tokenInfo.user
-        // if (!request.user) throw Error('no user in request object')
+        console.log('this user is getting orders', user)
+        if (!request.user) throw Error('no user in request object')
         const result = await knex(knex.ref('orders').as('ord'))
             .select(
                 'ord.order_id as orderId',
                 'total_price as totalPrice',
                 'utc_date as date',
+
                 knex
                     .ref(
                         knex.raw(
@@ -89,7 +90,7 @@ const getUserOrders: RequestHandler = async (request, response) => {
                 'product_quantity',
                 product_quantity)
                 )`
-                        )
+                        ) as unknown as string
                     )
                     .as('productList')
             )
@@ -103,4 +104,4 @@ const getUserOrders: RequestHandler = async (request, response) => {
     }
 }
 
-module.exports = { createOrder, getUserOrders }
+// module.exports = { createOrder, getUserOrders }
