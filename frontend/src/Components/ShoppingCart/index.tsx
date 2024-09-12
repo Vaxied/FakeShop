@@ -2,6 +2,7 @@ import React from 'react'
 import { StoreContext } from '../../Context/context'
 import useShoppingCart from '../../Hooks/useShoppingCart'
 import { StoreContextType } from '../../@types/store'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 function ShoppingCart() {
     const { shoppingCartProducts, addNewOrder, closeCartSideMenu } =
@@ -9,7 +10,10 @@ function ShoppingCart() {
 
     const { removeProductFromShoppingCart, calculateTotalPrice } =
         useShoppingCart()
+    const navigate = useNavigate()
+    const [isCartSynched, setIsCartSynched] = React.useState(true)
 
+    React.useEffect(() => {}, [])
     if (!Array.isArray(shoppingCartProducts) || !shoppingCartProducts.length) {
         return <p>You have not added any items</p>
     }
@@ -81,7 +85,7 @@ function ShoppingCart() {
                 <button
                     type='button'
                     className='border border-gray px-4 py-2 w-full bg-black text-white rounded-lg mt-4'
-                    onClick={() => addNewOrder()}
+                    onClick={() => navigate('/order-to-confirm')}
                 >
                     Checkout
                 </button>

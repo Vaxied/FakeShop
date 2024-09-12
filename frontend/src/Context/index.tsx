@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext } from './context'
 import { postData } from '../services/fetchWrapper'
@@ -9,7 +9,7 @@ type props = {
     children: React.ReactNode
 }
 
-function StoreProvider({ children }: props) {
+function StoreProvider({ children }: Readonly<props>) {
     const API = import.meta.env.VITE_API
     const navigate = useNavigate()
 
@@ -76,6 +76,7 @@ function StoreProvider({ children }: props) {
             !Array.isArray(shoppingCartProducts)
         )
             return
+        // do this in the backend
         const newOrder = {
             orderId: '',
             productList: shoppingCartProducts,
@@ -152,47 +153,46 @@ function StoreProvider({ children }: props) {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
             /[xy]/g,
             function (c) {
-                var r = (Math.random() * 16) | 0,
+                let r = (Math.random() * 16) | 0,
                     v = c == 'x' ? r : (r & 0x3) | 0x8
                 return v.toString(16)
             }
         )
     }
 
+    const value = {
+        items,
+        username,
+        isProductDetailOpen,
+        productToShow,
+        shoppingCartProducts,
+        isCartSideMenuOpen,
+        orders,
+        loggedIn,
+        searchByTitle,
+        productCategories,
+        setItems,
+        setProductToShow,
+        setIsProductDetailOpen,
+        openProductDetail,
+        closeProductDetail,
+        setShoppingCartProducts,
+        openCartSideMenu,
+        closeCartSideMenu,
+        addNewOrder,
+        calculateTotalPrice,
+        setLoggedIn,
+        logOut,
+        setUsername,
+        setOrders,
+        navigateWithClosing,
+        setSearchByTitle,
+        filterItems,
+    }
+
+    const values = useMemo(() => value, [value])
     return (
-        <StoreContext.Provider
-            value={{
-                items,
-                username,
-                isProductDetailOpen,
-                productToShow,
-                shoppingCartProducts,
-                isCartSideMenuOpen,
-                orders,
-                loggedIn,
-                searchByTitle,
-                productCategories,
-                setItems,
-                setProductToShow,
-                setIsProductDetailOpen,
-                openProductDetail,
-                closeProductDetail,
-                setShoppingCartProducts,
-                openCartSideMenu,
-                closeCartSideMenu,
-                addNewOrder,
-                calculateTotalPrice,
-                setLoggedIn,
-                logOut,
-                setUsername,
-                setOrders,
-                navigateWithClosing,
-                setSearchByTitle,
-                filterItems,
-            }}
-        >
-            {children}
-        </StoreContext.Provider>
+        <StoreContext.Provider value={values}>{children}</StoreContext.Provider>
     )
 }
 

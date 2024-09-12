@@ -2,14 +2,9 @@ import React from 'react'
 import { getData } from '../services/fetchWrapper'
 import { StoreContext } from '../Context/context'
 import { StoreContextType } from '../@types/store'
-// import { API } from '../api'
 
 function useApi() {
-    // const DATA = JSON.parse(import.meta.env.VITE_API_DATA)
-    // console.log('data', DATA)
     const API = import.meta.env.VITE_API
-    // console.log('API', API)
-    // const { items, setItems } = React.useContext(StoreContext)
     const {
         items,
         setItems,
@@ -19,21 +14,21 @@ function useApi() {
         setOrders,
         loggedIn,
     } = React.useContext(StoreContext) as StoreContextType
-    // console.log(items)
+
     const [tries, setTries] = React.useState(0)
+
     React.useEffect(() => {
         try {
             if (!Array.isArray(items) || !items.length) {
-                async function loadItems() {
-                    const products = await fetchData(API, null)
-                    setItems(products.info)
+                const loadItems = async () => {
+                    const items = await loadResource()
+                    setItems(items.info)
                 }
                 loadItems()
             }
             if ((!Array.isArray(orders) || !orders.length) && loggedIn) {
-                async function loadOrders() {
-                    const orders = await fetchData(API, '/get-orders')
-                    console.log(orders)
+                const loadOrders = async () => {
+                    const orders = await loadResource('/get-orders')
                     setOrders(orders)
                 }
                 loadOrders()
@@ -44,10 +39,9 @@ function useApi() {
                 loggedIn
             ) {
                 console.log('TRYING TO LOAD PRODUCTS')
-                async function loadCart() {
-                    const something = await fetchData(API, '/load-cart')
-                    console.log('RESULT FROM LOADING CART', something)
-                    setShoppingCartProducts(something)
+                const loadCart = async () => {
+                    const products = await loadResource('/load-cart')
+                    setShoppingCartProducts(products)
                 }
                 loadCart()
             }
@@ -56,10 +50,15 @@ function useApi() {
         }
     }, [items])
 
-    const fetchData = async (API: string, endPoint: string | null) => {
+    async function loadResource(endpoint: string | null = null) {
+        const resource = await fetchData(API, endpoint)
+        return resource
+    }
+
+    const fetchData = async (API: string, endpoint: string | null) => {
         // tricky
-        const url = endPoint ? `${API}${endPoint}` : API
-        if (tries === 3) return null
+        const url = endpoint ? `${API}${endpoint}` : API
+        if (tries === 3) return 'Failed connection to API'
         console.log('getting data')
         const data = await getData(url)
         // console.log(tries)
@@ -67,7 +66,7 @@ function useApi() {
         return data
     }
 
-    return { items, setItems }
+    return { items, setItems, loadResource }
 }
 
 export default useApi

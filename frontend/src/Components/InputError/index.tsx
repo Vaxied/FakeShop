@@ -1,5 +1,5 @@
 type props = { errMsg: string | object; condition: boolean }
-function ErrorMsg({ errMsg, condition }: props) {
+function ErrorMsg({ errMsg, condition }: Readonly<props>) {
     console.log('input err check', errMsg, condition)
     return (
         <div
@@ -10,7 +10,7 @@ function ErrorMsg({ errMsg, condition }: props) {
             {typeof errMsg === 'string' && (
                 <span
                     className={`text-red-500 
-                text-sm ${!!condition ? 'block' : 'hidden'}`}
+                text-sm ${condition ? 'block' : 'hidden'}`}
                 >
                     {errMsg}
                 </span>
@@ -18,16 +18,12 @@ function ErrorMsg({ errMsg, condition }: props) {
             {typeof errMsg === 'object' && (
                 <p
                     className={`text-red-500
-                text-sm ${!!condition ? 'flex flex-col' : 'hidden'}
+                text-sm ${condition ? 'flex flex-col' : 'hidden'}
                 `}
                 >
                     {Object.values(errMsg).map((value: any) => (
-                        <span>{value}</span>
+                        <span key={value}>{value}</span>
                     ))}
-                    {/* <span>{errMsg?.length}</span>
-                    <span>{errMsg?.uppercase}</span>
-                    <span>{errMsg?.lowercase}</span>
-                    <span>{errMsg?.special}</span> */}
                 </p>
             )}
         </div>

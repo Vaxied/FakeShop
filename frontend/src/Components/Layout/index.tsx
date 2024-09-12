@@ -1,16 +1,24 @@
+import React from 'react'
 import Navbar from '../Navbar'
 import CartSideMenu from '../CartSideMenu'
+import { useLocation } from 'react-router-dom'
+import MainContainer from '../MainContainer'
 
 type props = { children: React.ReactNode }
 
-function Layout({ children }: props) {
+function Layout({ children }: Readonly<props>) {
+    const location = useLocation()
+    const [isCheckout, setIsCheckout] = React.useState(true)
+
+    if (location.pathname === '/order-to-confirm') {
+        if (!isCheckout) setIsCheckout(true)
+    } else if (isCheckout) setIsCheckout(false)
+
     return (
         <>
-            <Navbar />
-            <div className='w-full flex justify-center p-8 min-h-[calc(100vh-70px)]'>
-                {children}
-            </div>
-            <CartSideMenu />
+            {!isCheckout && <Navbar />}
+            <MainContainer>{children}</MainContainer>
+            {!isCheckout && <CartSideMenu />}
         </>
     )
 }

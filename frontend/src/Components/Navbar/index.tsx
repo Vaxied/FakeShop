@@ -44,7 +44,7 @@ function Navbar() {
                     </li>
                     <li>
                         <NavLink
-                            to='/category/jewelry'
+                            to='/category/jewelery'
                             className={({ isActive }) => isLinkActive(isActive)}
                         >
                             Jewelery

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import useShoppingCart from '../../Hooks/useShoppingCart'
 import { IProduct } from '../../@types/product'
 
@@ -7,21 +6,11 @@ type props = {
     closeProductDetail: (event: React.MouseEvent) => void
 }
 
-function ProductDetail({ product, closeProductDetail }: props) {
-    // ProductDetail.propTypes = {
-    //     item: PropTypes.object.isRequired,
-    //     image: PropTypes.string.isRequired,
-    //     price: PropTypes.string.isRequired,
-    //     title: PropTypes.string.isRequired,
-    //     description: PropTypes.string.isRequired,
-    //     category: PropTypes.string.isRequired,
-    //     closeProductDetail: PropTypes.func.isRequired,
-    // }
-
+function ProductDetail({ product, closeProductDetail }: Readonly<props>) {
     const { addItemToShoppingCart } = useShoppingCart()
 
     return (
-        <aside className='flex flex-col fixed right-0 border-0.5 border-black w-[360px] h-[calc(100vh-68px)] top-[68px] bg-white rounded-lg'>
+        <aside className='flex flex-col fixed right-0 border-0.5 border-black w-[360px] h-[calc(100vh-64px)] top-[64px] bg-white rounded-lg'>
             <div className='bg-gray-100 bg-opacity-50 w-full h-full cursor-pointer border-2 border-gray rounded-lg px-4 overflow-y-scroll'>
                 <button
                     type='button'

@@ -37,15 +37,16 @@ function MyOrder() {
                     </Link>
                     <p className='font-semibold'>My Order</p>
                 </div>
+                <p className='font-semibold'>order #{order.orderId}</p>
                 <p>
                     {order.date &&
-                        `Placed on ${order.date.substring(0, 10)} at{' '}
+                        `Placed on ${order.date.substring(0, 10)} at
                     ${order.date.substring(11, 16)}`}
                 </p>
                 <p>{order.productList.length} item(s)</p>
                 {order.productList.map((product, index) => (
                     <div
-                        key={index}
+                        key={product.title}
                         className='flex items-center my-3 p-2 justify-between bg-white border border-gray rounded-lg'
                     >
                         <div className='flex flex-1 items-center'>

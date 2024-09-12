@@ -9,6 +9,7 @@ import Login from './Login'
 import SignUp from './SignUp'
 import ShoppingCart from '../Components/ShoppingCart'
 import ProtectedRoute from '../Components/ProtectedRoute'
+import OrderToConfirm from '../Components/OrderToConfirm'
 
 export const AppRoutes = () => {
     let routes = useRoutes([
@@ -73,6 +74,10 @@ export const AppRoutes = () => {
                 {
                     path: 'shopping-cart',
                     element: <ShoppingCart />,
+                },
+                {
+                    path: 'order-to-confirm',
+                    element: <OrderToConfirm />,
                 },
             ],
         },

@@ -17,8 +17,8 @@ function Home() {
     } = React.useContext(StoreContext) as StoreContextType
     const { items } = useApi() || null
     // console.log('this should be items', items)
-    if (!items) return null
     React.useEffect(() => {
+        if (!items) return
         closeCartSideMenu()
         setSearchByTitle('')
     }, [])
@@ -26,7 +26,7 @@ function Home() {
     const productCategory = location.split('/')[2]
     // console.log('category', productCategories[productCategory])
     // console.log('location', location)
-
+    if (!items) return
     let filteredItems = items || []
     if (productCategory && productCategories[productCategory]) {
         filteredItems = filterItems(
@@ -34,33 +34,26 @@ function Home() {
             productCategories[productCategory]
         )
     } else if (searchByTitle) filteredItems = filterItems(searchByTitle)
-    else filteredItems = [...items]
+    else filteredItems = items
 
     return (
-        <>
-            <div className='flex flex-col'>
-                <ProductSearchBar
-                    searchByTitle={searchByTitle}
-                    setSearchByTitle={setSearchByTitle}
-                />
-                <CardsWrapper>
-                    {!filteredItems.length && (
-                        <p className='flex w-full justify-center mt-8'>
-                            No product matches the searched term
-                        </p>
-                    )}
-                    {!!filteredItems.length &&
-                        filteredItems.map((item, index) => (
-                            <Card
-                                key={index}
-                                // items={items}
-                                // index={index}
-                                product={item}
-                            />
-                        ))}
-                </CardsWrapper>
-            </div>
-        </>
+        <div className='flex flex-col'>
+            <ProductSearchBar
+                searchByTitle={searchByTitle}
+                setSearchByTitle={setSearchByTitle}
+            />
+            <CardsWrapper>
+                {!filteredItems.length && (
+                    <p className='flex w-full justify-center mt-8'>
+                        No product matches the searched term
+                    </p>
+                )}
+                {!!filteredItems.length &&
+                    filteredItems.map((item, index) => (
+                        <Card key={item.product_id} product={item} />
+                    ))}
+            </CardsWrapper>
+        </div>
     )
 }
 

@@ -81,7 +81,6 @@ export const removeProduct: RequestHandler = async (request, response) => {
     const product = request.body
     console.log('product to increase', product)
     try {
-        // if (!request.user) throw Error('no user in request object')
         if (!request.user) {
             return null
         }

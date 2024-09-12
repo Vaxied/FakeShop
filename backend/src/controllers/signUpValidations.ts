@@ -55,7 +55,6 @@ function arePasswordsEqual(confirmedPassword: string, password: string) {
 }
 
 function isAnyFieldEmpty(formData: SignUpForm) {
-    // TODO Change and test each individual field
     for (let key in formData) {
         console.log('Comparing is empty', formData[key] === '')
         if (formData[key] === '') return true
@@ -71,7 +70,6 @@ function areFormFieldKeysEqual(
     const receivedKeys = Object.keys(formData)
     const expectedKeys = Object.keys(expectedFormDataStructure)
 
-    // if (formData === expectedFormData) return true
     if (receivedKeys.length !== expectedKeys.length) return false
 
     for (let i = 0; i < receivedKeys.length; ++i) {
@@ -81,7 +79,6 @@ function areFormFieldKeysEqual(
 }
 
 function isEveryFieldString(formData: SignUpForm) {
-    // TODO Change and test each individual field
     for (let key in formData) {
         console.log(
             `Comparing is type string, ${typeof formData[key] !== 'string'}`
@@ -90,15 +87,6 @@ function isEveryFieldString(formData: SignUpForm) {
     }
     return true
 }
-
-// function isAnyInputError(inputErrs) {
-//     for (let key in inputErrs) {
-//         if (inputErrs[key] === true) return true
-//         console.log('input error found')
-//     }
-//     console.log('No input errors found')
-//     return false
-// }
 
 export function isEveryFieldValid(rawInputData: any) {
     const formData: SignUpForm = sanitizeData(rawInputData)
