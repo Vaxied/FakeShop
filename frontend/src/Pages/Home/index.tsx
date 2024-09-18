@@ -14,14 +14,16 @@ function Home() {
         searchByTitle,
         setSearchByTitle,
         productCategories,
+        items,
     } = React.useContext(StoreContext) as StoreContextType
-    const { items } = useApi() || null
+    // const { items } = useApi() || null
     // console.log('this should be items', items)
     React.useEffect(() => {
         if (!items) return
         closeCartSideMenu()
         setSearchByTitle('')
     }, [])
+    console.log('this is items', items)
     const location = useLocation().pathname
     const productCategory = location.split('/')[2]
     // console.log('category', productCategories[productCategory])
@@ -49,7 +51,7 @@ function Home() {
                     </p>
                 )}
                 {!!filteredItems.length &&
-                    filteredItems.map((item, index) => (
+                    filteredItems.map((item) => (
                         <Card key={item.product_id} product={item} />
                     ))}
             </CardsWrapper>

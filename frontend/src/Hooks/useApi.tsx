@@ -6,21 +6,38 @@ import { StoreContextType } from '../@types/store'
 function useApi() {
     const API = import.meta.env.VITE_API
     const {
+        username,
         items,
-        setItems,
         shoppingCartProducts,
-        setShoppingCartProducts,
-        orders,
-        setOrders,
         loggedIn,
+        orders,
+        setItems,
+        setShoppingCartProducts,
+        setOrders,
+        setIsLoading,
+        setUsername,
+        setLoggedIn,
     } = React.useContext(StoreContext) as StoreContextType
 
     const [tries, setTries] = React.useState(0)
 
     React.useEffect(() => {
         try {
+            if (!loggedIn && !username) {
+                const checkIfUser = async () => {
+                    setIsLoading(true)
+                    const user = await loadResource('/refresh-user')
+                    console.log('RETURNED USER AFTER FIRST LOAD', user)
+                    if (user?.first_name) {
+                        setUsername(user.first_name)
+                        setLoggedIn(true)
+                    }
+                }
+                checkIfUser()
+            }
             if (!Array.isArray(items) || !items.length) {
                 const loadItems = async () => {
+                    setIsLoading(true)
                     const items = await loadResource()
                     setItems(items.info)
                 }
@@ -28,6 +45,7 @@ function useApi() {
             }
             if ((!Array.isArray(orders) || !orders.length) && loggedIn) {
                 const loadOrders = async () => {
+                    setIsLoading(true)
                     const orders = await loadResource('/get-orders')
                     setOrders(orders)
                 }
@@ -41,14 +59,18 @@ function useApi() {
                 console.log('TRYING TO LOAD PRODUCTS')
                 const loadCart = async () => {
                     const products = await loadResource('/load-cart')
-                    setShoppingCartProducts(products)
+                    products
+                        ? setShoppingCartProducts(products)
+                        : console.log(
+                              "User has no products in cart or products couldn't be fetched"
+                          )
                 }
                 loadCart()
             }
         } catch (error: any) {
             throw new Error(error)
         }
-    }, [items])
+    }, [items, orders, shoppingCartProducts, loggedIn])
 
     async function loadResource(endpoint: string | null = null) {
         const resource = await fetchData(API, endpoint)
@@ -58,7 +80,7 @@ function useApi() {
     const fetchData = async (API: string, endpoint: string | null) => {
         // tricky
         const url = endpoint ? `${API}${endpoint}` : API
-        if (tries === 3) return 'Failed connection to API'
+        if (tries === 3) return false
         console.log('getting data')
         const data = await getData(url)
         // console.log(tries)

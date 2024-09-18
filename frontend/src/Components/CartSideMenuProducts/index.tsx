@@ -1,32 +1,27 @@
-import React from 'react'
-import { StoreContext } from '../../Context/context'
+import { IProduct } from '../../@types/product'
 import useShoppingCart from '../../Hooks/useShoppingCart'
-import { StoreContextType } from '../../@types/store'
-import { Navigate, useNavigate } from 'react-router-dom'
 
-function ShoppingCart() {
-    const { shoppingCartProducts } = React.useContext(
-        StoreContext
-    ) as StoreContextType
-
-    const { removeProductFromShoppingCart, calculateTotalPrice } =
-        useShoppingCart()
-    const navigate = useNavigate()
-
-    React.useEffect(() => {}, [])
-    if (!Array.isArray(shoppingCartProducts) || !shoppingCartProducts.length) {
-        return <p>You have not added any items</p>
-    }
-    const totalPrice = calculateTotalPrice(shoppingCartProducts)
-    console.log('shopping cart', shoppingCartProducts)
+function CartSideMenuProducts(
+    props: Readonly<{ shoppingCartProducts: IProduct[] }>
+) {
+    console.log('products', props.shoppingCartProducts)
+    const { removeProductFromShoppingCart } = useShoppingCart()
     return (
-        <div className='flex flex-col'>
-            <div className='border border-gray px-6 py-4 rounded-lg bg-gray-100'>
-                <p className='font-semibold'>My Order</p>
-                {shoppingCartProducts.map((product) => (
+        <div
+            className={` ${
+                props.shoppingCartProducts.length > 0
+                    ? 'overflow-y-auto'
+                    : 'justify-center items-center font-semibold text-lg'
+            } flex flex-col h-[500px] my-2`}
+        >
+            {props.shoppingCartProducts.length <= 0 && (
+                <p>Please, add an item</p>
+            )}
+            {props.shoppingCartProducts.length > 0 &&
+                props.shoppingCartProducts.map((product: IProduct) => (
                     <div
                         key={product.product_id}
-                        className='flex items-center my-3 p-2 justify-between bg-white border border-gray rounded-lg'
+                        className='flex items-center mb-2 p-2 justify-between bg-white border border-gray rounded-lg text-xs'
                     >
                         <div className='flex flex-1 items-center'>
                             <img
@@ -34,11 +29,13 @@ function ShoppingCart() {
                                 alt={product.title}
                                 className='w-12 h-12 rounded-lg'
                             />
-                            <p className='flex-1 px-4 mr-8'>{product?.title}</p>
+                            <p className='flex-1 px-4 w-32 truncate'>
+                                {product?.title}
+                            </p>
                         </div>
                         <div className='flex justify-between items-center h-8'>
-                            <p className='flex items-center mr-8'>
-                                Quantity: {product?.product_quantity}
+                            <p className='flex items-center'>
+                                Qty: {product?.product_quantity}
                             </p>
                             <p className='flex items-center w-16 justify-end'>
                                 $
@@ -51,11 +48,12 @@ function ShoppingCart() {
                             <button
                                 type='button'
                                 className='ml-8 h-8'
-                                onClick={() =>
+                                onClick={() => {
                                     removeProductFromShoppingCart(
                                         product.product_id
                                     )
-                                }
+                                    console.log('removing')
+                                }}
                             >
                                 <svg
                                     xmlns='http://www.w3.org/2000/svg'
@@ -75,24 +73,8 @@ function ShoppingCart() {
                         </div>
                     </div>
                 ))}
-                <div className='w-full flex justify-end'>
-                    <div className='w-32 px-2 py-2 flex justify-between'>
-                        <p>Total:</p>
-                        <p className='font-bold'>${totalPrice}</p>
-                    </div>
-                </div>
-            </div>
-            <div className='w-full flex justify-end'>
-                <button
-                    type='button'
-                    className='border border-gray px-4 py-2 w-full bg-black text-white rounded-lg mt-4'
-                    onClick={() => navigate('/checkout')}
-                >
-                    Checkout
-                </button>
-            </div>
         </div>
     )
 }
 
-export default ShoppingCart
+export default CartSideMenuProducts

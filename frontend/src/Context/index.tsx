@@ -31,6 +31,8 @@ function StoreProvider({ children }: Readonly<props>) {
 
     const [searchByTitle, setSearchByTitle] = React.useState('')
 
+    const [isLoading, setIsLoading] = React.useState(true)
+
     const productCategories = {
         men: "men's clothing",
         women: "women's clothing",
@@ -39,6 +41,7 @@ function StoreProvider({ children }: Readonly<props>) {
     }
 
     console.log('cart products', shoppingCartProducts)
+    console.log('loading', isLoading)
     function openProductDetail(product: IProduct) {
         setIsProductDetailOpen(true)
         setProductToShow(product)
@@ -188,6 +191,8 @@ function StoreProvider({ children }: Readonly<props>) {
         navigateWithClosing,
         setSearchByTitle,
         filterItems,
+        isLoading,
+        setIsLoading,
     }
 
     const values = useMemo(() => value, [value])

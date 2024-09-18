@@ -10,7 +10,7 @@ function Layout({ children }: Readonly<props>) {
     const location = useLocation()
     const [isCheckout, setIsCheckout] = React.useState(true)
 
-    if (location.pathname === '/order-to-confirm') {
+    if (location.pathname === '/checkout') {
         if (!isCheckout) setIsCheckout(true)
     } else if (isCheckout) setIsCheckout(false)
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { StoreContextType } from '../../@types/store'
 import useApi from '../../Hooks/useApi'
 
-function OrderToConfirm() {
+function CheckoutPage() {
     const {
         shoppingCartProducts,
         setShoppingCartProducts,
@@ -13,7 +13,6 @@ function OrderToConfirm() {
     } = React.useContext(StoreContext) as StoreContextType
     const navigate = useNavigate()
     const { loadResource } = useApi()
-    console.log(loadResource)
 
     React.useEffect(() => {
         const validateShoppingCart = async () => {
@@ -65,24 +64,24 @@ function OrderToConfirm() {
                         </div>
                     </div>
                 ))}
-                <div className='w-full px-2 py-2 flex justify-end'>
-                    <p>Total:</p>
-                    <p className='font-bold'>
-                        ${calculateTotalPrice(products)}
-                    </p>
-                </div>
                 <div className='w-full flex justify-end'>
-                    <button
-                        type='button'
-                        className='border border-gray px-4 py-2 w-full bg-black text-white rounded-lg mt-4'
-                        onClick={() => addNewOrder()}
-                    >
-                        Place order
-                    </button>
+                    <div className='w-32 px-2 py-2 flex justify-between'>
+                        <p>Total:</p>
+                        <p className='font-bold'>
+                            ${calculateTotalPrice(products)}
+                        </p>
+                    </div>
                 </div>
+                <button
+                    type='button'
+                    className='border border-gray px-4 py-2 w-full bg-black text-white rounded-lg mt-4'
+                    onClick={() => addNewOrder()}
+                >
+                    Place order
+                </button>
             </div>
         </div>
     )
 }
 
-export default OrderToConfirm
+export default CheckoutPage

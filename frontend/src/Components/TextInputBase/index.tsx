@@ -6,9 +6,9 @@ type props = {
     stateProps: StateProps
 }
 
-function TextInputBase(props: props) {
+function TextInputBase(props: Readonly<props>) {
     const { inputProp, stateProps } = props
-    console.log('state props:', stateProps)
+    // console.log('state props:', stateProps)
     return (
         <>
             <label htmlFor={inputProp.id} className='py-2 font-semibold'>

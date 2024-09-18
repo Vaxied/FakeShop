@@ -66,8 +66,11 @@ function useShoppingCart() {
         console.log('quantity increased')
     }
 
-    async function removeProductFromShoppingCart(index: number) {
+    async function removeProductFromShoppingCart(id: number) {
         let newProducts = shoppingCartProducts
+        const index = newProducts.findIndex(
+            (element) => element.product_id === id
+        )
         const product = newProducts[index]
         const response = await deleteData(`${API}/remove-product`, product)
         if (!response) return

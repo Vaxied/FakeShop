@@ -13,6 +13,7 @@ export type StoreContextType = {
     searchByTitle: string
     productCategories: productCategories
     username: string
+    isLoading: boolean
     setItems: (products: items) => void
     setShoppingCartProducts: (products: IProduct[]) => void
     setProductToShow: (product: IProduct) => void
@@ -33,6 +34,7 @@ export type StoreContextType = {
         to: string
     ) => void
     filterItems: (searchTerm?: string, category?: string) => IProduct[]
+    setIsLoading: (boolean: boolean) => void
 }
 
 type productCategories = {

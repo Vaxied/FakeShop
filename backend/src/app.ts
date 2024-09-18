@@ -7,7 +7,7 @@ const PORT = process.env.API_PORT
 
 import { createUser, verifyUser } from './controllers/users'
 import { createOrder, getUserOrders } from './controllers/orders'
-import { isAuthenticated, authUser } from './routes/auth'
+import { isAuthenticated, authUser, refreshUser } from './routes/auth'
 import { getProducts } from './routes/products'
 
 import {
@@ -75,6 +75,11 @@ app.patch(
 app.get('/get-orders', isAuthenticated, (request, response, next) => {
     console.log('getting orders')
     return getUserOrders(request, response, next)
+})
+
+app.get('/refresh-user', isAuthenticated, (request, response, next) => {
+    console.log('app restarted, checking user')
+    return refreshUser(request, response, next)
 })
 
 app.listen(PORT, () => console.log(`\nListening on ${PORT}`))

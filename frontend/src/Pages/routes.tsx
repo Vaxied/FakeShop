@@ -9,7 +9,7 @@ import Login from './Login'
 import SignUp from './SignUp'
 import ShoppingCart from '../Components/ShoppingCart'
 import ProtectedRoute from '../Components/ProtectedRoute'
-import OrderToConfirm from '../Components/OrderToConfirm'
+import CheckoutPage from './CheckoutPage'
 
 export const AppRoutes = () => {
     let routes = useRoutes([
@@ -29,18 +29,6 @@ export const AppRoutes = () => {
                     path: '*',
                     element: <Home />,
                 },
-                // {
-                //     path: 'women',
-                //     element: <Home />,
-                // },
-                // {
-                //     path: 'electronics',
-                //     element: <Home />,
-                // },
-                // {
-                //     path: 'jewelry',
-                //     element: <Home />,
-                // },
             ],
         },
         {
@@ -65,7 +53,6 @@ export const AppRoutes = () => {
                 {
                     path: 'my-orders',
                     element: <MyOrders />,
-                    // children: [{ path: ':id', element: <MyOrder /> }],
                 },
                 {
                     path: 'my-orders/:id',
@@ -76,8 +63,8 @@ export const AppRoutes = () => {
                     element: <ShoppingCart />,
                 },
                 {
-                    path: 'order-to-confirm',
-                    element: <OrderToConfirm />,
+                    path: 'checkout',
+                    element: <CheckoutPage />,
                 },
             ],
         },

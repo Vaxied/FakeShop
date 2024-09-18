@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-
+import { AuthToken } from '../@types/user'
 import { knex } from '../database/connection'
 
 import bcrypt from 'bcrypt'
@@ -8,7 +8,6 @@ const secret = process.env.SECRET as string
 
 export const isAuthenticated: RequestHandler = (request, response, next) => {
     const accessToken = request.headers['authorization']
-    console.log('accessToken', accessToken)
     if (!accessToken) {
         return response.status(401).send({
             status: 401,
@@ -26,6 +25,31 @@ export const isAuthenticated: RequestHandler = (request, response, next) => {
     }
 }
 
+export const refreshUser: RequestHandler = async (request, response, next) => {
+    try {
+        console.log('user when refreshing app', request.user)
+        if (!request.user) {
+            return response
+                .status(404)
+                .send({ info: "Token doesnt exist or it wasn't valid" })
+        }
+        const user = request.user as AuthToken
+        const id = user.user.user_id
+        const results = await knex('users')
+            .select('first_name')
+            .where({ user_id: id })
+            .then((queryResult: any) => {
+                return queryResult
+            })
+            .catch((err: any) => {
+                throw err
+            })
+        console.log(results)
+        return response.status(200).send({ first_name: results[0].first_name })
+    } catch (err) {
+        console.log(err)
+    }
+}
 export async function authUser(username: string, password: string, done: any) {
     try {
         console.log(username, password)
@@ -60,5 +84,3 @@ export async function authUser(username: string, password: string, done: any) {
         console.log('ERROR:', error)
     }
 }
-
-// module.exports = { authUser, isAuthenticated }
