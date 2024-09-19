@@ -2,7 +2,7 @@ import React from 'react'
 import { StoreContext } from '../../Context/context'
 import useShoppingCart from '../../Hooks/useShoppingCart'
 import { StoreContextType } from '../../@types/store'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function ShoppingCart() {
     const { shoppingCartProducts } = React.useContext(
@@ -20,24 +20,26 @@ function ShoppingCart() {
     const totalPrice = calculateTotalPrice(shoppingCartProducts)
     console.log('shopping cart', shoppingCartProducts)
     return (
-        <div className='flex flex-col'>
-            <div className='border border-gray px-6 py-4 rounded-lg bg-gray-100'>
+        <div className='w-full flex flex-col min-w-[420px] max-w-[900px]'>
+            <div className='w-full border border-gray px-6 py-4 rounded-lg bg-gray-100 max-w-[900px]'>
                 <p className='font-semibold'>My Order</p>
                 {shoppingCartProducts.map((product) => (
                     <div
                         key={product.product_id}
                         className='flex items-center my-3 p-2 justify-between bg-white border border-gray rounded-lg'
                     >
-                        <div className='flex flex-1 items-center'>
+                        <div className='flex items-center min-w-[120px] gap-4 mr-8'>
                             <img
                                 src={product?.image}
                                 alt={product.title}
-                                className='w-12 h-12 rounded-lg'
+                                className='w-12 h-12 min-w-12 min-h-12 rounded-lg'
                             />
-                            <p className='flex-1 px-4 mr-8'>{product?.title}</p>
+                            <p className='min-w-[90px] truncate'>
+                                {product?.title}
+                            </p>
                         </div>
-                        <div className='flex justify-between items-center h-8'>
-                            <p className='flex items-center mr-8'>
+                        <div className='flex justify-between items-center h-8 gap-4'>
+                            <p className='min-w-[78px] ]flex flex-nowrap items-center'>
                                 Quantity: {product?.product_quantity}
                             </p>
                             <p className='flex items-center w-16 justify-end'>
@@ -50,7 +52,7 @@ function ShoppingCart() {
                             </p>
                             <button
                                 type='button'
-                                className='ml-8 h-8'
+                                className='h-8'
                                 onClick={() =>
                                     removeProductFromShoppingCart(
                                         product.product_id

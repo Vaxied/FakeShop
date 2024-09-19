@@ -11,7 +11,7 @@ function ProductDetail({ product, closeProductDetail }: Readonly<props>) {
 
     return (
         <aside className='flex flex-col fixed right-0 border-0.5 border-black w-[360px] h-[calc(100vh-64px)] top-[64px] bg-white rounded-lg'>
-            <div className='bg-gray-100 bg-opacity-50 w-full h-full cursor-pointer border-2 border-gray rounded-lg px-4 overflow-y-scroll'>
+            <div className='bg-gray-100 bg-opacity-50 w-full h-full border-2 border-gray rounded-lg px-4 overflow-y-scroll'>
                 <button
                     type='button'
                     onClick={(event) => {

@@ -10,9 +10,7 @@ function Login() {
         console.log('logged?', isAuthenticated())
         if (isAuthenticated()) navigate('/')
     }, [])
-    if (!isAuthenticated()) {
-        return <LoginForm />
-    } else return <>HIiiiii</>
+    return isAuthenticated() ? navigate('/') : <LoginForm />
 }
 
 export default Login

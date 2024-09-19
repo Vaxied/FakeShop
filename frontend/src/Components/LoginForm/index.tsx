@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 import React from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { postData } from '../../services/fetchWrapper'
 import { StoreContext } from '../../Context/context'
 import InputError from '../InputError'
@@ -16,7 +16,7 @@ function LoginForm() {
         username: '',
         password: '',
     })
-    const [isloginErr, isSetLoginErr] = React.useState(false)
+    const [isLoginErr, setIsLoginErr] = React.useState(false)
     const API = import.meta.env.VITE_API
     const errMsg = 'Invalid username or password.'
     const inputStyle =
@@ -30,12 +30,12 @@ function LoginForm() {
         if (!response) console.log('no response')
         // console.log('🚀 ~ handleSubmit ~ response:', response.status)
         else if (response.status !== 201) {
-            isSetLoginErr(true)
+            setIsLoginErr(true)
             // navigate('/login')
             console.log(response.info) //show error message
         } else {
             console.log('loggin in')
-            isSetLoginErr(false)
+            setIsLoginErr(false)
             setLoggedIn(true)
             setUsername(response.firstName)
             localStorage.setItem('accessToken', response.token)
@@ -84,7 +84,7 @@ function LoginForm() {
                     }
                     className={inputStyle}
                 />
-                <InputError errMsg={errMsg} condition={isloginErr} />
+                <InputError errMsg={errMsg} condition={isLoginErr} />
                 <p className='text-end mb-6'>
                     {/* <NavLink>Forgot password</NavLink> */}
                     <span>Forgot password</span>

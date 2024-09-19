@@ -12,8 +12,8 @@ function MainContainer({ children }: Readonly<props>) {
     useApi()
     React.useEffect(() => {
         console.log('stopped loading')
-        setTimeout(() => setIsLoading(false), 100)
-    }, [])
+        setTimeout(() => setIsLoading(false), 250)
+    }, [isLoading])
 
     return (
         <div className='w-full flex justify-center p-8 min-h-[calc(100vh-70px)]'>
