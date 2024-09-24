@@ -11,20 +11,18 @@ function MyOrders() {
     ) as StoreContextType
     if (!Array.isArray(Orders) || !shoppingCartProducts.length)
         return (
-            <>
-                <div>
-                    <Orders />
-                    <div className='w-full flex justify-end'>
-                        <button
-                            type='button'
-                            className='border border-gray px-4 py-2'
-                            onClick={() => navigate(-1)}
-                        >
-                            Back
-                        </button>
-                    </div>
+            <div>
+                <Orders />
+                <div className='w-full flex justify-end'>
+                    <button
+                        type='button'
+                        className='border border-gray px-4 py-2'
+                        onClick={() => navigate(-1)}
+                    >
+                        Back
+                    </button>
                 </div>
-            </>
+            </div>
         )
 }
 

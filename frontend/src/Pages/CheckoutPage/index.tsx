@@ -29,14 +29,11 @@ function CheckoutPage() {
     if (!Array.isArray(shoppingCartProducts) || !shoppingCartProducts.length)
         return <p>You don&apos;t have any products yet</p>
 
-    const products = [...shoppingCartProducts].reverse()
-    console.log('products', products)
-
     return (
         <div className='flex flex-col'>
             <div className='border border-gray px-6 py-4 rounded-lg bg-gray-100'>
                 <p className='font-semibold'>My cart</p>
-                {products.map((product) => (
+                {shoppingCartProducts.map((product) => (
                     <div
                         key={product.product_id}
                         className='flex items-center my-3 p-2 justify-between bg-white border border-gray rounded-lg'
@@ -68,7 +65,7 @@ function CheckoutPage() {
                     <div className='w-32 px-2 py-2 flex justify-between'>
                         <p>Total:</p>
                         <p className='font-bold'>
-                            ${calculateTotalPrice(products)}
+                            ${calculateTotalPrice(shoppingCartProducts)}
                         </p>
                     </div>
                 </div>

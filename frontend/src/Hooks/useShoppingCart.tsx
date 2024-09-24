@@ -41,7 +41,7 @@ function useShoppingCart() {
             if (!response) return
             console.log('item has been added')
 
-            setShoppingCartProducts([...shoppingCartProducts, product])
+            setShoppingCartProducts([product, ...shoppingCartProducts])
         }
         openCartSideMenu(event)
     }

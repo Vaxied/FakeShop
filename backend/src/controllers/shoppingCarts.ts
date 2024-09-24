@@ -27,6 +27,7 @@ export const addProduct: RequestHandler = async (request, response) => {
                         cart_id: shoppingCart[0].cart_id,
                         product_id: product.product_id,
                         product_quantity: product.product_quantity,
+                        // added_at: new Date().toISOString(),
                     },
                 ])
 
@@ -138,6 +139,7 @@ export const loadShoppingCart: RequestHandler = async (request, response) => {
             )
             .where('user_id', user.user_id)
             .andWhere('cart_status', 'active')
+            .orderBy('added_at', 'desc')
 
         console.log('PRODUCTS', products)
         // console.log(products)

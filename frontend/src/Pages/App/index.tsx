@@ -6,15 +6,13 @@ import { AppRoutes } from '../routes'
 
 function App() {
     return (
-        <>
-            <BrowserRouter>
-                <StoreProvider>
-                    <Layout>
-                        <AppRoutes />
-                    </Layout>
-                </StoreProvider>
-            </BrowserRouter>
-        </>
+        <BrowserRouter>
+            <StoreProvider>
+                <Layout>
+                    <AppRoutes />
+                </Layout>
+            </StoreProvider>
+        </BrowserRouter>
     )
 }
 

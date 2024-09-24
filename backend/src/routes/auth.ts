@@ -21,7 +21,7 @@ export const isAuthenticated: RequestHandler = (request, response, next) => {
         next()
     } catch (error) {
         console.log('ERORR:', error)
-        return response.status(400).send({ info: 'Invalid access token' })
+        return response.status(400).send({ info: error })
     }
 }
 

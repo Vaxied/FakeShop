@@ -17,7 +17,6 @@ function CartSideMenu() {
     const location = useLocation()
     const navigate = useNavigate()
 
-    // if (!isCartSideMenuOpen)
     if (
         location.pathname === '/my-order' ||
         location.pathname === '/shopping-cart' ||
@@ -27,8 +26,8 @@ function CartSideMenu() {
     return (
         <aside
             className={`${
-                isCartSideMenuOpen ? 'flex flex-col' : 'translate-x-[360px]'
-            } fixed right-0 h-[calc(100vh-68px)] top-[68px] w-[360px] border border-gray rounded-lg bg-gray-100 transition-all duration-500 ease-out px-6 py-3`}
+                isCartSideMenuOpen ? 'flex flex-col' : 'translate-x-[380px]'
+            } fixed right-0 h-[calc(100vh-68px)] top-[68px] w-[380px] border border-gray rounded-lg rounded-r-none bg-gray-100 transition-all duration-500 ease-out px-6 py-3`}
         >
             <div className='flex flex-col'>
                 <div
@@ -61,7 +60,6 @@ function CartSideMenu() {
                         My Order
                     </span>
                 </div>
-
                 <CartSideMenuProducts
                     shoppingCartProducts={shoppingCartProducts}
                 />

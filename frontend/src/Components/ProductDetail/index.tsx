@@ -73,7 +73,7 @@ function ProductDetail({ product, closeProductDetail }: Readonly<props>) {
                     <span className='text-sm text-black/60 font-bold mr-2'>
                         {product.title}
                     </span>
-                    <span className='text-lg text-green-500 font-semibold'>
+                    <span className='text-lg text-black font-semibold'>
                         ${product.price}
                     </span>
                 </p>

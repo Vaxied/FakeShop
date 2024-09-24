@@ -89,7 +89,10 @@ function StoreProvider({ children }: Readonly<props>) {
             totalPrice: calculateTotalPrice(shoppingCartProducts),
             date: new Date().toISOString(),
         }
-        const response = await postData(`${API}/new-order`, newOrder)
+        const response = await postData(
+            `${API}/new-order`,
+            shoppingCartProducts
+        )
         if (!response) console.log('no response')
         else if (response.status !== 200) console.log('Something went wrong')
         else {

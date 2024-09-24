@@ -1,5 +1,7 @@
+import { UUID } from 'crypto'
+
 type Order = {
-    order_id: string
+    order_id: UUID
     product_quantity: number
     price: number
     title: string

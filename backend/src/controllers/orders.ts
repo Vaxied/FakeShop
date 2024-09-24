@@ -4,9 +4,22 @@ import { RequestHandler } from 'express'
 import { knex } from '../database/connection'
 import { Knex } from 'knex'
 import { setCartInactive, createShoppingCart } from './shoppingCarts'
+import { Order } from '../@types/order'
+
+function calculateTotalPrice(products: Product[]) {
+    console.log('calculating products total', products)
+    let total = 0
+    products.forEach((product: Product) => {
+        if (!product.product_quantity) return
+        const price = product.price * product.product_quantity
+        total = total + price
+    })
+    return total.toFixed(2)
+}
 
 export const createOrder: RequestHandler = async (request, response) => {
-    const { productList, totalPrice, date } = request.body
+    console.log('body', request.body)
+    const productList = request.body
     try {
         await knex.transaction(async function (trx: Knex.Transaction) {
             if (!request.user) {
@@ -15,19 +28,20 @@ export const createOrder: RequestHandler = async (request, response) => {
             const tokenInfo = request.user as AuthToken
             const user = tokenInfo.user
 
-            const inserResult = await trx('orders')
+            console.log('PRODUCT LIST', productList)
+            const inserResult: Order[] = await trx('orders')
                 .returning('order_id')
                 .insert([
                     {
                         user_id: user.user_id,
-                        total_price: totalPrice,
-                        utc_date: date,
+                        total_price: calculateTotalPrice(productList),
+                        utc_date: new Date().toISOString(),
                     },
                 ])
-            const order = { order_id: inserResult[0] }
-            // console.log('PRODUCT LIST', productList)
+            const id = inserResult[0].order_id
+            console.log('new order id', id)
             const orderProductsData = productList.map((product: Product) => ({
-                order_id: order.order_id,
+                order_id: id,
                 product_quantity: product.product_quantity,
                 price: product.price,
                 title: product.title,
@@ -49,7 +63,7 @@ export const createOrder: RequestHandler = async (request, response) => {
             console.log('newCart operation', newCart)
             response.status(200).send({
                 status: 200,
-                order_id: order.order_id,
+                order_id: id,
             })
         })
     } catch (error) {
@@ -94,6 +108,7 @@ export const getUserOrders: RequestHandler = async (request, response) => {
                     )
                     .as('productList')
             )
+            .orderBy('utc_date', 'desc')
             .innerJoin('order_products as op', 'op.order_id', 'ord.order_id')
             .where('user_id', user.user_id)
             .groupBy('ord.order_id')
