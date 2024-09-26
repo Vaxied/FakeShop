@@ -16,7 +16,7 @@ function MainContainer({ children }: Readonly<props>) {
     }, [isLoading])
 
     return (
-        <div className='w-full flex justify-center p-8 min-h-[calc(100vh-70px)]'>
+        <div className='w-full flex flex-wrap justify-center p-8 min-h-[calc(100vh-70px)]'>
             {isLoading && <Loader />}
             {children}
         </div>

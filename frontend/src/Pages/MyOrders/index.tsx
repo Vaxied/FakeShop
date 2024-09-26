@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Orders from '../../Components/Orders'
+import OrderList from '../../Components/OrderList'
 import { StoreContextType } from '../../@types/store'
 import { StoreContext } from '../../Context/context'
 
@@ -9,10 +9,10 @@ function MyOrders() {
     const { shoppingCartProducts } = React.useContext(
         StoreContext
     ) as StoreContextType
-    if (!Array.isArray(Orders) || !shoppingCartProducts.length)
+    if (!Array.isArray(OrderList) || !shoppingCartProducts.length)
         return (
-            <div>
-                <Orders />
+            <>
+                <OrderList />
                 <div className='w-full flex justify-end'>
                     <button
                         type='button'
@@ -22,7 +22,7 @@ function MyOrders() {
                         Back
                     </button>
                 </div>
-            </div>
+            </>
         )
 }
 

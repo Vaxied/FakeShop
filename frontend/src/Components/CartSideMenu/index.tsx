@@ -31,8 +31,8 @@ function CartSideMenu() {
         >
             <div className='flex flex-col'>
                 <div
-                    className='
-                    flex items-center justify-end text-sm'
+                    className='w-full
+                    flex justify-between text-sm'
                 >
                     <button
                         type='button'

@@ -1,13 +1,13 @@
 import React from 'react'
 import { StoreContext } from '../../Context/context'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { StoreContextType } from '../../@types/store'
 import PrimaryContainer from '../../Components/PrimaryContainer'
+import ProductList from '../../Components/ProductList'
 
 function MyOrder() {
     const { orders } = React.useContext(StoreContext) as StoreContextType
     const orderId = useParams().id
-    const navigate = useNavigate()
 
     console.log('params', orderId)
     console.log('orders', orders)
@@ -43,30 +43,8 @@ function MyOrder() {
                     `Placed on ${order.date.substring(0, 10)} at
                     ${order.date.substring(11, 16)}`}
             </p>
-            <p>{order.productList.length} item(s)</p>
-            {order.productList.map((product) => (
-                <div
-                    key={product.title}
-                    className='flex items-center my-3 p-2 justify-between bg-white border border-gray rounded-lg'
-                >
-                    <div className='flex flex-1 items-center'>
-                        <img
-                            src={product?.image}
-                            alt={product.title}
-                            className='w-12 h-12 rounded-lg'
-                        />
-                        <p className='flex-1 px-4 mr-8'>{product?.title}</p>
-                    </div>
-                    <div className='flex justify-between items-center h-8'>
-                        <p className='flex items-center mr-8'>
-                            Qty: {product?.product_quantity}
-                        </p>
-                        <p className='flex items-center w-16 justify-end'>
-                            ${product?.price.toFixed(2)}
-                        </p>
-                    </div>
-                </div>
-            ))}
+            <p className='pb-4'>{order.productList.length} item(s)</p>
+            <ProductList products={order.productList} />
             <div className='w-full flex justify-end'>
                 <div className='w-32 py-2'>
                     <p className='font-semibold flex justify-end'>
