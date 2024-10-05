@@ -13,12 +13,12 @@ function OrderInfo(props: Readonly<{ order: Order }>) {
                 alt={order.title}
                 className='w-12 h-12 rounded-lg min-w-12 min-h-12 '
             />
-            <p>${order.totalPrice}</p>
+            <p className='w-[70px]'>${order.totalPrice}</p>
             <p className='flex items-center max-[600px]:justify-center'>
                 <span className='pr-1'>{order.productList.length}</span>
                 <span>item(s)</span>
             </p>
-            <p className='flex items-center w-[5.5rem] justify-end'>
+            <p className='flex items-center w-[5.5rem]'>
                 {order.date && order?.date.substring(0, 10)}
             </p>
             {order.orderId && <ViewButton id={order.orderId} />}

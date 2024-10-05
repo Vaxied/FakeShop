@@ -14,7 +14,7 @@ function CartSideMenuProducts(
                 props.shoppingCartProducts.length > 0
                     ? 'overflow-y-auto'
                     : 'justify-center items-center font-semibold text-lg'
-            } flex flex-col h-[500px] my-2 pr-2`}
+            } flex flex-col h-[calc(100vh-200px)] my-2 pr-2`}
         >
             {props.shoppingCartProducts.length <= 0 && (
                 <p>Please, add an item</p>

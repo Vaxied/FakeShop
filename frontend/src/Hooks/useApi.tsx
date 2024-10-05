@@ -66,6 +66,11 @@ function useApi() {
                           )
                 }
                 loadCart()
+                const loadPrivacyPolicy = async () => {
+                    const policy = await loadResource('/privacy-policy')
+                    console.log('privacy policy', policy.info)
+                }
+                loadPrivacyPolicy()
             }
         } catch (error: any) {
             throw new Error(error)

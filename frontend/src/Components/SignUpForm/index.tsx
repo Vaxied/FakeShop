@@ -1,6 +1,7 @@
 import React from 'react'
 import useForms from '../../Hooks/useForms'
 import TextInputBase from '../TextInputBase'
+import ActionButton from '../ActionButton'
 import {
     InputProp,
     InputProps,
@@ -119,13 +120,14 @@ function SignUpForm() {
                         key={inputProp.id}
                     />
                 ))}
-                <button
-                    className='border border-gray px-4 py-2 w-full mt-8 bg-black
-                    text-white rounded-lg'
-                    type='submit'
-                >
-                    Create Account
-                </button>
+                <div className='w-full flex justify-center'>
+                    <ActionButton
+                        text={'Create account'}
+                        type='submit'
+                        action={undefined}
+                        route={undefined}
+                    />
+                </div>
             </form>
         </div>
     )

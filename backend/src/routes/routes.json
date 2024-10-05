@@ -1,0 +1,21 @@
+{
+    "user": {
+        "login": "/auth",
+        "register": "/register",
+        "refreshUser": "/refresh-user",
+        "cart": {
+            "addCartProduct": "/add-cart-product",
+            "loadCart": "/load-cart",
+            "removeCartProduct": "/remove-product",
+            "increaseProductQuantity": "/increase-product-quantity"
+        },
+        "orders": {
+            "getOrders": "/get-orders",
+            "newOrder": "/new-order"
+        }
+    },
+    "static": {
+        "home": "/",
+        "privacy": "/privacy-policy"
+    }
+}

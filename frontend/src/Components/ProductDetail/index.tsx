@@ -10,7 +10,7 @@ function ProductDetail({ product, closeProductDetail }: Readonly<props>) {
     const { addItemToShoppingCart } = useShoppingCart()
 
     return (
-        <aside className='flex flex-col fixed right-0 border-0.5 border-black w-[360px] h-[calc(100vh-64px)] top-[64px] bg-white rounded-lg'>
+        <aside className='flex flex-col fixed right-0 border-0.5 border-black w-[360px] h-[calc(100vh-64px)] top-[64px] bg-[--primary-bg] rounded-lg'>
             <div className='bg-gray-100 bg-opacity-50 w-full h-full border-2 border-gray rounded-lg px-4 overflow-y-scroll'>
                 <button
                     type='button'
@@ -39,7 +39,7 @@ function ProductDetail({ product, closeProductDetail }: Readonly<props>) {
                 </p>
                 <figure className='relative mb-2 w-full h-1/2'>
                     <img
-                        className='w-full h-full object-cover rounded-lg border border-gray'
+                        className='w-full h-full object-cover rounded-lg'
                         src={product.image}
                         alt={product.title}
                     />

@@ -12,7 +12,7 @@ function Navbar() {
         React.useContext(StoreContext) as StoreContextType
 
     return (
-        <nav className='bg-white flex justify-between items-center fixed z-10 top-0 w-full h-16 py-5 px-8 text-sm font-light border-b border-gray'>
+        <nav className='bg-[--primary-bg] flex justify-between items-center fixed z-10 top-0 w-full h-16 py-5 px-8 text-sm font-light border-b border-gray'>
             <ul className='flex items-center gap-3'>
                 <li className='font-semibold text-lg'>
                     <NavLink to='/'>FakeShop</NavLink>

@@ -1,7 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+:root {
+    --primary-bg: #ffffff;
+    --primary-text: ;
+    --action-btn-width: 10rem;
+}
 * {
     box-sizing: border-box;
 }

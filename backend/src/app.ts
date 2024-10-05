@@ -1,3 +1,4 @@
+import routes from './routes/routes.json'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
@@ -9,6 +10,7 @@ import { createUser, verifyUser } from './controllers/users'
 import { createOrder, getUserOrders } from './controllers/orders'
 import { isAuthenticated, authUser, refreshUser } from './routes/auth'
 import { getProducts } from './routes/products'
+import { getPrivacyPolicy } from './routes/privacy'
 
 import {
     addProduct,
@@ -29,42 +31,58 @@ app.use(
 app.use(passport.initialize())
 passport.use('local', new LocalStrategy(authUser))
 
-app.get('/', (request, response) => {
+app.get(routes.static.home, (request, response) => {
     console.log('Tadaima')
     console.log('getting products')
     return getProducts(request, response)
 })
-app.post('/register', (request, response, next) => {
+app.post(routes.user.register, (request, response, next) => {
     console.log('\nregister request')
     return createUser(request, response, next)
 })
 
-app.post('/auth', (request, response, next) => {
+app.post(routes.user.login, (request, response, next) => {
     console.log('\nlogin request')
     return verifyUser(request, response, next)
 })
 
-app.post('/new-order', isAuthenticated, (request, response, next) => {
-    return createOrder(request, response, next)
-})
+app.get(
+    routes.user.orders.newOrder,
+    isAuthenticated,
+    (request, response, next) => {
+        return createOrder(request, response, next)
+    }
+)
 
-app.post('/add-cart-product', isAuthenticated, (request, response, next) => {
-    console.log('\n add product request')
-    return addProduct(request, response, next)
-})
+app.post(
+    routes.user.cart.addCartProduct,
+    isAuthenticated,
+    (request, response, next) => {
+        console.log('\n add product request')
+        return addProduct(request, response, next)
+    }
+)
 
-app.get('/load-cart', isAuthenticated, (request, response, next) => {
-    console.log('load cart request')
-    return loadShoppingCart(request, response, next)
-})
+app.get(
+    routes.user.cart.loadCart,
+    isAuthenticated,
+    (request, response, next) => {
+        console.log('load cart request')
+        return loadShoppingCart(request, response, next)
+    }
+)
 
-app.delete('/remove-product', isAuthenticated, (request, response, next) => {
-    console.log('remove product request')
-    return removeProduct(request, response, next)
-})
+app.delete(
+    routes.user.cart.removeCartProduct,
+    isAuthenticated,
+    (request, response, next) => {
+        console.log('remove product request')
+        return removeProduct(request, response, next)
+    }
+)
 
 app.patch(
-    '/increase-product-quantity',
+    routes.user.cart.increaseProductQuantity,
     isAuthenticated,
     (request, response, next) => {
         console.log('increase quantity request')
@@ -72,14 +90,23 @@ app.patch(
     }
 )
 
-app.get('/get-orders', isAuthenticated, (request, response, next) => {
-    console.log('getting orders')
-    return getUserOrders(request, response, next)
-})
+app.get(
+    routes.user.orders.getOrders,
+    isAuthenticated,
+    (request, response, next) => {
+        console.log('getting orders')
+        return getUserOrders(request, response, next)
+    }
+)
 
-app.get('/refresh-user', isAuthenticated, (request, response, next) => {
+app.get(routes.user.refreshUser, isAuthenticated, (request, response, next) => {
     console.log('app restarted, checking user')
     return refreshUser(request, response, next)
+})
+
+app.get(routes.static.privacy, (request, response, next) => {
+    console.log('app restarted, checking user')
+    return getPrivacyPolicy(request, response)
 })
 
 app.listen(PORT, () => console.log(`\nListening on ${PORT}`))

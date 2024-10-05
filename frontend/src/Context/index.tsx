@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext } from './context'
-import { postData } from '../services/fetchWrapper'
+import { postData, getData } from '../services/fetchWrapper'
 import { Order } from '../@types/order'
 import { IProduct } from '../@types/product'
 
@@ -79,27 +79,15 @@ function StoreProvider({ children }: Readonly<props>) {
             !Array.isArray(shoppingCartProducts)
         )
             return
-        // do this in the backend
-        const newOrder = {
-            orderId: '',
-            productList: shoppingCartProducts,
-            title: '',
-            image: '',
-            productCount: shoppingCartProducts.length,
-            totalPrice: calculateTotalPrice(shoppingCartProducts),
-            date: new Date().toISOString(),
-        }
-        const response = await postData(
-            `${API}/new-order`,
-            shoppingCartProducts
-        )
+        const response = await getData(`${API}/new-order`)
         if (!response) console.log('no response')
         else if (response.status !== 200) console.log('Something went wrong')
         else {
             clearShoppingCart()
             closeCartSideMenu()
-            newOrder.orderId = response.order_id
-            setOrders([...orders, newOrder])
+            setIsLoading(true)
+            const orders = await getData(`${API}/get-orders`)
+            setOrders(orders)
             navigate('/my-orders')
         }
     }

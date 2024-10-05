@@ -2,6 +2,7 @@ import { Knex } from 'knex'
 import { knex } from '../database/connection'
 import { RequestHandler } from 'express'
 import { AuthToken } from '../@types/user'
+import { Product } from '../@types/product'
 
 export const addProduct: RequestHandler = async (request, response) => {
     const product = request.body
@@ -115,32 +116,7 @@ export const loadShoppingCart: RequestHandler = async (request, response) => {
         const tokenInfo = request.user as AuthToken
         const user = tokenInfo.user
         console.log('USER ID', user.user_id)
-        const products = await knex('shopping_carts')
-            .select(
-                'shopping_cart_products.product_id',
-                'product_quantity',
-                'title',
-                'price',
-                'image',
-                'description',
-                'category',
-                'average_rating',
-                'rating_count'
-            )
-            .innerJoin(
-                'shopping_cart_products',
-                'shopping_carts.cart_id',
-                'shopping_cart_products.cart_id'
-            )
-            .join(
-                'products',
-                'shopping_cart_products.product_id',
-                'products.product_id'
-            )
-            .where('user_id', user.user_id)
-            .andWhere('cart_status', 'active')
-            .orderBy('added_at', 'desc')
-
+        const products = await getCartProducts(user.user_id)
         console.log('PRODUCTS', products)
         // console.log(products)
 
@@ -190,6 +166,50 @@ export const setCartInactive = async (
     } catch (error) {
         console.log('error updating cart status', error)
     }
+}
+
+export async function getCartProducts(userId: number | undefined) {
+    try {
+        const products = await knex('shopping_carts')
+            .select(
+                'shopping_cart_products.product_id',
+                'product_quantity',
+                'title',
+                'price',
+                'image',
+                'description',
+                'category',
+                'average_rating',
+                'rating_count'
+            )
+            .innerJoin(
+                'shopping_cart_products',
+                'shopping_carts.cart_id',
+                'shopping_cart_products.cart_id'
+            )
+            .join(
+                'products',
+                'shopping_cart_products.product_id',
+                'products.product_id'
+            )
+            .where('user_id', userId)
+            .andWhere('cart_status', 'active')
+            .orderBy('added_at', 'desc')
+        return products
+    } catch (error) {
+        console.log('error getting cart products', error)
+        return error
+    }
+}
+export function calculateTotalPrice(products: Product[]) {
+    console.log('calculating products total', products)
+    let total = 0
+    products.forEach((product: Product) => {
+        if (!product.product_quantity) return
+        const price = product.price * product.product_quantity
+        total = total + price
+    })
+    return total.toFixed(2)
 }
 // module.exports = {
 //     createShoppingCart,

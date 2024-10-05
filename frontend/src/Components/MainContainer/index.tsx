@@ -12,7 +12,7 @@ function MainContainer({ children }: Readonly<props>) {
     useApi()
     React.useEffect(() => {
         console.log('stopped loading')
-        setTimeout(() => setIsLoading(false), 250)
+        setTimeout(() => setIsLoading(false), 500)
     }, [isLoading])
 
     return (

@@ -8,12 +8,10 @@ import { StoreContextType } from '../../@types/store'
 
 type props = {
     key: number
-    // items: IProduct[]
     product: IProduct
-    // index: number
 }
 
-function Card({ product }: props) {
+function Card({ product }: Readonly<props>) {
     const {
         productToShow,
         isProductDetailOpen,

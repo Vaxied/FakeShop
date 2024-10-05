@@ -5,6 +5,7 @@ import { postData } from '../../services/fetchWrapper'
 import { StoreContext } from '../../Context/context'
 import InputError from '../InputError'
 import { StoreContextType } from '../../@types/store'
+import ActionButton from '../ActionButton'
 
 function LoginForm() {
     // debugger
@@ -87,15 +88,16 @@ function LoginForm() {
                 <InputError errMsg={errMsg} condition={isLoginErr} />
                 <p className='text-end mb-6'>
                     {/* <NavLink>Forgot password</NavLink> */}
-                    <span>Forgot password</span>
+                    <Link to={'/'}>Forgot password</Link>
                 </p>
-                <button
-                    className='border border-gray px-4 py-2 w-full bg-black
-                    text-white rounded-lg'
-                    type='submit'
-                >
-                    Login
-                </button>
+                <div className='w-full flex justify-center'>
+                    <ActionButton
+                        text={'Login'}
+                        type='submit'
+                        action={undefined}
+                        route={undefined}
+                    />
+                </div>
             </form>
             <p className='flex py-4 text-gray-700 font-light'>
                 <span>Don&apos;t have an account?</span>

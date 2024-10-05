@@ -3,44 +3,37 @@ import { Product } from '../@types/product'
 import { RequestHandler } from 'express'
 import { knex } from '../database/connection'
 import { Knex } from 'knex'
-import { setCartInactive, createShoppingCart } from './shoppingCarts'
+import {
+    setCartInactive,
+    createShoppingCart,
+    getCartProducts,
+    calculateTotalPrice,
+} from './shoppingCarts'
 import { Order } from '../@types/order'
 
-function calculateTotalPrice(products: Product[]) {
-    console.log('calculating products total', products)
-    let total = 0
-    products.forEach((product: Product) => {
-        if (!product.product_quantity) return
-        const price = product.price * product.product_quantity
-        total = total + price
-    })
-    return total.toFixed(2)
-}
-
 export const createOrder: RequestHandler = async (request, response) => {
-    console.log('body', request.body)
-    const productList = request.body
     try {
         await knex.transaction(async function (trx: Knex.Transaction) {
             if (!request.user) {
                 return null
             }
+            // Validate incoming cart with DB cart before creating order
             const tokenInfo = request.user as AuthToken
             const user = tokenInfo.user
 
-            console.log('PRODUCT LIST', productList)
+            const userProducts: any = await getCartProducts(user.user_id)
             const inserResult: Order[] = await trx('orders')
                 .returning('order_id')
                 .insert([
                     {
                         user_id: user.user_id,
-                        total_price: calculateTotalPrice(productList),
+                        total_price: calculateTotalPrice(userProducts),
                         utc_date: new Date().toISOString(),
                     },
                 ])
             const id = inserResult[0].order_id
             console.log('new order id', id)
-            const orderProductsData = productList.map((product: Product) => ({
+            const orderProductsData = userProducts.map((product: Product) => ({
                 order_id: id,
                 product_quantity: product.product_quantity,
                 price: product.price,
