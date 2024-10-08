@@ -2,6 +2,7 @@ import React from 'react'
 import { getData } from '../services/fetchWrapper'
 import { StoreContext } from '../Context/context'
 import { StoreContextType } from '../@types/store'
+import { useNavigate } from 'react-router-dom'
 
 function useApi() {
     const API = import.meta.env.VITE_API
@@ -17,83 +18,105 @@ function useApi() {
         setIsLoading,
         setUsername,
         setLoggedIn,
+        policy,
+        setPolicy,
     } = React.useContext(StoreContext) as StoreContextType
 
+    // const navigate = useNavigate()
     const [tries, setTries] = React.useState(0)
-
+    // const [firstLoad, setFirstLoad] = React.useState(true)
     React.useEffect(() => {
+        // if (!firstLoad) return
+        // setFirstLoad(false)
         try {
-            if (!loggedIn && !username) {
-                const checkIfUser = async () => {
-                    setIsLoading(true)
-                    const user = await loadResource('/refresh-user')
-                    console.log('RETURNED USER AFTER FIRST LOAD', user)
-                    if (user?.first_name) {
-                        setUsername(user.first_name)
-                        setLoggedIn(true)
+            if (loggedIn) {
+                if (!Array.isArray(orders) || !orders.length) {
+                    const loadOrders = async () => {
+                        setTries(0)
+                        setIsLoading(true)
+                        const orders = await loadResource('json', '/get-orders')
+                        setOrders(orders)
+                    }
+                    loadOrders()
+                }
+                if (
+                    !Array.isArray(shoppingCartProducts) ||
+                    !shoppingCartProducts.length
+                ) {
+                    console.log('TRYING TO LOAD PRODUCTS')
+                    const loadCart = async () => {
+                        setTries(0)
+                        const products = await loadResource(
+                            'json',
+                            '/load-cart'
+                        )
+                        products
+                            ? setShoppingCartProducts(products)
+                            : console.log(
+                                  "User has no products in cart or products couldn't be fetched"
+                              )
+                    }
+                    loadCart()
+                }
+            } else {
+                if (!username) {
+                    const checkIfUser = async () => {
+                        setIsLoading(true)
+                        setTries(0)
+                        const user = await loadResource('json', '/refresh-user')
+                        if (user.error) {
+                            localStorage.removeItem('accessToken')
+                        }
+                        console.log('response.status', user?.status)
+                        if (user?.first_name) {
+                            console.log('RETURNED USER AFTER FIRST LOAD', user)
+                            setUsername(user.first_name)
+                            setLoggedIn(true)
+                        }
+                    }
+                    checkIfUser()
+                    if (!Array.isArray(items) || !items.length) {
+                        const loadItems = async () => {
+                            setTries(0)
+                            setIsLoading(true)
+                            const items = await loadResource('json')
+                            setItems(items.info)
+                        }
+                        loadItems()
                     }
                 }
-                checkIfUser()
-            }
-            if (!Array.isArray(items) || !items.length) {
-                const loadItems = async () => {
-                    setIsLoading(true)
-                    const items = await loadResource()
-                    setItems(items.info)
+                const loadStatic = async () => {
+                    await loadStaticElements()
+
+                    console.log('LOADED PRIVACY POLICY')
                 }
-                loadItems()
-            }
-            if ((!Array.isArray(orders) || !orders.length) && loggedIn) {
-                const loadOrders = async () => {
-                    setIsLoading(true)
-                    const orders = await loadResource('/get-orders')
-                    setOrders(orders)
-                }
-                loadOrders()
-            }
-            if (
-                (!Array.isArray(shoppingCartProducts) ||
-                    !shoppingCartProducts.length) &&
-                loggedIn
-            ) {
-                console.log('TRYING TO LOAD PRODUCTS')
-                const loadCart = async () => {
-                    const products = await loadResource('/load-cart')
-                    products
-                        ? setShoppingCartProducts(products)
-                        : console.log(
-                              "User has no products in cart or products couldn't be fetched"
-                          )
-                }
-                loadCart()
-                const loadPrivacyPolicy = async () => {
-                    const policy = await loadResource('/privacy-policy')
-                    console.log('privacy policy', policy.info)
-                }
-                loadPrivacyPolicy()
+                loadStatic()
             }
         } catch (error: any) {
             throw new Error(error)
         }
-    }, [items, orders, shoppingCartProducts, loggedIn])
+    }, [loggedIn])
 
-    async function loadResource(endpoint: string | null = null) {
-        const resource = await fetchData(API, endpoint)
+    async function loadResource(
+        responseType: 'json' | 'text',
+        endpoint: string | null = null,
+        headerOpts = { 'Content-type': 'application/json' }
+    ) {
+        const url = endpoint ? `${API}${endpoint}` : API
+        setTimeout(() => setTries(tries + 1), 1000)
+        const resource = await getData(url, responseType, headerOpts)
+        if (tries === 3) return false
         return resource
     }
 
-    const fetchData = async (API: string, endpoint: string | null) => {
-        // tricky
-        const url = endpoint ? `${API}${endpoint}` : API
-        if (tries === 3) return false
-        console.log('getting data')
-        const data = await getData(url)
-        // console.log(tries)
-        setTries(tries + 1)
-        return data
+    async function loadStaticElements() {
+        const policyData = await loadResource('text', '/privacy-policy')
+        console.log('LOADING PRIVACY POLICY')
+        if (policyData) setPolicy(policyData)
+        // {'Content-type': 'text/html',}
     }
 
-    return { items, setItems, loadResource }
+    return { items, setItems, loadResource, policy, setPolicy }
 }
 
 export default useApi

@@ -10,6 +10,7 @@ import SignUp from './SignUp'
 import ShoppingCart from '../Components/ShoppingCart'
 import ProtectedRoute from '../Components/ProtectedRoute'
 import CheckoutPage from './CheckoutPage'
+import Privacy from './Privacy'
 
 export const AppRoutes = () => {
     let routes = useRoutes([
@@ -38,6 +39,10 @@ export const AppRoutes = () => {
         {
             path: '/sign-up',
             element: <SignUp />,
+        },
+        {
+            path: '/privacy',
+            element: <Privacy />,
         },
         {
             element: <ProtectedRoute />,

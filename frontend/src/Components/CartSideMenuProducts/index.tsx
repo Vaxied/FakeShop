@@ -6,7 +6,7 @@ import CartSideMenuProduct from '../CartSideMenuProduct'
 function CartSideMenuProducts(
     props: Readonly<{ shoppingCartProducts: IProduct[] }>
 ) {
-    console.log('products', props.shoppingCartProducts)
+    // console.log('products', props.shoppingCartProducts)
     return (
         <div
             id='cart-side-products-container'

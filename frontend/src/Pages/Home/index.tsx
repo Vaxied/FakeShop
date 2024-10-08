@@ -23,13 +23,13 @@ function Home() {
         closeCartSideMenu()
         setSearchByTitle('')
     }, [])
-    console.log('this is items', items)
+    // console.log('this is items', items)
     const location = useLocation().pathname
     const productCategory = location.split('/')[2]
     // console.log('category', productCategories[productCategory])
     // console.log('location', location)
     if (!items) return
-    let filteredItems = items || []
+    let filteredItems
     if (productCategory && productCategories[productCategory]) {
         filteredItems = filterItems(
             searchByTitle,

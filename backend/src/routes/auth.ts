@@ -21,7 +21,7 @@ export const isAuthenticated: RequestHandler = (request, response, next) => {
         next()
     } catch (error) {
         console.log('ERORR:', error)
-        return response.status(400).send({ info: error })
+        return response.status(400).send({ error: error })
     }
 }
 

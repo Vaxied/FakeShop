@@ -1,6 +1,6 @@
 type props = { errMsg: string | object; condition: boolean }
 function ErrorMsg({ errMsg, condition }: Readonly<props>) {
-    console.log('input err check', errMsg, condition)
+    // console.log('input err check', errMsg, condition)
     return (
         <div
             className={`flex w-full justify-center items-center relative ${

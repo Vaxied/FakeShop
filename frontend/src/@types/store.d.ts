@@ -35,6 +35,8 @@ export type StoreContextType = {
     ) => void
     filterItems: (searchTerm?: string, category?: string) => IProduct[]
     setIsLoading: (boolean: boolean) => void
+    policy: string
+    setPolicy: (string: string) => void
 }
 
 type productCategories = {

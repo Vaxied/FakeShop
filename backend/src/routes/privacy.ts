@@ -3,12 +3,11 @@ import { getText } from '../utils/scripts/readFile'
 
 export async function getPrivacyPolicy(request: Request, response: Response) {
     try {
-        const result = await getText(
-            './public/static/privacy-policy.docx',
-            'utf8'
-        )
+        const result: any = await getText('./public/static/policy.txt', 'utf8')
         console.log('resulting policy', result)
-        return response.status(200).send({ info: result })
+        response.writeHead(200, { 'Content-Type': 'text/html' })
+        response.write(result)
+        response.end()
     } catch (error) {
         console.log(error)
     }

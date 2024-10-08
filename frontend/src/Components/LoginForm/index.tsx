@@ -25,9 +25,9 @@ function LoginForm() {
 
     async function handleLogin(event: React.FormEvent) {
         event.preventDefault()
-        console.log(formState)
+        // console.log(formState)
         const response = await postData(`${API}/auth`, formState)
-        console.log('response', response)
+        // console.log('response', response)
         if (!response) console.log('no response')
         // console.log('🚀 ~ handleSubmit ~ response:', response.status)
         else if (response.status !== 201) {

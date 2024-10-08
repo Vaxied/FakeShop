@@ -1,12 +1,18 @@
-export async function getData(url: string) {
-    const headers = formatRequestHeader()
+export async function getData(
+    url: string,
+    responseType?: 'json' | 'text',
+    headerOpts = { 'Content-type': 'application/json' }
+) {
+    const headers = formatRequestHeader(headerOpts)
     const data = await fetch(url, {
         method: 'GET',
         headers,
     })
-        .then((response) => response.json())
+        .then((response) =>
+            responseType === 'text' ? response.text() : response.json()
+        )
         .then((result) => {
-            console.log('GET: fetch end result (JSON)', result)
+            console.log('GET: fetch end result', result)
             return result
         })
         .catch((error) => {
@@ -77,10 +83,13 @@ function getAccessToken() {
     return localStorage.getItem('accessToken')
 }
 
-function formatRequestHeader() {
+function formatRequestHeader(
+    headerOpts = { 'Content-type': 'application/json' }
+) {
     const accessToken = getAccessToken()
     let headers = {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
+        ...headerOpts,
         Authorization: '',
     }
 

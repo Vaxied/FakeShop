@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext } from './context'
-import { postData, getData } from '../services/fetchWrapper'
+import { getData } from '../services/fetchWrapper'
 import { Order } from '../@types/order'
 import { IProduct } from '../@types/product'
 
@@ -32,6 +32,7 @@ function StoreProvider({ children }: Readonly<props>) {
     const [searchByTitle, setSearchByTitle] = React.useState('')
 
     const [isLoading, setIsLoading] = React.useState(true)
+    const [policy, setPolicy] = React.useState('')
 
     const productCategories = {
         men: "men's clothing",
@@ -40,8 +41,8 @@ function StoreProvider({ children }: Readonly<props>) {
         jewelery: 'jewelery',
     }
 
-    console.log('cart products', shoppingCartProducts)
-    console.log('loading', isLoading)
+    // console.log('cart products', shoppingCartProducts)
+    // console.log('loading', isLoading)
     function openProductDetail(product: IProduct) {
         setIsProductDetailOpen(true)
         setProductToShow(product)
@@ -184,6 +185,8 @@ function StoreProvider({ children }: Readonly<props>) {
         filterItems,
         isLoading,
         setIsLoading,
+        policy,
+        setPolicy,
     }
 
     const values = useMemo(() => value, [value])
