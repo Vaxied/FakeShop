@@ -13,7 +13,11 @@ function Privacy() {
         setTextArr(() => policy.split(/\r\n|\n/))
     }
 
-    const isTitle = (text: string) => !text.includes('.') && !text.includes(':')
+    const isTitle = (text: string, index: number) =>
+        !text.includes('.') && !text.includes(':') && index === 0
+
+    const isSubtitle = (text: string, index: number) =>
+        !text.includes('.') && !text.includes(':') && index !== 0
 
     const isUnorderedList = (text: string) =>
         !text.includes('.') && text.includes(':')
@@ -30,28 +34,36 @@ function Privacy() {
         list: { unorderedList: { default: 'pb-2 text-xs', listItem: 'pl-4' } },
         paragraph: 'pb-1 text-xs',
     }
+
+    const styleText = (text: string, index: number) => {
+        let style
+        switch (true) {
+            case isTitle(text, index):
+                style = styles.title
+                break
+            case isSubtitle(text, index):
+                style = styles.subtitle
+                break
+            case isUnorderedList(text):
+                style = styles.list.unorderedList.default
+                break
+            case isParagraph(text):
+                style = styles.paragraph
+                break
+            case isListItem(text):
+                style = styles.list.unorderedList.listItem
+                break
+            default:
+                style = ''
+                break
+        }
+        return style
+    }
+
     return (
         <div className='max-w-[1200px] pr-[25%] pl-[10%]'>
             {textArr.map((text: string, index: number) => (
-                <p
-                    className={`
-                        ${isTitle(text) && index === 0 ? styles.title : ''}
-                    ${isTitle(text) && index !== 0 ? styles.subtitle : ''}
-                    ${
-                        isUnorderedList(text)
-                            ? styles.list.unorderedList.default
-                            : ''
-                    }
-                        ${isParagraph(text) ? styles.paragraph : ''}
-                        ${
-                            isListItem(text)
-                                ? styles.list.unorderedList.listItem
-                                : ''
-                        }
-                        `}
-                >
-                    {text}
-                </p>
+                <p className={styleText(text, index)}>{text}</p>
             ))}
         </div>
     )
