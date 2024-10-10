@@ -11,6 +11,7 @@ import { createOrder, getUserOrders } from './controllers/orders'
 import { isAuthenticated, authUser, refreshUser } from './routes/auth'
 import { getProducts } from './routes/products'
 import { getPrivacyPolicy } from './routes/privacy'
+import { getTerms } from './routes/terms'
 
 import {
     addProduct,
@@ -105,8 +106,13 @@ app.get(routes.user.refreshUser, isAuthenticated, (request, response, next) => {
 })
 
 app.get(routes.static.privacy, (request, response, next) => {
-    console.log('app restarted, checking user')
+    console.log('app restarted, getting policy')
     return getPrivacyPolicy(request, response)
+})
+
+app.get(routes.static.terms, (request, response, next) => {
+    console.log('app restarted, getting terms')
+    return getTerms(request, response)
 })
 
 app.listen(PORT, () => console.log(`\nListening on ${PORT}`))

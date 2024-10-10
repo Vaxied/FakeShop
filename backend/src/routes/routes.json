@@ -16,6 +16,7 @@
     },
     "static": {
         "home": "/",
-        "privacy": "/privacy-policy"
+        "privacy": "/privacy-policy",
+        "terms": "/terms-and-conditions"
     }
 }

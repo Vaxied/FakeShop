@@ -33,6 +33,7 @@ function StoreProvider({ children }: Readonly<props>) {
 
     const [isLoading, setIsLoading] = React.useState(true)
     const [policy, setPolicy] = React.useState('')
+    const [terms, setTerms] = React.useState('')
 
     const productCategories = {
         men: "men's clothing",
@@ -187,6 +188,8 @@ function StoreProvider({ children }: Readonly<props>) {
         setIsLoading,
         policy,
         setPolicy,
+        terms,
+        setTerms,
     }
 
     const values = useMemo(() => value, [value])

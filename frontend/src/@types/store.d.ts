@@ -37,6 +37,8 @@ export type StoreContextType = {
     setIsLoading: (boolean: boolean) => void
     policy: string
     setPolicy: (string: string) => void
+    terms: string
+    setTerms: (string: string) => void
 }
 
 type productCategories = {

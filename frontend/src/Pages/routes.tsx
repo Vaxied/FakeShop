@@ -11,6 +11,7 @@ import ShoppingCart from '../Components/ShoppingCart'
 import ProtectedRoute from '../Components/ProtectedRoute'
 import CheckoutPage from './CheckoutPage'
 import Privacy from './Privacy'
+import TermsAndConditions from './TermsAndConditions'
 
 export const AppRoutes = () => {
     let routes = useRoutes([
@@ -43,6 +44,10 @@ export const AppRoutes = () => {
         {
             path: '/privacy',
             element: <Privacy />,
+        },
+        {
+            path: '/terms',
+            element: <TermsAndConditions />,
         },
         {
             element: <ProtectedRoute />,

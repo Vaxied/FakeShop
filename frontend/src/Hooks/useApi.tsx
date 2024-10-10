@@ -20,6 +20,8 @@ function useApi() {
         setLoggedIn,
         policy,
         setPolicy,
+        terms,
+        setTerms,
     } = React.useContext(StoreContext) as StoreContextType
 
     // const navigate = useNavigate()
@@ -110,10 +112,19 @@ function useApi() {
     }
 
     async function loadStaticElements() {
-        const policyData = await loadResource('text', '/privacy-policy')
-        console.log('LOADING PRIVACY POLICY')
-        if (policyData) setPolicy(policyData)
-        // {'Content-type': 'text/html',}
+        if (!policy) {
+            const policyData = await loadResource('text', '/privacy-policy')
+            console.log('LOADING PRIVACY POLICY')
+            if (policyData) setPolicy(policyData)
+        }
+        if (!terms) {
+            const termsData = await loadResource(
+                'text',
+                '/terms-and-conditions'
+            )
+            console.log('LOADING TERMS AND CONDITIONS')
+            if (termsData) setTerms(termsData)
+        }
     }
 
     return { items, setItems, loadResource, policy, setPolicy }
