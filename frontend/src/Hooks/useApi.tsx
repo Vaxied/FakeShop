@@ -1,8 +1,7 @@
 import React from 'react'
 import { getData } from '../services/fetchWrapper'
-import { StoreContext } from '../Context/context'
+import { StoreContext } from '../Components/Context/context'
 import { StoreContextType } from '../@types/store'
-import { useNavigate } from 'react-router-dom'
 
 function useApi() {
     const API = import.meta.env.VITE_API
@@ -24,12 +23,8 @@ function useApi() {
         setTerms,
     } = React.useContext(StoreContext) as StoreContextType
 
-    // const navigate = useNavigate()
     const [tries, setTries] = React.useState(0)
-    // const [firstLoad, setFirstLoad] = React.useState(true)
     React.useEffect(() => {
-        // if (!firstLoad) return
-        // setFirstLoad(false)
         try {
             if (loggedIn) {
                 if (!Array.isArray(orders) || !orders.length) {

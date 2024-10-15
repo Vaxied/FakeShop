@@ -1,9 +1,9 @@
 import React from 'react'
-import { StoreContext } from '../../Context/context'
+import { StoreContext } from '../../Components/Context/context'
 import { useParams, Link } from 'react-router-dom'
 import { StoreContextType } from '../../@types/store'
-import PrimaryContainer from '../../Components/PrimaryContainer'
-import ProductList from '../../Components/ProductList'
+import PrimaryContainer from '../../Components/containers/PrimaryContainer'
+import ProductList from '../../Components/features/product/ProductList'
 
 function MyOrder() {
     const { orders } = React.useContext(StoreContext) as StoreContextType

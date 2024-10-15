@@ -1,5 +1,5 @@
 import React from 'react'
-import { StoreContext } from '../Context/context'
+import { StoreContext } from '../Components/Context/context'
 import { useNavigate } from 'react-router-dom'
 import { postData, updateData, deleteData } from '../services/fetchWrapper'
 import { StoreContextType } from '../@types/store'

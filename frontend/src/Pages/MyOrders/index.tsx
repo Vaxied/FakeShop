@@ -1,7 +1,7 @@
 import React from 'react'
-import OrderList from '../../Components/OrderList'
+import OrderList from '../../Components/features/orders/OrderList'
 import { StoreContextType } from '../../@types/store'
-import { StoreContext } from '../../Context/context'
+import { StoreContext } from '../../Components/Context/context'
 
 function MyOrders() {
     const { shoppingCartProducts } = React.useContext(

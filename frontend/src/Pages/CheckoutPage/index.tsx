@@ -1,11 +1,10 @@
 import React from 'react'
-import { StoreContext } from '../../Context/context'
-import { useNavigate } from 'react-router-dom'
+import { StoreContext } from '../../Components/Context/context'
 import { StoreContextType } from '../../@types/store'
 import useApi from '../../Hooks/useApi'
-import PrimaryContainer from '../../Components/PrimaryContainer'
-import ShoppingCartProduct from '../../Components/ShoppingCartProduct'
-import ActionButton from '../../Components/ActionButton'
+import PrimaryContainer from '../../Components/containers/PrimaryContainer'
+import ShoppingCartProduct from '../../Components/features/shoppingCart/ShoppingCartProduct'
+import ActionButton from '../../Components/buttons/ActionButton'
 
 function CheckoutPage() {
     const {
@@ -14,12 +13,11 @@ function CheckoutPage() {
         calculateTotalPrice,
         addNewOrder,
     } = React.useContext(StoreContext) as StoreContextType
-    const navigate = useNavigate()
     const { loadResource } = useApi()
 
     React.useEffect(() => {
         const validateShoppingCart = async () => {
-            const cart = await loadResource('/load-cart')
+            const cart = await loadResource('json', '/load-cart')
             console.log('cart', cart)
             if (shoppingCartProducts !== cart) {
                 setShoppingCartProducts(cart)
