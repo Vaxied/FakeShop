@@ -7,7 +7,7 @@ export async function getTerms(request: Request, response: Response) {
             './public/static/terms-and-conditions.txt',
             'utf8'
         )
-        console.log('resulting terms', result)
+        // console.log('resulting terms', result)
         response.writeHead(200, { 'Content-Type': 'text/html' })
         response.write(result)
         response.end()

@@ -12,7 +12,7 @@ export async function getData(
             responseType === 'text' ? response.text() : response.json()
         )
         .then((result) => {
-            console.log('GET: fetch end result', result)
+            // console.log('GET: fetch end result', result)
             return result
         })
         .catch((error) => {
