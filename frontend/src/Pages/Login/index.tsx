@@ -1,7 +1,7 @@
 import React from 'react'
-import LoginForm from '../../Components/features/forms/login/LoginForm'
+import LoginForm from '@components/features/forms/login/LoginForm'
 import { useNavigate } from 'react-router-dom'
-import useAuth from '../../Hooks/useAuth'
+import useAuth from '@hooks/useAuth'
 
 function Login() {
     const isAuthenticated = useAuth()

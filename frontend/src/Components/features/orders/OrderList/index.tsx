@@ -1,7 +1,7 @@
 import React from 'react'
-import { StoreContext } from '../../../Context/context'
-import { StoreContextType } from '../../../../@types/store'
-import PrimaryContainer from '../../../containers/PrimaryContainer'
+import { StoreContext } from '@components/Context/context'
+import { StoreContextType } from '@@types/store'
+import PrimaryContainer from '@components/containers/PrimaryContainer'
 import OrderInfo from '../OrderInfo'
 
 function OrderList() {

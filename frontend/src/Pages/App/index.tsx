@@ -1,8 +1,8 @@
 import { BrowserRouter } from 'react-router-dom'
-import StoreProvider from '../../Components/Context'
-import Layout from '../../Components/containers/Layout'
-import './App.css'
+import StoreProvider from '@components/Context'
+import Layout from '@components/containers/Layout'
 import { AppRoutes } from '../routes'
+import './App.css'
 
 function App() {
     return (

@@ -1,5 +1,5 @@
-import { Order } from '../../../../@types/order'
-import ViewButton from '../../../buttons/ViewButton'
+import { Order } from '@@types/order'
+import ViewButton from '@components/buttons/ViewButton'
 
 function OrderInfo(props: Readonly<{ order: Order }>) {
     const { order } = props

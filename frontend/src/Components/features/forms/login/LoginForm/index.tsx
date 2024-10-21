@@ -1,11 +1,11 @@
 /* eslint-disable no-debugger */
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { postData } from '../../../../../services/fetchWrapper'
-import { StoreContext } from '../../../../Context/context'
-import InputError from '../../InputError'
-import { StoreContextType } from '../../../../../@types/store'
-import ActionButton from '../../../../buttons/ActionButton'
+import { postData } from '@lib/services/fetchWrapper'
+import { StoreContext } from '@components/Context/context'
+import InputError from '@features/forms/InputError'
+import { StoreContextType } from '@@types/store'
+import ActionButton from '@components/buttons/PrimaryButton'
 
 function LoginForm() {
     // debugger
@@ -48,7 +48,7 @@ function LoginForm() {
         <div className='flex flex-col items-center justify-center w-[400px] h-[calc(100vh-134px)]'>
             <form
                 onSubmit={(event) => handleLogin(event)}
-                className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-gray-100'
+                className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container'
             >
                 <p className='font-bold text-lg text-center'>Sign In</p>
                 <label htmlFor='username' className='py-2 font-semibold'>

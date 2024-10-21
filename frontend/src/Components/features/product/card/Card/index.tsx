@@ -1,10 +1,7 @@
 import React from 'react'
-import { createPortal } from 'react-dom'
-import { StoreContext } from '../../../../Context/context'
-import ProductDetail from '../../ProductDetail'
-import useShoppingCart from '../../../../../Hooks/useShoppingCart'
-import { IProduct } from '../../../../../@types/product'
-import { StoreContextType } from '../../../../../@types/store'
+import useShoppingCart from '@hooks/useShoppingCart'
+import { IProduct } from '@@types/product'
+import { useNavigate } from 'react-router-dom'
 
 type props = {
     key: number
@@ -12,19 +9,19 @@ type props = {
 }
 
 function Card({ product }: Readonly<props>) {
-    const {
-        productToShow,
-        isProductDetailOpen,
-        openProductDetail,
-        closeProductDetail,
-    } = React.useContext(StoreContext) as StoreContextType
-
     const { addItemToShoppingCart } = useShoppingCart()
+    const navigate = useNavigate()
 
     return (
         <div
-            className='bg-gray-100 bg-opacity-50 w-56 h-60 cursor-pointer border-2 border-gray rounded-lg'
-            onClick={() => openProductDetail(product)}
+            role='button'
+            className='bg-secondary/50 bg-opacity-50 w-56 h-60 cursor-pointer border-2 border-gray rounded-lg'
+            // onClick={() => openProductDetail(product)}
+            onClick={() =>
+                navigate(`/products/${product.product_id}`, {
+                    state: product,
+                })
+            }
         >
             <figure className='relative mb-2 w-full h-4/5'>
                 <img
@@ -35,7 +32,7 @@ function Card({ product }: Readonly<props>) {
                 <button
                     type='button'
                     onClick={(event) => addItemToShoppingCart(event, product)}
-                    className='flex justify-center items-center absolute text-md font-bold w-6 h-6 top-0 right-0 mt-1 mr-1 rounded-full p-1 bg-white cursor-pointer border border-gray'
+                    className='bg-white flex justify-center items-center absolute text-md font-bold w-6 h-6 top-0 right-0 mt-1 mr-1 rounded-full p-1 cursor-pointer border border-gray'
                 >
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
@@ -52,7 +49,7 @@ function Card({ product }: Readonly<props>) {
                         />
                     </svg>
                 </button>
-                <figcaption className='bg-white/60 text-md font-semibold absolute bottom-0 left-0 ml-1 mb-1 py-1 px-2 text-xs rounded-lg truncate'>
+                <figcaption className='bg-accent text-md font-semibold absolute bottom-0 left-0 ml-1 mb-1 py-1 px-2 text-xs rounded-lg truncate'>
                     {product.category}
                 </figcaption>
             </figure>
@@ -64,15 +61,6 @@ function Card({ product }: Readonly<props>) {
                     ${product.price}
                 </span>
             </p>
-            {productToShow === product &&
-                isProductDetailOpen &&
-                createPortal(
-                    <ProductDetail
-                        product={product}
-                        closeProductDetail={closeProductDetail}
-                    />,
-                    document.body
-                )}
         </div>
     )
 }

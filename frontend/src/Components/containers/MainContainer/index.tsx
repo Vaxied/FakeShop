@@ -1,9 +1,10 @@
 import React from 'react'
+import { StoreContext } from '@components/Context/context'
+import Loader from '@features/loading/Loader'
+import { StoreContextType } from '@@types/store'
+import useApi from '@hooks/useApi'
+
 type props = { children: React.ReactNode }
-import { StoreContext } from '../../Context/context'
-import Loader from '../../features/loading/Loader'
-import { StoreContextType } from '../../../@types/store'
-import useApi from '../../../Hooks/useApi'
 
 function MainContainer({ children }: Readonly<props>) {
     const { isLoading, setIsLoading } = React.useContext(

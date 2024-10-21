@@ -1,11 +1,10 @@
 import React from 'react'
-import { StoreContext } from '../../../Context/context'
-import useShoppingCart from '../../../../Hooks/useShoppingCart'
-import { StoreContextType } from '../../../../@types/store'
-import { useNavigate } from 'react-router-dom'
+import { StoreContext } from '@components/Context/context'
+import useShoppingCart from '@hooks/useShoppingCart'
+import { StoreContextType } from '@@types/store'
 import ShoppingCartProduct from '../ShoppingCartProduct'
-import PrimaryContainer from '../../../containers/PrimaryContainer'
-import ActionButton from '../../../buttons/ActionButton'
+import PrimaryContainer from '@components/containers/PrimaryContainer'
+import ActionButton from '@components/buttons/PrimaryButton'
 
 function ShoppingCart() {
     const { shoppingCartProducts } = React.useContext(
@@ -13,7 +12,6 @@ function ShoppingCart() {
     ) as StoreContextType
 
     const { calculateTotalPrice } = useShoppingCart()
-    const navigate = useNavigate()
 
     if (!Array.isArray(shoppingCartProducts) || !shoppingCartProducts.length) {
         return <p>You have not added any items</p>

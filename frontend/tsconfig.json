@@ -1,5 +1,16 @@
 {
     "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@components/*": ["./components/*"],
+            "@features/*": ["./components/features/*"],
+            "@pages/*": ["./pages/*"],
+            "@hooks/*": ["./hooks/*"],
+            "@lib/*": ["./lib/*"],
+            "@@types/*": ["./@types/*"],
+            "@classes/*": ["./classes/*"]
+        },
         /* Visit https://aka.ms/tsconfig to read more about this file */
 
         /* Projects */

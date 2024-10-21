@@ -1,6 +1,6 @@
 import React from 'react'
-import ContentItemTypeClass from '../classes/ContentItemClass'
-import { ContentItemType } from '../@types/contentItem'
+import ContentItemTypeClass from '@classes/ContentItemClass'
+import { ContentItemType } from '@@types/contentItem'
 
 //This custom hook logic could be transfered to StaticText component
 function useStaticText(responseText: string) {

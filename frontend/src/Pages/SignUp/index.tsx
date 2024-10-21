@@ -1,6 +1,6 @@
 import React from 'react'
-import SignUpForm from '../../Components/features/forms/signUp/SignUpForm'
-import useAuth from '../../Hooks/useAuth'
+import SignUpForm from '../../components/features/forms/signUp/SignUpForm'
+import useAuth from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 
 function SignUp() {

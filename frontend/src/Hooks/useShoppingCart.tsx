@@ -1,9 +1,9 @@
 import React from 'react'
-import { StoreContext } from '../Components/Context/context'
+import { StoreContext } from '@components/Context/context'
+import { postData, updateData, deleteData } from '@lib/services/fetchWrapper'
+import { StoreContextType } from '@@types/store'
+import { IProduct } from '@@types/product'
 import { useNavigate } from 'react-router-dom'
-import { postData, updateData, deleteData } from '../services/fetchWrapper'
-import { StoreContextType } from '../@types/store'
-import { IProduct } from '../@types/product'
 
 function useShoppingCart() {
     const {

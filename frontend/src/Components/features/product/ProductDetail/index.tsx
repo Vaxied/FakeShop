@@ -1,56 +1,67 @@
-import useShoppingCart from '../../../../Hooks/useShoppingCart'
-import { IProduct } from '../../../../@types/product'
+import NotFound from '@pages/NotFound'
+import useShoppingCart from '@hooks/useShoppingCart'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-type props = {
-    product: IProduct
-    closeProductDetail: (event: React.MouseEvent) => void
-}
+// type props = {
+//     product: IProduct
+//     closeProductDetail: (event: React.MouseEvent) => void
+// }
 
-function ProductDetail({ product, closeProductDetail }: Readonly<props>) {
+function ProductDetail() {
+    //check if product.id exists or send to notfound
     const { addItemToShoppingCart } = useShoppingCart()
+    const navigate = useNavigate()
+    const { state } = useLocation()
+    const product = state
+    const params = useParams()
+    console.log('params', params)
+    const id = params['productId']
+    console.log('product id is: ', id)
+    if (!product) {
+        return <NotFound />
+    }
 
     return (
-        <aside className='flex flex-col fixed right-0 border-0.5 border-black w-[360px] h-[calc(100vh-64px)] top-[64px] bg-[--primary-bg] rounded-lg'>
-            <div className='bg-gray-100 bg-opacity-50 w-full h-full border-2 border-gray rounded-lg px-4 overflow-y-scroll'>
-                <button
-                    type='button'
-                    onClick={(event) => {
-                        closeProductDetail(event)
-                    }}
-                    className='flex justify-center items-center absolute text-md font-bold w-6 h-6 top-0 left-0 mt-3 ml-3 p-1 bg-white cursor-pointer border border-gray rounded-full z-10'
-                >
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='w-6 h-6'
-                    >
-                        <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M6 18 18 6M6 6l12 12'
+        <div className='flex bg-gray-100 bg-opacity-50 w-full h-full px-8'>
+            <div className='flex justify-center w-[33%] h-full'>
+                <div>
+                    <figure className='relative mb-2 w-full h-[300px]'>
+                        <img
+                            className='w-full h-full object-contain rounded-lg'
+                            src={product.image}
+                            alt={product.title}
                         />
-                    </svg>
-                </button>
-                <p className='text-right py-2'>
-                    <span>Detail</span>
+                    </figure>
+                </div>
+            </div>
+            <div className='w-[calc(100%-33%)]'>
+                <p>
+                    <span className='text-md text-black/60 font-bold'>
+                        {product.title}
+                    </span>
                 </p>
-                <figure className='relative mb-2 w-full h-1/2'>
-                    <img
-                        className='w-full h-full object-cover rounded-lg'
-                        src={product.image}
-                        alt={product.title}
-                    />
+                <span className='px-2 w-[8rem] border border-gray rounded-lg bg-gray-300 text-black'>
+                    {product.category}
+                </span>
+                <hr className='mt-2'></hr>
+                <p className='flex items-start pt-2 text-3xl leading-none'>
+                    <span className='text-sm'>US$</span>
+                    <span>{product.price.split('.')[0]}</span>
+                    <span className='text-sm'>
+                        {product.price.split('.')[1]}
+                    </span>
+                </p>
+                <p className='flex items-center text-lg text-black font-semibold py-2'>
                     <button
                         type='button'
                         onClick={(event) => {
                             addItemToShoppingCart(event, product)
                         }}
-                        className='flex justify-center items-center absolute text-md h-6 bottom-0 right-0 mb-1 mr-1 p-3 bg-green-500 cursor-pointer border border-gray rounded-lg text-white'
+                        className='flex justify-center items-center text-md h-6 bg-black cursor-pointer border border-gray rounded-lg text-white p-4'
                     >
-                        <span className='mb-0.5 text-xs font-bold'>+</span>
+                        <span className='text-sm font-semibold'>
+                            Add to cart
+                        </span>
                         <span className='scale-x-[-1] ml-1'>
                             <svg
                                 xmlns='http://www.w3.org/2000/svg'
@@ -68,21 +79,10 @@ function ProductDetail({ product, closeProductDetail }: Readonly<props>) {
                             </svg>
                         </span>
                     </button>
-                </figure>
-                <p className='flex justify-between items-center p-2'>
-                    <span className='text-sm text-black/60 font-bold mr-2'>
-                        {product.title}
-                    </span>
-                    <span className='text-lg text-black font-semibold'>
-                        ${product.price}
-                    </span>
                 </p>
-                <span className='px-2 border border-gray rounded-lg bg-gray-300 text-black'>
-                    {product.category}
-                </span>
-                <p className='px-2 pb-4 pt-2'>{product.description}</p>
+                <p className='pb-4'>{product.description}</p>
             </div>
-        </aside>
+        </div>
     )
 }
 

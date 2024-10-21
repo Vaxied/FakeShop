@@ -1,10 +1,10 @@
 import React from 'react'
-import { StoreContext } from '../../../Context/context'
+import { StoreContext } from '@components/Context/context'
 import CartSideMenuProducts from '../CartSideMenuProducts'
 import { useLocation } from 'react-router-dom'
-import { StoreContextType } from '../../../../@types/store'
+import { StoreContextType } from '@@types/store'
 import CartSideMenuOpenerButton from '../CartSideMenuOpenerButton'
-import ActionButton from '../../../buttons/ActionButton'
+import ActionButton from '@components/buttons/PrimaryButton'
 
 function CartSideMenu() {
     const {

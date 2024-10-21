@@ -1,30 +1,30 @@
+import parse from 'html-react-parser/lib/index'
 import React from 'react'
-import { ContentItemType } from '../../../../@types/contentItem'
-import useStaticText from '../../../../Hooks/useStaticText'
+import './index.css'
 
 function StaticText(props: Readonly<{ responseText: string }>) {
     const { responseText } = props
-    const { styleText, textArr, formattedArr } = useStaticText(responseText)
-    const [contentArr, setContentArr] = React.useState<ContentItemType[]>([])
+    // const { styleText, textArr, formattedArr } = useStaticText(responseText)
+    // const [contentArr, setContentArr] = React.useState<ContentItemType[]>([])
 
-    console.log('formattedARRRRRRRR', formattedArr.current)
-    console.log('contentARRRR', contentArr)
+    // console.log('formattedARRRRRRRR', formattedArr.current)
+    // console.log('contentARRRR', contentArr)
+    return <div id='static-text-container'>{parse(responseText)}</div>
+    // if (responseText && textArr.length && !contentArr.length) {
+    // setContentArr(() => formattedArr.current)
+    // console.log('setted contentarr')
+    // return (
+    //     <>
+    //         {textArr.map((text, index) => (
+    //             <p key={index} className={styleText(text, index)}>
+    //                 {text}
+    //             </p>
+    //         ))}
+    //     </>
+    // )
+    // }
 
-    if (responseText && textArr.length && !contentArr.length) {
-        setContentArr(() => formattedArr.current)
-        console.log('setted contentarr')
-        //     return (
-        //         <>
-        //             {textArr.map((text, index) => (
-        //                 <p key={index} className={styleText(text, index)}>
-        //                     {text}
-        //                 </p>
-        //             ))}
-        //         </>
-        //     )
-    }
-
-    if (responseText && contentArr.length && textArr.length) {
+    /*     if (responseText && contentArr.length && textArr.length) {
         return (
             <>
                 {contentArr.map((text, index) => {
@@ -67,7 +67,7 @@ function StaticText(props: Readonly<{ responseText: string }>) {
                 })}
             </>
         )
-    }
+    }*/
 }
 
 export default StaticText

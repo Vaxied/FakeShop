@@ -1,10 +1,10 @@
 import React from 'react'
-import { StoreContext } from '../../Components/Context/context'
-import { StoreContextType } from '../../@types/store'
-import useApi from '../../Hooks/useApi'
-import PrimaryContainer from '../../Components/containers/PrimaryContainer'
-import ShoppingCartProduct from '../../Components/features/shoppingCart/ShoppingCartProduct'
-import ActionButton from '../../Components/buttons/ActionButton'
+import { StoreContext } from '@components/Context/context'
+import { StoreContextType } from '@@types/store'
+import useApi from '@hooks/useApi'
+import PrimaryContainer from '@components/containers/PrimaryContainer'
+import ShoppingCartProduct from '@components/features/shoppingCart/ShoppingCartProduct'
+import ActionButton from '@components/buttons/PrimaryButton'
 
 function CheckoutPage() {
     const {

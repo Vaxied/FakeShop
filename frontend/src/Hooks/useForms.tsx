@@ -1,6 +1,6 @@
-import React, { FormEvent } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { postData } from '../services/fetchWrapper'
+import { postData } from '@lib/services/fetchWrapper'
 type formState = {
     [key: string]: string
 }

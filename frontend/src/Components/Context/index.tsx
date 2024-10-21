@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext } from './context'
-import { getData } from '../../services/fetchWrapper'
-import { Order } from '../../@types/order'
-import { IProduct } from '../../@types/product'
+import { getData } from '@lib/services/fetchWrapper'
+import { Order } from '@@types/order'
+import { IProduct } from '@@types/product'
 
 type props = {
     children: React.ReactNode

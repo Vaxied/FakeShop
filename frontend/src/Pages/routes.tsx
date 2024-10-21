@@ -1,16 +1,17 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import Home from './Home'
-import MyAccount from './MyAccount'
-import MyOrder from './MyOrder'
-import MyOrders from './MyOrders'
-import NotFound from './NotFound'
-import Login from './Login'
-import SignUp from './SignUp'
-import ShoppingCart from '../Components/features/shoppingCart/ShoppingCart'
-import ProtectedRoute from '../Components/containers/ProtectedRoute'
-import CheckoutPage from './CheckoutPage'
-import Privacy from './Privacy'
-import TermsAndConditions from './TermsAndConditions'
+import Home from '@pages/Home'
+import MyAccount from '@pages/MyAccount'
+import MyOrder from '@pages/MyOrder'
+import MyOrders from '@pages/MyOrders'
+import NotFound from '@pages/NotFound'
+import Login from '@pages/Login'
+import SignUp from '@pages/SignUp'
+import CheckoutPage from '@pages/CheckoutPage'
+import Privacy from '@pages/Privacy'
+import TermsAndConditions from '@pages/TermsAndConditions'
+import Product from '@pages/Product'
+import ProtectedRoute from '@components/containers/ProtectedRoute'
+import ShoppingCart from '@components/features/shoppingCart/ShoppingCart'
 
 export const AppRoutes = () => {
     let routes = useRoutes([
@@ -31,6 +32,10 @@ export const AppRoutes = () => {
                     element: <Home />,
                 },
             ],
+        },
+        {
+            path: '/products/:productId',
+            element: <Product />,
         },
         {
             path: '/login',

@@ -1,4 +1,4 @@
-import { IProduct } from '../../@types/product'
+import { IProduct } from '@@types/product'
 import ProductListInfo from './ProductListInfo'
 function ProductList(props: Readonly<{ products: IProduct[] }>) {
     const { products } = props

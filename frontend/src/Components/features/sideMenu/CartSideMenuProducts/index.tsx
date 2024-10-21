@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { IProduct } from '../../@types/product'
 import './index.css'
+import { IProduct } from '@@types/product'
 import CartSideMenuProduct from '../CartSideMenuProduct'
 
 function CartSideMenuProducts(

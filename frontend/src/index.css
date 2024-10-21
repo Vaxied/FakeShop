@@ -5,6 +5,12 @@
     --primary-bg: #ffffff;
     --primary-text: ;
     --action-btn-width: 10rem;
+    --text-lg: 1.125rem;
+    --text-lg-lineheight: 1.75rem;
+    --text-sm: 0.875rem;
+    --text-sm-lineheight: 1.25rem;
+    --text-xs: 0.75rem;
+    --text-xs-lineheight: 1rem;
 }
 * {
     box-sizing: border-box;

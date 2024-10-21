@@ -1,18 +1,9 @@
-import { MouseEvent } from 'react'
-import React from 'react'
-import { StoreContext } from '../../Context/context'
-import useShoppingCart from '../../Hooks/useShoppingCart'
-import { StoreContextType } from '../../@types/store'
-
 function CartSideMenuOpenerButton(
     props: Readonly<{
         isCartSideMenuOpen: boolean
         openCartSideMenu: (event: React.MouseEvent<HTMLButtonElement>) => void
     }>
 ) {
-    // const { openCartSideMenu } = React.useContext(
-    //     StoreContext
-    // ) as StoreContextType
     return (
         <div
             className={`${

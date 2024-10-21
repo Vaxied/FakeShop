@@ -1,7 +1,7 @@
 import React from 'react'
-import useForms from '../../../../../Hooks/useForms'
-import TextInputBase from '../../TextInputBase'
-import ActionButton from '../../../../buttons/ActionButton'
+import useForms from '@hooks/useForms'
+import TextInputBase from '@features/forms/TextInputBase'
+import ActionButton from '@components/buttons/PrimaryButton'
 import { InputProp, InputProps } from './Interfaces'
 
 function SignUpForm() {
@@ -100,7 +100,7 @@ function SignUpForm() {
         <div className='flex flex-col items-center justify-center w-[500px]'>
             {/* h-[calc(100vh-134px)] */}
             <form
-                className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-gray-100'
+                className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container'
                 onSubmit={(event) =>
                     handleSubmit(event, formState, showInputErr)
                 }

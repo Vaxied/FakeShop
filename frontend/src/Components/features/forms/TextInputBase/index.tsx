@@ -1,5 +1,5 @@
 import React from 'react'
-import { InputProp, StateProps } from '../SignUpForm/Interfaces'
+import { InputProp, StateProps } from '../signUp/SignUpForm/Interfaces'
 
 type props = {
     inputProp: InputProp

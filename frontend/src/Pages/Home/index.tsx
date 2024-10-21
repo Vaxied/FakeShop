@@ -1,10 +1,10 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import Card from '../../Components/features/product/card/Card'
-import CardsWrapper from '../../Components/features/product/card/CardsWrapper'
-import { StoreContext } from '../../Components/Context/context'
-import { StoreContextType } from '../../@types/store'
-import ProductSearchBar from '../../Components/features/product/ProductSearchBar'
+import Card from '@components/features/product/card/Card'
+import CardsWrapper from '@components/features/product/card/CardsWrapper'
+import { StoreContext } from '@components/Context/context'
+import { StoreContextType } from '@@types/store'
+import ProductSearchBar from '@components/features/product/ProductSearchBar'
 
 function Home() {
     const {

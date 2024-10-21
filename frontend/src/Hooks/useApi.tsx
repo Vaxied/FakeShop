@@ -1,7 +1,7 @@
 import React from 'react'
-import { getData } from '../services/fetchWrapper'
-import { StoreContext } from '../Components/Context/context'
-import { StoreContextType } from '../@types/store'
+import { getData } from '../lib/services/fetchWrapper'
+import { StoreContext } from '@components/Context/context'
+import { StoreContextType } from '@@types/store'
 
 function useApi() {
     const API = import.meta.env.VITE_API
