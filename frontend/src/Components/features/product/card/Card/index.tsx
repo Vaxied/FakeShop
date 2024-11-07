@@ -2,7 +2,9 @@ import React from 'react'
 import useShoppingCart from '@hooks/useShoppingCart'
 import { IProduct } from '@@types/product'
 import { useNavigate } from 'react-router-dom'
-
+import StarIcon from '@components/icons/StarIcon'
+import AddToCartPlusButton from '@components/buttons/AddToCartPlusButton'
+import CategoryLabel from '../CategoryLabel'
 type props = {
     key: number
     product: IProduct
@@ -11,56 +13,50 @@ type props = {
 function Card({ product }: Readonly<props>) {
     const { addItemToShoppingCart } = useShoppingCart()
     const navigate = useNavigate()
-
+    console.log('product', product)
     return (
         <div
             role='button'
-            className='bg-secondary/50 bg-opacity-50 w-56 h-60 cursor-pointer border-2 border-gray rounded-lg'
-            // onClick={() => openProductDetail(product)}
+            className='bg-white w-56 cursor-pointer rounded-lg border-2 border-accent overflow-hidden group'
             onClick={() =>
                 navigate(`/products/${product.product_id}`, {
                     state: product,
                 })
             }
         >
-            <figure className='relative mb-2 w-full h-4/5'>
+            <figure className='relative w-full h-56 overflow-hidden'>
                 <img
-                    className='w-full h-full object-cover'
+                    className='w-full h-full object-contain transition-transform group-hover:scale-110'
                     src={product.image}
                     alt={product.title}
                 />
-                <button
-                    type='button'
-                    onClick={(event) => addItemToShoppingCart(event, product)}
-                    className='bg-white flex justify-center items-center absolute text-md font-bold w-6 h-6 top-0 right-0 mt-1 mr-1 rounded-full p-1 cursor-pointer border border-gray'
-                >
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='w-6 h-6'
-                    >
-                        <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M12 4.5v15m7.5-7.5h-15'
-                        />
-                    </svg>
-                </button>
-                <figcaption className='bg-accent text-md font-semibold absolute bottom-0 left-0 ml-1 mb-1 py-1 px-2 text-xs rounded-lg truncate'>
-                    {product.category}
-                </figcaption>
+                <AddToCartPlusButton
+                    product={product}
+                    addItemToShoppingCart={addItemToShoppingCart}
+                />
+                <CategoryLabel product={product} />
             </figure>
-            <p className='flex justify-between items-center px-2'>
-                <span className='text-sm text-black/60 truncate mr-2'>
-                    {product.title}
-                </span>
-                <span className='text-lg text-black font-semibold'>
-                    ${product.price}
-                </span>
-            </p>
+            <div className='flex flex-col bg-secondary/60 justify-center h-17 p-2'>
+                <div className='flex items-center h-7'>
+                    <span className='font-medium pr-1'>
+                        {product.average_rating.substring(0, 3)}
+                    </span>
+                    <span>
+                        <StarIcon />
+                    </span>
+                    <span className='pl-1 font-normal'>
+                        ({product.rating_count})
+                    </span>
+                </div>
+                <p className='flex justify-between items-center'>
+                    <span className='text-sm text-black/60 truncate mr-2'>
+                        {product.title}
+                    </span>
+                    <span className='text-lg text-black font-medium'>
+                        ${product.price}
+                    </span>
+                </p>
+            </div>
         </div>
     )
 }
