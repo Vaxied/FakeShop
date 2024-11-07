@@ -1,15 +1,16 @@
 {
     "compilerOptions": {
-        "baseUrl": "./src",
+        "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"],
-            "@components/*": ["./components/*"],
-            "@features/*": ["./components/features/*"],
-            "@pages/*": ["./pages/*"],
-            "@hooks/*": ["./hooks/*"],
-            "@lib/*": ["./lib/*"],
-            "@@types/*": ["./@types/*"],
-            "@classes/*": ["./classes/*"]
+            // "@/*": ["./src/*"],
+            "@components/*": ["./src/components/*"],
+            "@features/*": ["./src/components/features/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@hooks/*": ["./src/hooks/*"],
+            "@lib/*": ["./src/lib/*"],
+            "@@types/*": ["./src/@types/*"],
+            "@classes/*": ["./src/classes/*"],
+            "@assets/*": ["./public/assets/*"]
         },
         /* Visit https://aka.ms/tsconfig to read more about this file */
 
