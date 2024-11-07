@@ -22,12 +22,14 @@ function Home() {
         closeCartSideMenu()
         setSearchByTitle('')
     }, [])
-    // console.log('this is items', items)
     const location = useLocation().pathname
     const productCategory = location.split('/')[2]
-    // console.log('category', productCategories[productCategory])
-    // console.log('location', location)
-    if (!items) return
+    if (!items)
+        return (
+            <p className='flex w-full justify-center mt-8'>
+                Something went wrong loading products
+            </p>
+        )
     let filteredItems
     if (productCategory && productCategories[productCategory]) {
         filteredItems = filterItems(
