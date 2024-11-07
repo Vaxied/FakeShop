@@ -8,9 +8,9 @@ function CartSideMenuOpenerButton(
         <div
             className={`${
                 props.isCartSideMenuOpen ? 'opacity-0' : 'opacity-1'
-            } absolute -left-4 top-1/2 w-4 h-32 bg-gray-500 -translate-y-1/2 rounded-l-md text-white transition-opacity duration-500`}
+            } absolute -left-4 top-1/2 w-4 h-32 bg-secondary -translate-y-1/2 rounded-l-md text-white transition-opacity duration-500`}
         >
-            <span className='before:content-[""] block w-2 h-2 bg-gray-500 absolute top-[-8px] right-0'></span>
+            <span className='before:content-[""] block w-2 h-2 bg-secondary absolute top-[-8px] right-0'></span>
             <span className='before:content-[""] block w-4 h-4 bg-white absolute top-[-16px] rounded-full'></span>
             <button
                 onClick={(event) => props.openCartSideMenu(event)}
@@ -32,7 +32,7 @@ function CartSideMenuOpenerButton(
                 </svg>
             </button>
             <span className='after:content-[""] block w-4 h-4 bg-white absolute bottom-[-16px] rounded-full z-10'></span>
-            <span className='after:content-[""] block w-2 h-2 bg-gray-500 absolute bottom-[-8px] right-0'></span>
+            <span className='after:content-[""] block w-2 h-2 bg-secondary absolute bottom-[-8px] right-0'></span>
         </div>
     )
 }

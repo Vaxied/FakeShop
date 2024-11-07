@@ -7,6 +7,8 @@ export interface IProduct {
     image: string
     rating: Rating
     product_quantity?: number
+    average_rating: string
+    rating_count: string
 }
 
 export type Rating = {

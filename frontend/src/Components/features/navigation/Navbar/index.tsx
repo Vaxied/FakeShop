@@ -23,54 +23,78 @@ function Navbar() {
         {
             content: 'Men',
             to: '/category/men',
-            className: '',
         },
         {
             content: 'Women',
             to: '/category/women',
-            className: '',
         },
         {
             content: 'Electronics',
             to: '/category/electronics',
-            className: '',
         },
         {
             content: 'Jewelery',
             to: '/category/jewelery',
-            className: '',
         },
     ]
 
-    // const navLinksRight = [
-    //     {
-    //         content: 'My Orders',
-    //         to: '/my-orders',
-    //     },
-    //     {
-    //         content: 'My Account',
-    //         to: '/my-account',
-    //     },
-    //     {
-    //         content: 'Sign In',
-    //         to: '/login',
-    //     },
-    //     {
-    //         content: 'Sign Out',
-    //         to: '/',
-    //     },
-    //     {
-    //         content: (
-    //             <ShoppingCartIcon numberOfItems={shoppingCartProducts.length} />
-    //         ),
-    //         to: '/shopping-cart',
-    //     },
-    // ]
+    const navLinksRight = {
+        isLoggedIn: [
+            {
+                content: 'My Orders',
+                to: '/my-orders',
+            },
+            {
+                content: 'My Account',
+                to: '/my-account',
+            },
+            {
+                content: 'Sign Out',
+                to: '/',
+            },
+            {
+                content: (
+                    <ShoppingCartIcon
+                        numberOfItems={shoppingCartProducts.length}
+                    />
+                ),
+                to: `${loggedIn ? '/shopping-cart' : '/login'}`,
+                className: 'relative',
+            },
+        ],
+        isNotLoggedIn: [
+            {
+                content: 'My Orders',
+                to: '/my-orders',
+            },
+            {
+                content: 'My Account',
+                to: '/my-account',
+            },
+            {
+                content: 'Sign In',
+                to: '/login',
+            },
+            {
+                content: (
+                    <ShoppingCartIcon
+                        numberOfItems={shoppingCartProducts.length}
+                    />
+                ),
+                to: `${loggedIn ? '/shopping-cart' : '/login'}`,
+                className: 'relative',
+            },
+        ],
+    }
+
+    const rightNavElements = loggedIn
+        ? navLinksRight.isLoggedIn
+        : navLinksRight.isNotLoggedIn
 
     return (
         <nav className='bg-primary flex justify-between items-center fixed z-10 top-0 w-full h-16 py-5 px-8 text-sm font-light border-b border-gray'>
             <ul className='flex items-center gap-3'>
-                {navLinksLeft.map(({ content, to, className }) => (
+                {navLinksLeft.map(({ content, to, className = '' }) => (
                     <li className={className}>
                         <NavLink
                             to={to}
@@ -85,46 +109,11 @@ function Navbar() {
             </ul>
             <ul className='flex items-center gap-3'>
                 {loggedIn && <li className='text-black/80'>Hi, {username}!</li>}
-                <li>
-                    <NavLink
-                        to='/my-orders'
-                        className={({ isActive }) => isLinkActive(isActive)}
-                    >
-                        My Orders
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink
-                        to='/my-account'
-                        className={({ isActive }) => isLinkActive(isActive)}
-                    >
-                        My Account
-                    </NavLink>
-                </li>
-                {!loggedIn && (
-                    <li>
-                        <NavLink
-                            to='/login'
-                            className={({ isActive }) => isLinkActive(isActive)}
-                        >
-                            Sign In
-                        </NavLink>
+                {rightNavElements.map(({ content, to, className = '' }) => (
+                    <li className={className}>
+                        <NavLink to={to}>{content}</NavLink>
                     </li>
-                )}
-                {loggedIn && (
-                    <li>
-                        <NavLink to={'/'} onClick={() => logOut()}>
-                            Logout
-                        </NavLink>
-                    </li>
-                )}
-                <li className='relative'>
-                    <NavLink to={`${loggedIn ? '/shopping-cart' : '/login'}`}>
-                        <ShoppingCartIcon
-                            numberOfItems={shoppingCartProducts.length}
-                        />
-                    </NavLink>
-                </li>
+                ))}
             </ul>
         </nav>
     )

@@ -9,7 +9,7 @@ function ProductSearchBar(props: Readonly<searchProps>) {
     const { searchByTitle, setSearchByTitle } = props
     return (
         <div className='flex justify-center items-center mb-8'>
-            <div className='flex items-center border border-gray-400 rounded-lg px-4 py-2 outline-none w-80'>
+            <div className='flex items-center bg-secondary/70 border border-accent rounded-lg px-4 py-2 outline-none w-80'>
                 <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -31,7 +31,7 @@ function ProductSearchBar(props: Readonly<searchProps>) {
                     onChange={(event) => {
                         setSearchByTitle(event.target.value)
                     }}
-                    className=' indent-4 outline-none'
+                    className=' indent-4 outline-none bg-transparent placeholder-gray-700 flex-1'
                 />
             </div>
         </div>

@@ -18,7 +18,7 @@ function ActionButton(
     const { text, type, action, route } = props
     return (
         <button
-            className={`border border-gray px-4 py-2 w-[--action-btn-width] bg-black
+            className={`border border-gray px-4 py-2 w-[--action-btn-width] bg-secondary
                     text-white rounded-lg`}
             type={type}
             onClick={() => handleAction()}

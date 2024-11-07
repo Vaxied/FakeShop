@@ -5,7 +5,7 @@ function CloseButton({ id }: Readonly<{ id: string }>) {
             // onClick={(event) => {
             // closeProductDetail(event)
             // }}
-            className='flex justify-center items-center absolute text-md font-bold w-6 h-6 top-0 left-0 mt-3 ml-3 p-1 bg-white cursor-pointer border border-gray rounded-full z-10'
+            className='flex justify-center items-center absolute text-md font-bold w-6 h-6 top-0 left-0 mt-3 ml-3 p-1 bg-accent cursor-pointer border border-gray rounded-full z-10'
         >
             <svg
                 xmlns='http://www.w3.org/2000/svg'
