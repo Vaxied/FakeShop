@@ -59,7 +59,7 @@ function ProductDetail() {
 
     return (
         <>
-            <div className='flex gap-4 bg-gray-100 bg-opacity-50 w-full h-[calc(100vh-96px)] px-8'>
+            <div className='flex gap-4 bg-gray-100 bg-opacity-50 w-full min-h-[calc(100vh-96px)]'>
                 <div className='flex w-[33%] mr-4'>
                     <div className='flex w-full top-[96px] sticky self-start gap-4'>
                         <ProductImgSelector
