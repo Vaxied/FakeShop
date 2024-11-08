@@ -17,7 +17,7 @@ function MainContainer({ children }: Readonly<props>) {
     }, [isLoading])
 
     return (
-        <div className='max-w-5xl flex flex-wrap justify-center p-8 min-h-[calc(100vh-70px)] mx-auto'>
+        <div className='max-w-6xl flex flex-wrap justify-center p-8 min-h-[calc(100vh-70px)] mx-auto'>
             {isLoading && <Loader />}
             {children}
         </div>
