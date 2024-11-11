@@ -59,8 +59,8 @@ function ProductDetail() {
 
     return (
         <>
-            <div className='flex gap-4 bg-gray-100 bg-opacity-50 w-full min-h-[calc(100vh-96px)]'>
-                <div className='flex w-[33%] mr-4'>
+            <div className='flex gap-4 bg-gray-100 bg-opacity-50 w-full min-h-96] pb-4'>
+                <div className='flex w-[30%] mr-4'>
                     <div className='flex w-full top-[96px] sticky self-start gap-4'>
                         <ProductImgSelector
                             productImages={productImages.current}
@@ -77,7 +77,7 @@ function ProductDetail() {
                         </div>
                     </div>
                 </div>
-                <div className='w-[calc(100%-33%-25%)]'>
+                <div className='w-[45%]'>
                     <p className='flex flex-wrap pb-2'>
                         <span className='w-full text-md text-black/60 font-bold'>
                             {product.title}
@@ -98,7 +98,7 @@ function ProductDetail() {
                         </span>
                     </div>
                     <hr className='mb-3'></hr>
-                    <p className='flex items-start text-3xl leading-none'>
+                    <p className='flex items-start text-3xl pb-3 leading-none'>
                         <span className='text-sm'>US$</span>
                         <span>{product.price.split('.')[0]}</span>
                         <span className='text-sm'>
@@ -148,9 +148,8 @@ function ProductDetail() {
                     </div>
                 </div>
             </div>
-            <hr className='mb-3' />
-            <ProductImgCarousel />
             <DetailedProductDescription />
+            <ProductImgCarousel />
         </>
     )
 }
