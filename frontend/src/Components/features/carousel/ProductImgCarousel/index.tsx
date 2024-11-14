@@ -43,7 +43,8 @@ function ProductImgCarousel() {
         { id: 'mid', data: productImages.current[index] },
         { id: 'right', data: productImages.current[nextIndex] },
     ]
-
+    // TODO ADD THE CAROUSEL MAP LOCATION AND CALC INDICES INDIVIDUALLY
+    // Can be optimized using just two containers. When a button is pressed the position is set dynamically to start animation. After animation finishes the div under can swap position to the left or right
     const nextImage = (index: number) => {
         const last = productImages.current.length - 1
         setCarouselPosition('right')
@@ -58,7 +59,7 @@ function ProductImgCarousel() {
                 setNextIndex(1)
             }
             setCarouselPosition('mid')
-        }, 1000)
+        }, 850)
     }
     const prevImage = (index: number) => {
         const last = productImages.current.length - 1
@@ -74,7 +75,7 @@ function ProductImgCarousel() {
                 setNextIndex(nextIndex - 1)
             }
             setCarouselPosition('mid')
-        }, 1100)
+        }, 850)
     }
     console.log('carouselPosition:', carouselPosition)
     console.log('indices: ', prevIndex, index, nextIndex)
@@ -121,7 +122,7 @@ function ProductImgCarousel() {
                         {imagesToRender.map(({ id, data }) => (
                             <figure
                                 key={id}
-                                className={`w-full h-full duration-1000 ease-out flex-shrink-0 ${imgTranslateValues.current[carouselPosition]}`}
+                                className={`w-full h-full duration-700 ease-out flex-shrink-0 ${imgTranslateValues.current[carouselPosition]}`}
                             >
                                 <img
                                     className='w-full h-full object-cover'
