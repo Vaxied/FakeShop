@@ -24,7 +24,7 @@ function Card({ product }: Readonly<props>) {
                 })
             }
         >
-            <figure className='relative w-full h-56 overflow-hidden'>
+            <figure className='relative w-full h-56 p-2 overflow-hidden'>
                 <img
                     className='w-full h-full object-contain transition-transform group-hover:scale-110'
                     src={product.image}
