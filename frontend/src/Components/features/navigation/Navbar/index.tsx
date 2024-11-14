@@ -33,8 +33,8 @@ function Navbar() {
             to: '/category/electronics',
         },
         {
-            content: 'Jewelery',
-            to: '/category/jewelery',
+            content: 'Jewelry',
+            to: '/category/jewelry',
         },
     ]
 
@@ -92,7 +92,7 @@ function Navbar() {
         : navLinksRight.isNotLoggedIn
 
     return (
-        <nav className='bg-primary flex justify-between items-center fixed z-10 top-0 w-full h-16 py-5 px-8 text-sm font-light border-b border-gray'>
+        <nav className='bg-primary flex justify-between items-center fixed top-0 w-full h-16 py-5 px-8 text-sm font-light z-20'>
             <ul className='flex items-center gap-3'>
                 {navLinksLeft.map(({ content, to, className = '' }) => (
                     <li className={className}>
