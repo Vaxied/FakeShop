@@ -2,7 +2,7 @@ import { Order } from './order.d.ts'
 import { IProduct } from './product.d.ts'
 
 export type StoreContextType = {
-    items: IProduct[] | null
+    items: IProduct[]
     shoppingCartProducts: IProduct[] | []
     orders: Order[]
     productToShow: IProduct | null
