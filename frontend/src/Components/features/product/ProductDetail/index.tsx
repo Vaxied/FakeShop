@@ -1,20 +1,15 @@
 import React from 'react'
 import NotFound from '@pages/NotFound'
 import useShoppingCart from '@hooks/useShoppingCart'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import ProductImgCarousel from '@components/features/carousel/ProductImgCarousel'
 import StarIcon from '@components/icons/StarIcon'
 import ProductImgSelector from '../ProductImageSelector'
 import DetailedProductDescription from '../DetailedProductDescription'
-
-// type props = {
-//     product: IProduct
-//     closeProductDetail: (event: React.MouseEvent) => void
-// }
+import RelatedProducts from '../RelatedProducts'
 
 function ProductDetail() {
     const { addItemToShoppingCart } = useShoppingCart()
-    const navigate = useNavigate()
     const { state } = useLocation()
     const product = state
     const params = useParams()
@@ -52,7 +47,6 @@ function ProductDetail() {
     ])
 
     const [imageToShow, setImageToShow] = React.useState(product.image)
-    //check if product.id exists or send to notfound
     if (!product) {
         return <NotFound />
     }
@@ -150,6 +144,7 @@ function ProductDetail() {
             </div>
             <DetailedProductDescription />
             <ProductImgCarousel />
+            <RelatedProducts featuredProduct={product} />
         </>
     )
 }
