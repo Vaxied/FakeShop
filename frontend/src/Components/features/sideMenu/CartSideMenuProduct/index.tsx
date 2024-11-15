@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { IProduct } from '@@types/product'
 import useShoppingCart from '@hooks/useShoppingCart'
-import Spinner from '@features/loading/Spinner'
+import Spinner from '@components/features/loading/Spinner'
 import './index.css'
 
 function CartSideMenuProduct(

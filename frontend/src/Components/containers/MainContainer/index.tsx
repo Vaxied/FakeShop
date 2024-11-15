@@ -1,6 +1,6 @@
 import React from 'react'
 import { StoreContext } from '@components/Context/context'
-import Loader from '@features/loading/Loader'
+import Loader from '@components/features/loading/Loader'
 import { StoreContextType } from '@@types/store'
 import useApi from '@hooks/useApi'
 

@@ -1,9 +1,9 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import Navbar from '@features/navigation/Navbar'
-import CartSideMenu from '@features/sideMenu/CartSideMenu'
+import Navbar from '@components/features/navigation/Navbar'
+import CartSideMenu from '@components/features/sideMenu/CartSideMenu'
 import MainContainer from '@components/containers/MainContainer'
-import Footer from '@features/navigation/Footer'
+import Footer from '@components/features/navigation/Footer'
 
 type props = { children: React.ReactNode }
 

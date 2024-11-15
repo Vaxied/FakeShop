@@ -3,7 +3,6 @@ import useShoppingCart from '@hooks/useShoppingCart'
 import { IProduct } from '@@types/product'
 import { useNavigate } from 'react-router-dom'
 import StarIcon from '@components/icons/StarIcon'
-import AddToCartPlusButton from '@components/buttons/AddToCartPlusButton'
 // import CategoryLabel from '../CategoryLabel'
 type props = {
     key: number
