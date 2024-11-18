@@ -16,7 +16,7 @@ function RelatedProductCard({ product }: Readonly<props>) {
     return (
         <div
             role='button'
-            className='max-width[35%] lg:min-w-[27.5%] w-[27.5%] min-w-[55%] sm:max-lg:min-w-[40%] cursor-pointer rounded-lg border-2 border-accent overflow-hidden shadow-secondary shadow-md flex-shrink-0'
+            className='w-[75%] md:max-2xl:w-[27.5%] sm:max-md:w-[45%] cursor-pointer rounded-lg border-2 border-accent overflow-hidden shadow-secondary shadow-md flex-shrink-0 snap-center'
             onClick={() =>
                 navigate(`/products/${product.product_id}`, {
                     state: product,

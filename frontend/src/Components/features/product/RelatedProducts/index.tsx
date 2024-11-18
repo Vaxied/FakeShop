@@ -21,35 +21,72 @@ function RelatedProducts(props: Readonly<{ featuredProduct: IProduct }>) {
     const handleScroll = () => {
         console.log('SCROLLINNNNNNG!')
         let scrollOffset
-        if (!cardScroller.current) return
+        let displacement
+        if (!cardScroller.current || cardScroller.current.scrollLeft === 0)
+            return
+        console.log(
+            'current',
+            cardScroller.current.scrollLeft,
+            'last',
+            lastScrollPosition.current,
+            'scrollWidth',
+            cardScroller.current.scrollWidth,
+            'client width',
+            cardScroller.current.clientWidth
+        )
+        // TODO
+        // Percentage needs to consider card width in different resolutions, only works when is desktop right now.
+        // To fix above, RelatedProducts needs to assign the card width property depending on the resolution
+        // That way the slider displacement can adjust itself properly to the card.
+
+        if (cardScroller.current.clientWidth > 640) {
+            displacement = cardScroller.current.clientWidth * (82.5 / 100) + 48
+        } else {
+            displacement = cardScroller.current.clientWidth * (82.5 / 100) + 16
+        }
+
         scrollPosition.current = cardScroller.current?.scrollLeft
         if (lastScrollPosition.current < scrollPosition.current) {
-            scrollOffset = handleScrollRight(scrollPosition.current)
+            scrollOffset = handleScrollRight(
+                scrollPosition.current,
+                displacement
+            )
+        } else if (lastScrollPosition.current > scrollPosition.current) {
+            scrollOffset = handleScrollLeft(
+                scrollPosition.current,
+                displacement
+            )
         } else {
-            scrollOffset = handleScrollLeft(scrollPosition.current)
+            console.log('reached edge of scroll')
         }
-        cardScroller.current.scrollTo({
-            left: scrollOffset,
-            behavior: 'smooth',
-        })
+        if (scrollOffset !== undefined && scrollOffset !== null)
+            cardScroller.current.scrollTo({
+                left: scrollOffset,
+                behavior: 'smooth',
+            })
         if (scrollOffset) scrollPosition.current = scrollOffset
     }
 
-    const handleScrollLeft = (position: number) => {
+    const handleScrollLeft = (position: number, displacement: number) => {
         console.log('scrolling left')
         if (!cardScroller.current) return
         let newPosition = lastScrollPosition.current
         console.log('starting position', cardScroller.current?.scrollLeft)
         if (position - cardScroller.current.clientWidth < 0) newPosition = 0
-        else newPosition -= cardScroller.current.clientWidth
+        else newPosition -= displacement
         console.log('ending position', newPosition)
         lastScrollPosition.current = newPosition
         return newPosition
     }
 
-    const handleScrollRight = (position: number) => {
+    const handleScrollRight = (position: number, displacement: number) => {
         console.log('scrolling right')
         if (!cardScroller.current) return
+        if (
+            cardScroller.current.scrollLeft ===
+            cardScroller.current?.scrollWidth
+        )
+            return
         let newPosition = lastScrollPosition.current
         console.log('starting position', cardScroller.current?.scrollLeft)
         if (
@@ -58,7 +95,7 @@ function RelatedProducts(props: Readonly<{ featuredProduct: IProduct }>) {
         ) {
             newPosition = cardScroller.current.scrollWidth
         } else {
-            newPosition += cardScroller.current.clientWidth
+            newPosition += displacement
         }
         lastScrollPosition.current = newPosition
         console.log('ending position', newPosition)
@@ -83,15 +120,15 @@ function RelatedProducts(props: Readonly<{ featuredProduct: IProduct }>) {
     console.log('relatedItems', relatedItems)
     if (items && relatedItems)
         return (
-            <div className='w-full flex flex-wrap mt-4 '>
+            <div className='w-full flex flex-wrap mt-4'>
                 <div>
                     <p className='text-2xl font-semibold'>
                         Related items for you
                     </p>
                 </div>
                 <div
-                    className='w-full flex overflow-x-scroll py-4 gap-4 hidden-scrollbar'
-                    onScroll={debounce(handleScroll, 150)}
+                    className='w-full flex overflow-x-scroll py-4 gap-4 hidden-scrollbar snap-mandatory snap-x'
+                    // onScroll={debounce(handleScroll, 150)}
                     ref={cardScroller}
                 >
                     {items.map((item) => (
