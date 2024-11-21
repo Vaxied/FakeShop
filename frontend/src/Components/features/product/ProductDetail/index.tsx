@@ -7,6 +7,7 @@ import StarIcon from '@components/icons/StarIcon'
 import ProductImgSelector from '../ProductImageSelector'
 import DetailedProductDescription from '../DetailedProductDescription'
 import RelatedProducts from '../RelatedProducts'
+import ProductReviews from '../ProductReviews'
 
 function ProductDetail() {
     const { addItemToShoppingCart } = useShoppingCart()
@@ -85,7 +86,7 @@ function ProductDetail() {
                             {product.average_rating.substring(0, 3)}
                         </span>
                         <span>
-                            <StarIcon />
+                            <StarIcon isFilled={true} isHalved={false} />
                         </span>
                         <span className='pl-1 font-normal'>
                             ({product.rating_count})
@@ -145,6 +146,7 @@ function ProductDetail() {
             <DetailedProductDescription />
             <ProductImgCarousel />
             <RelatedProducts featuredProduct={product} />
+            <ProductReviews />
         </>
     )
 }

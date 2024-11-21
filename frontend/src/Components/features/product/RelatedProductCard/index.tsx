@@ -3,7 +3,6 @@ import useShoppingCart from '@hooks/useShoppingCart'
 import { IProduct } from '@@types/product'
 import { useNavigate } from 'react-router-dom'
 import StarIcon from '@components/icons/StarIcon'
-// import CategoryLabel from '../CategoryLabel'
 type props = {
     key: number
     product: IProduct
@@ -12,7 +11,7 @@ type props = {
 function RelatedProductCard({ product }: Readonly<props>) {
     const { addItemToShoppingCart } = useShoppingCart()
     const navigate = useNavigate()
-    console.log('product', product)
+    // console.log('product', product)
     return (
         <div
             role='button'
@@ -29,11 +28,6 @@ function RelatedProductCard({ product }: Readonly<props>) {
                     src={product.image}
                     alt={product.title}
                 />
-                {/* <AddToCartPlusButton
-                    product={product}
-                    addItemToShoppingCart={addItemToShoppingCart}
-                /> */}
-                {/* <CategoryLabel product={product} /> */}
             </figure>
             <div className='flex flex-col bg-secondary/60 justify-center p-2'>
                 <div className='flex items-center h-7'>
@@ -41,7 +35,7 @@ function RelatedProductCard({ product }: Readonly<props>) {
                         {product.average_rating.substring(0, 3)}
                     </span>
                     <span>
-                        <StarIcon />
+                        <StarIcon isFilled={true} isHalved={false} />
                     </span>
                     <span className='pl-1 font-normal'>
                         ({product.rating_count})
