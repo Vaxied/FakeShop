@@ -12,8 +12,10 @@ export default {
                 triadic2: '#c600e0',
                 complementary: '#e0001a',
             },
+            fontFamily: {
+                sans: ['Inter', 'Roboto', 'Poppins', 'sans-serif'],
+            },
         },
-        fontFamily: {},
     },
     plugins: [],
 }
