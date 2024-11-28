@@ -1,36 +1,34 @@
 import StarIcon from '@components/icons/StarIcon'
 import ProductReview from '../ProductReview'
 import { ReactElement, useRef } from 'react'
+import ProductReviewDistribution from '../ProductReviewDistribution'
+import { IProduct } from '@@types/product'
 
 type Review = {
     reviewId: number
     username: string
-    rating: number
+    rating: string
     summary: string
     content: string
     date: string
 }
 
-function ProductReviews(props: Readonly<{}>) {
-    const reviewStars = useRef<{ id: number; stars?: ReactElement[] }[]>([])
+function ProductReviews(props: Readonly<{ product: IProduct }>) {
+    const { product } = props
+    const reviewStars = useRef<{ id: number; stars: ReactElement[] | [] }[]>([])
 
-    const buildStarArr = (rating: number, index: number) => {
+    const buildStarArr = (arr: ReactElement[], rating: string) => {
+        const parsedRating = parseFloat(rating)
         for (let i = 0; i < 5; i++) {
             switch (true) {
-                case i < Math.floor(rating):
-                    reviewStars.current[index].stars?.push(
-                        <StarIcon isFilled={true} isHalved={false} />
-                    )
+                case i < Math.floor(parsedRating):
+                    arr.push(<StarIcon isFilled={true} isHalved={false} />)
                     break
-                case rating - i > 0 && !Number.isInteger(rating):
-                    reviewStars.current[index].stars?.push(
-                        <StarIcon isFilled={true} isHalved={true} />
-                    )
+                case parsedRating - i > 0 && !Number.isInteger(parsedRating):
+                    arr.push(<StarIcon isFilled={true} isHalved={true} />)
                     break
                 default:
-                    reviewStars.current[index].stars?.push(
-                        <StarIcon isFilled={false} isHalved={false} />
-                    )
+                    arr.push(<StarIcon isFilled={false} isHalved={false} />)
             }
         }
     }
@@ -38,14 +36,14 @@ function ProductReviews(props: Readonly<{}>) {
     const drawStars = () => {
         mockedReviews.current.forEach((review, index) => {
             reviewStars.current.push({ id: review.reviewId, stars: [] })
-            buildStarArr(review.rating, index)
+            buildStarArr(reviewStars.current[index].stars, review.rating)
         })
     }
-    const mockedReviews = useRef([
+    const mockedReviews = useRef<Review[]>([
         {
             reviewId: 1,
             username: 'Ana',
-            rating: 4,
+            rating: '4',
             summary: 'Great experience!',
             content:
                 'Bought this bag for my vacation, had a great time and felt amazing during all of it. This bag has enough space to store your essentials and carry them with you at all times!',
@@ -54,7 +52,7 @@ function ProductReviews(props: Readonly<{}>) {
         {
             reviewId: 2,
             username: 'Alfred',
-            rating: 3,
+            rating: '3',
             summary: 'Great experience!',
             content:
                 'Bought this bag for a touring trip, had a great time and felt amazing during all of it. This bag has enough space and more, you could easily store a cow in it!',
@@ -63,7 +61,7 @@ function ProductReviews(props: Readonly<{}>) {
         {
             reviewId: 3,
             username: 'Daniel',
-            rating: 3.5,
+            rating: '3.5',
             summary: 'Great experience!',
             content:
                 'Bought this bag for a touring trip, had a great time and felt amazing during all of it. This bag has enough space and more, you could easily store a cow in it!',
@@ -72,7 +70,7 @@ function ProductReviews(props: Readonly<{}>) {
         {
             reviewId: 4,
             username: 'Ethna',
-            rating: 4.5,
+            rating: '4.5',
             summary: 'Not a bad purchase!!',
             content:
                 'Bought this bag for a touring trip, had a great time and felt amazing during all of it. This bag has enough space and more, you could easily store a cow in it!\r\n Bought this bag for a touring trip, had a great time and felt amazing during all of it. This bag has enough space and more, you could easily store a cow in it!\r\n Bought this bag for a touring trip, had a great time and felt amazing during all of it. This bag has enough space and more, you could easily store a cow in it!\r\n Bought this bag for a touring trip, had a great time and felt amazing during all of it. This bag has enough space and more, you could easily store a cow in it!',
@@ -89,11 +87,13 @@ function ProductReviews(props: Readonly<{}>) {
     }
 
     return (
-        <div className='flex flex-wrap justify-center'>
-            <p className='font-semibold text-2xl pb-4 w-full'>
-                What do our customers say
-            </p>
-            <div className='md:max-2xl:w-3/5 md:max-2xl: w-full'>
+        <div className='w-full flex flex-wrap pt-8'>
+            <ProductReviewDistribution
+                buildStars={buildStarArr}
+                avgRating={product.average_rating}
+                productId={product.product_id}
+            />
+            <div className='md:max-2xl:w-3/5 w-full flex-1'>
                 {mockedReviews.current.map((review, index) => (
                     <ProductReview
                         review={review}
