@@ -35,14 +35,14 @@ function RelatedProductCard({ product }: Readonly<props>) {
                         {product.average_rating.substring(0, 3)}
                     </span>
                     <span>
-                        <StarIcon isFilled={true} isHalved={false} />
+                        <StarIcon />
                     </span>
                     <span className='pl-1 font-normal'>
                         ({product.rating_count})
                     </span>
                 </div>
-                <p className='flex justify-between h-10 line-clamp-2'>
-                    <span className='text-sm text-black/60 truncate line-clamp-2 mr-2'>
+                <p className='flex justify-between h-10 overflow-hidden text-ellipsis line-clamp-2'>
+                    <span className='text-sm text-black/60 line-clamp-2 mr-2'>
                         {product.title}
                     </span>
                     <span className='text-lg text-black font-medium'>
