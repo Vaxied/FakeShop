@@ -1,10 +1,10 @@
-type starProps = {
+type StarProps = {
     isFilled?: boolean
     isHalved?: boolean
 }
 
-function StarIcon(props: Readonly<{ isFilled: boolean; isHalved: boolean }>) {
-    const { isFilled, isHalved } = props
+function StarIcon(props: Readonly<StarProps>) {
+    const { isFilled = true, isHalved = false } = props
 
     const getFilledOrEmpty = () => {
         return isFilled && !isHalved ? 'fill-[#677beb]' : 'fill-[#fff]'
