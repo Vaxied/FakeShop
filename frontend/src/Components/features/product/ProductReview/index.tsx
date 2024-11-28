@@ -3,7 +3,7 @@ import UserIcon from '@components/icons/UserIcon'
 type Review = {
     reviewId?: number
     username?: string
-    rating?: number
+    rating?: string
     summary?: string
     content?: string
     date?: string
@@ -23,9 +23,6 @@ function ProductReview(
     if (!reviewContentRef) return
 
     const isContentOverflowing = () => {
-        console.log('element', reviewContentRef.current)
-        console.log('height', reviewContentRef.current?.clientHeight)
-        console.log('size', reviewContentRef.current?.scrollHeight)
         if (!reviewContentRef.current) return false
         if (
             reviewContentRef.current.clientHeight &&
@@ -39,7 +36,6 @@ function ProductReview(
         return false
     }
 
-    console.log(isContentOverflowing())
     return (
         <div
             className='flex flex-col py-4 bg-container mb-4 px-4 rounded-lg'
@@ -50,9 +46,9 @@ function ProductReview(
                 <span className='pl-2'>{review.username}</span>
             </p>
             <p className='flex'>
-                <p className='flex'>
-                    {reviewStars.stars?.map((stars) => stars)}
-                </p>
+                {reviewStars.stars?.map((stars, index) => (
+                    <span key={index}>{stars}</span>
+                ))}
                 <span className='pl-2 font-semibold line-clamp-6 truncate'>
                     {review.summary}
                 </span>
@@ -60,7 +56,7 @@ function ProductReview(
             <span className='text-gray-500'>{review.date}</span>
             <p
                 ref={reviewContentRef}
-                className={`w-full mb-2 ${!isExpanded ? 'line-clamp-6' : ''}`}
+                className={`w-full mb-2 ${!isExpanded ? 'line-clamp-4' : ''}`}
             >
                 {review.content}
             </p>
