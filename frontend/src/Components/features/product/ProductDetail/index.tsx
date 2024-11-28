@@ -146,7 +146,7 @@ function ProductDetail() {
             <DetailedProductDescription />
             <ProductImgCarousel />
             <RelatedProducts featuredProduct={product} />
-            <ProductReviews />
+            <ProductReviews product={product} />
         </>
     )
 }
