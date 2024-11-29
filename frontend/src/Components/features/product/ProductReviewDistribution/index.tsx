@@ -1,5 +1,5 @@
-import useIntersectionObserver from '@hooks/useIntersectionObserver'
-import { ReactElement, useCallback, useRef, useState } from 'react'
+import { ReactElement, useRef } from 'react'
+import ReviewsStarDistribution from '../ReviewsStarDistribution'
 
 type StarData = {
     stars: number
@@ -16,21 +16,6 @@ function ProductReviewDistribution(
     props: Readonly<ProductReviewDistributionProps>
 ) {
     const { buildStars, avgRating } = props
-    const starDistributionContainer = useRef<HTMLDivElement | null>(null)
-    const [hasAnimated, setHasAnimated] = useState(false)
-
-    const HandleAnimation = useCallback(
-        (entries: IntersectionObserverEntry[]) => {
-            const [entry] = entries
-            console.log('checking for target')
-            if (entry.isIntersecting) {
-                // Custom Action
-                setHasAnimated(true)
-                unobserve(starDistributionContainer.current)
-            }
-        },
-        []
-    )
 
     const avgStars = useRef<ReactElement[] | []>([])
     if (avgRating && !avgStars.current.length) {
@@ -54,19 +39,7 @@ function ProductReviewDistribution(
         console.log('starDistribution')
     }
 
-    const { observe, unobserve } = useIntersectionObserver(HandleAnimation, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 1.0,
-    })
-
-    if (starDistribution.current.length && !hasAnimated)
-        observe(starDistributionContainer.current)
     if (!starDistribution.current.length) calculateStarDistribution()
-
-    const singularOrPlural = (number: number) => {
-        return number > 1 ? `${number} stars` : `${number} star`
-    }
 
     return (
         <div
@@ -85,36 +58,7 @@ function ProductReviewDistribution(
                 </span>
             </div>
             <p className='w-full text-gray-700'>136 verified reviews</p>
-            <div id='stars-container' ref={starDistributionContainer}>
-                <ul className='flex flex-wrap gap-3'>
-                    {starDistribution.current.map(({ stars, percentValue }) => (
-                        <li
-                            key={stars}
-                            className='flex w-full gap-3 text-secondary hover:text-accent hover:underline underline-offset-2 cursor-pointer text-sm'
-                        >
-                            <span className='min-w-12'>
-                                {singularOrPlural(stars)}
-                            </span>
-                            <div className='w-60 border-2 border-gray-500 bg-white rounded-lg overflow-hidden'>
-                                <div
-                                    className={`w-full h-full bg-gradient-to-r from-secondary to-secondary transition-transform origin-left duration-[1.5s] ease-linear
-                                    }`}
-                                    style={
-                                        !hasAnimated
-                                            ? { transform: 'scaleX(0)' }
-                                            : {
-                                                  transform: `scaleX(${percentValue}%)`,
-                                              }
-                                    }
-                                ></div>
-                            </div>
-                            <span className='min-w-8 text-end'>
-                                {percentValue}%
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <ReviewsStarDistribution starDistribution={starDistribution} />
         </div>
     )
 }
