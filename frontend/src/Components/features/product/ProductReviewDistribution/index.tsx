@@ -1,5 +1,6 @@
 import { ReactElement, useRef } from 'react'
 import ReviewsStarDistribution from '../ReviewsStarDistribution'
+import StarArray from '@components/icons/StarArray'
 
 type StarData = {
     stars: number
@@ -7,20 +8,13 @@ type StarData = {
 }
 
 type ProductReviewDistributionProps = {
-    buildStars: (arr: ReactElement[], rating: string) => void
     avgRating: string
-    productId: number
 }
 
 function ProductReviewDistribution(
     props: Readonly<ProductReviewDistributionProps>
 ) {
-    const { buildStars, avgRating } = props
-
-    const avgStars = useRef<ReactElement[] | []>([])
-    if (avgRating && !avgStars.current.length) {
-        buildStars(avgStars.current, avgRating)
-    }
+    const { avgRating } = props
 
     const starDistribution = useRef<StarData[]>([])
 
@@ -32,7 +26,7 @@ function ProductReviewDistribution(
             // TODO calculate percentvalue
             const star = {
                 stars: i + 1,
-                percentValue: Math.round(Math.random() * 100).toString(),
+                percentValue: Math.round(Math.random() * 100).toString()
             }
             starDistribution.current.push(star)
         }
@@ -43,21 +37,19 @@ function ProductReviewDistribution(
 
     return (
         <div
-            id='review-distribution'
-            className='flex flex-col gap-2 pr-4 w-[35%] font-poppins'
+            id="review-distribution"
+            className="flex flex-col gap-2 pr-4 w-[35%] font-poppins"
         >
-            <h2 className='font-semibold text-lg'>Our Customer Reviews</h2>
-            <div className='flex items-center gap-3'>
-                <div className='flex flex-wrap'>
-                    {avgStars.current?.map((star, index) => (
-                        <span key={index}>{star}</span>
-                    ))}
+            <h2 className="font-semibold text-lg">Our Customer Reviews</h2>
+            <div className="flex items-center gap-3">
+                <div className="flex flex-wrap">
+                    {avgRating && <StarArray rating={avgRating} />}
                 </div>
-                <span className='text-lg'>
+                <span className="text-lg">
                     {parseFloat(avgRating).toFixed(1)} of 5
                 </span>
             </div>
-            <p className='w-full text-gray-700'>136 verified reviews</p>
+            <p className="w-full text-gray-700">136 verified reviews</p>
             <ReviewsStarDistribution starDistribution={starDistribution} />
         </div>
     )
