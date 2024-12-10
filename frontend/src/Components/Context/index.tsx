@@ -39,7 +39,7 @@ function StoreProvider({ children }: Readonly<props>) {
         men: "men's clothing",
         women: "women's clothing",
         electronics: 'electronics',
-        jewelery: 'jewelery',
+        jewelery: 'jewelery'
     }
 
     // console.log('cart products', shoppingCartProducts)
@@ -68,7 +68,7 @@ function StoreProvider({ children }: Readonly<props>) {
 
     function calculateTotalPrice(items: IProduct[]) {
         let total = 0
-        items.forEach((product) => {
+        items.forEach(product => {
             if (!product.product_quantity) return
             const price = product.price * product.product_quantity
             total = total + price
@@ -189,7 +189,7 @@ function StoreProvider({ children }: Readonly<props>) {
         policy,
         setPolicy,
         terms,
-        setTerms,
+        setTerms
     }
 
     const values = useMemo(() => value, [value])
