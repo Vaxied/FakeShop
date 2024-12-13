@@ -1,0 +1,25 @@
+#static-text-container h1 {
+    font-weight: 700;
+    font-size: var(--text-lg);
+    line-height: var(--text-lg-lineheight);
+    padding-bottom: 0.875rem;
+}
+
+#static-text-container h2 {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lineheight);
+    padding-bottom: 0.75rem;
+    padding-top: 0.25rem;
+}
+
+#static-text-container ul {
+    padding-left: 1.25rem;
+}
+
+#static-text-container p,
+#static-text-container li {
+    font-size: var(--text-xs);
+    line-height: var(--text-xs-lineheight);
+    padding-bottom: 0.5rem;
+}
