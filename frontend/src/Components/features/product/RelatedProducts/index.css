@@ -1,9 +1,0 @@
-.hidden-scollbar::-webkit-scrollbar {
-    background: transparent; /* Chrome/Safari/Webkit */
-    width: 0px;
-}
-
-.hidden-scrollbar {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-}
