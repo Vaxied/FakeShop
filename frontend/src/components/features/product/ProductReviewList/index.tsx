@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
 import ProductReview from '../ProductReview'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { IProduct } from '@@types/product'
 import Paginator from '@components/features/Paginator'
 
@@ -13,9 +12,17 @@ type Review = {
     date: string
 }
 
-function ProductReviews(props: Readonly<{ product: IProduct }>) {
-    const { product } = props
+function ProductReviewList(
+    props: Readonly<{ product: IProduct; starToFilter: number | undefined }>
+) {
+    const { starToFilter } = props
     const reviewsContainer = useRef<HTMLDivElement | null>(null)
+    const [lastFilteredStar, setLastFilteredStar] = useState<number | null>(
+        null
+    )
+    const [shouldResetPaginator, setShouldResetPaginator] = useState(false)
+    const filteredReviews = useRef<Review[] | null>(null)
+    const [firstLoad, setFirstLoad] = useState(true)
 
     const mockedReviews = useRef<Review[]>([
         {
@@ -148,29 +155,73 @@ function ProductReviews(props: Readonly<{ product: IProduct }>) {
     if (!mockedReviews.current.length) {
         return null
     }
+    const [reviewsToShow, setReviewsToShow] = useState<Review[] | null>(
+        mockedReviews.current
+    )
 
     const scrollToTopAfterLoading = () => {
         window.scrollTo(0, 0)
-        // if (reviewsContainer.current) {
-        //     console.log('OFFSET!', reviewsContainer.current.offsetTop)
-        //     const offset = reviewsContainer.current.offsetTop - 64 //substracting navbar
-        //     console.log('Scrolling')
-        //     window.scroll({
-        //         top: offset,
-        //         behavior: 'smooth'
-        //     })
-        // }
     }
+
+    // IDEA Reset Paginador to FIRST LOAD WHEN FILTERING
+    const filterReviewsByStar = (star: number) => {
+        console.log('filtering reviews')
+        filteredReviews.current = mockedReviews.current.filter(
+            ({ rating }) => star.toString() == rating
+        )
+        setLastFilteredStar(star)
+        setReviewsToShow(filteredReviews.current)
+        setShouldResetPaginator(true)
+        scrollToTopAfterLoading()
+        // when to turn this to false??
+        setFirstLoad(true)
+    }
+
+    const resetFilter = () => {
+        console.log('resetting filter')
+        setLastFilteredStar(null)
+        setReviewsToShow(mockedReviews.current)
+        setShouldResetPaginator(true)
+        scrollToTopAfterLoading()
+        setFirstLoad(true)
+    }
+    if (starToFilter && starToFilter !== lastFilteredStar) {
+        filterReviewsByStar(starToFilter)
+    }
+    if (!starToFilter && lastFilteredStar) {
+        resetFilter()
+    }
+
+    //TODO fix scroll bug when using prev or next page buttons in paginatorcontrols
+    const scrollToTopOfReviews = () => {
+        console.log('scrolling to reviews')
+        if (reviewsContainer.current) {
+            console.log('OFFSET!', reviewsContainer.current.offsetTop)
+            const offset = reviewsContainer.current.offsetTop - 64 //substracting navbar
+            console.log('Scrolling')
+            window.scroll({
+                top: offset,
+                behavior: 'smooth'
+            })
+        }
+    }
+
+    // use a key to reset all state from child component when key changes
 
     return (
         <div className="w-full flex flex-wrap pt-8" ref={reviewsContainer}>
             <div className="md:max-2xl:pr-[25%] w-full">
                 <Paginator
-                    content={mockedReviews.current}
+                    content={reviewsToShow}
                     elementsPerPage={3}
-                    scrollToTopAfterLoading={scrollToTopAfterLoading}
+                    scrollToTopOfReviews={scrollToTopOfReviews}
+                    resourceToFilter={starToFilter}
+                    shouldResetPaginator={shouldResetPaginator}
+                    setShouldResetPaginator={setShouldResetPaginator}
+                    firstLoad={firstLoad}
+                    setFirstLoad={setFirstLoad}
                     render={content =>
-                        content.map((review: Review, index: number) => (
+                        content.map((review: Review) => (
                             <ProductReview
                                 review={review}
                                 key={review.reviewId}
@@ -183,4 +234,4 @@ function ProductReviews(props: Readonly<{ product: IProduct }>) {
     )
 }
 
-export default ProductReviews
+export default ProductReviewList

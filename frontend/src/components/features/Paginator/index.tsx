@@ -6,16 +6,31 @@ type PaginatorProps = {
     render: (content: any) => ReactNode
     elementsPerPage: number
     content: any
-    scrollToTopAfterLoading: () => void
+    scrollToTopOfReviews: () => void
+    resourceToFilter?: number
+    shouldResetPaginator?: boolean
+    setShouldResetPaginator?: (state: boolean) => void
+    firstLoad: boolean
+    setFirstLoad: (state: boolean) => void
 }
 
 function Paginator(props: Readonly<PaginatorProps>) {
     const [currentPage, setCurrentPage] = useState(1)
-    const { render, content, elementsPerPage, scrollToTopAfterLoading } = props
+    const {
+        render,
+        content,
+        elementsPerPage,
+        scrollToTopOfReviews,
+        resourceToFilter,
+        shouldResetPaginator,
+        setShouldResetPaginator,
+        firstLoad,
+        setFirstLoad
+    } = props
     const [adyacentPages, setAdjyacentPages] = useState([1, 2, 3])
     const pagesArr = useRef<number[]>([1])
     const [isLoading, setIsLoading] = useState(true)
-    // console.log(content)
+    console.log(content)
 
     const totalPages = Math.ceil(content.length / elementsPerPage)
 
@@ -27,7 +42,6 @@ function Paginator(props: Readonly<PaginatorProps>) {
     }
 
     const updatePage = (page: number) => {
-        scrollToTopAfterLoading()
         setIsLoading(true)
         if (currentPage === page) {
             console.log('samePage')
@@ -36,10 +50,25 @@ function Paginator(props: Readonly<PaginatorProps>) {
         setCurrentPage(page)
     }
 
+    const resetPaginator = () => {
+        updatePage(1)
+        setAdjyacentPages([1, 2, 3])
+    }
+
     useEffect(() => {
+        if (shouldResetPaginator && setShouldResetPaginator) {
+            resetPaginator()
+            setShouldResetPaginator(false)
+            return
+        }
         updateAdyacentPages(currentPage)
         if (isLoading) setTimeout(() => setIsLoading(false), 1000)
-    }, [currentPage, isLoading])
+        if (!firstLoad) {
+            console.log('scrolling to reviews')
+            scrollToTopOfReviews()
+            return
+        }
+    }, [currentPage, isLoading, resourceToFilter, firstLoad])
 
     const updateAdyacentPages = (page: number) => {
         console.log('totalpages', totalPages)
@@ -68,7 +97,18 @@ function Paginator(props: Readonly<PaginatorProps>) {
         console.log(start, end)
         return items.slice(start, end)
     }
+
+    const showPaginatorControls = () => {
+        return content.length > elementsPerPage
+    }
     console.log(getPagedData(content))
+    if (!content.length) {
+        return (
+            <p className="text-center font-medium text-lg">
+                No reviews at the moment
+            </p>
+        )
+    }
 
     return (
         <div id="paginator" className="flex flex-col justify-between">
@@ -81,14 +121,19 @@ function Paginator(props: Readonly<PaginatorProps>) {
                     <div>{render(getPagedData(content))}</div>
                 )}
             </div>
-            <PaginatorControls
-                currentPage={currentPage}
-                updatePage={updatePage}
-                pagesArr={pagesArr.current}
-                adyacentPages={adyacentPages}
-                setIsCurrentPage={setCurrentPage}
-                totalPages={totalPages}
-            />
+            {showPaginatorControls() && (
+                <PaginatorControls
+                    currentPage={currentPage}
+                    updatePage={updatePage}
+                    pagesArr={pagesArr.current}
+                    adyacentPages={adyacentPages}
+                    setIsCurrentPage={setCurrentPage}
+                    totalPages={totalPages}
+                    scrollToTopOfReviews={scrollToTopOfReviews}
+                    firstLoad={firstLoad}
+                    setFirstLoad={setFirstLoad}
+                />
+            )}
         </div>
     )
 }

@@ -1,16 +1,24 @@
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import ProductReviewDistribution from '@components/features/product/ProductReviewDistribution'
-import ProductReviews from '@components/features/product/ProductReviews'
+import ProductReviewList from '@components/features/product/ProductReviewList'
 
-function ProductReviewsPage() {
+function ProductReviews() {
     const location = useLocation()
     console.log('state after coming from product', location.state)
     const { product } = location.state
+    const [starToFilter, setStarToFilter] = useState<number>(0)
+
+    //TODO transform to context with useReducer
 
     return (
         <div className="w-full flex gap-6 sm:flex-wrap">
             <div className="flex w-full gap-8">
-                <ProductReviewDistribution avgRating={product.average_rating} />
+                <ProductReviewDistribution
+                    avgRating={product.average_rating}
+                    starToFilter={starToFilter}
+                    setStarToFilter={setStarToFilter}
+                />
                 <div className="flex items-start gap-4">
                     <img className="w-8" src={product.image} alt="a product" />
                     <p className="flex flex-wrap pb-2">
@@ -24,9 +32,9 @@ function ProductReviewsPage() {
                 </div>
             </div>
 
-            <ProductReviews product={product} />
+            <ProductReviewList product={product} starToFilter={starToFilter} />
         </div>
     )
 }
 
-export default ProductReviewsPage
+export default ProductReviews

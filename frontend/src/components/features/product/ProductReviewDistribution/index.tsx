@@ -1,4 +1,4 @@
-import { ReactElement, useRef } from 'react'
+import { useRef } from 'react'
 import ReviewsStarDistribution from '../ReviewsStarDistribution'
 import StarArray from '@components/icons/StarArray'
 
@@ -9,17 +9,21 @@ type StarData = {
 
 type ProductReviewDistributionProps = {
     avgRating: string
+    starToFilter?: number
+    setStarToFilter?: (star: number) => void
 }
 
 function ProductReviewDistribution(
     props: Readonly<ProductReviewDistributionProps>
 ) {
-    const { avgRating } = props
+    console.log(props)
+    const { avgRating, starToFilter, setStarToFilter } = props
 
     const starDistribution = useRef<StarData[]>([])
 
     //TODO createFakeDistribution()
 
+    // console.log('star', starToFilter, 'function', setStarToFilter)
     //Object.entries was sorting the keys
     const calculateStarDistribution = () => {
         for (let i = 4; i >= 0; i--) {
@@ -50,7 +54,20 @@ function ProductReviewDistribution(
                 </span>
             </div>
             <p className="w-full text-gray-700">136 verified reviews</p>
-            <ReviewsStarDistribution starDistribution={starDistribution} />
+            <ReviewsStarDistribution
+                starDistribution={starDistribution}
+                {...props}
+            />
+            {!!starToFilter && setStarToFilter && (
+                <div>
+                    <button
+                        className="px-4 py-2 bg-accent text-white rounded-3xl"
+                        onClick={() => setStarToFilter(0)}
+                    >
+                        Reset filter
+                    </button>
+                </div>
+            )}
         </div>
     )
 }

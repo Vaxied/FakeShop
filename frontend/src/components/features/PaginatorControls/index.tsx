@@ -1,4 +1,5 @@
 import ArrowIcon from '@components/icons/ArrowIcon'
+import { useEffect, useState } from 'react'
 
 type PaginatorControlsProps = {
     updatePage: (page: number) => void
@@ -7,11 +8,22 @@ type PaginatorControlsProps = {
     adyacentPages: number[]
     pagesArr: number[]
     totalPages: number
+    scrollToTopOfReviews: () => void
+    firstLoad: boolean
+    setFirstLoad: (state: boolean) => void
 }
 
 function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
-    const { updatePage, currentPage, adyacentPages, pagesArr, totalPages } =
-        props
+    const {
+        updatePage,
+        currentPage,
+        adyacentPages,
+        pagesArr,
+        totalPages,
+        firstLoad,
+        setFirstLoad
+    } = props
+
     const isCloserToBeginning = () => {
         const distanceToBeginning = currentPage - 1
         const distanceToEnd = totalPages - currentPage
@@ -24,12 +36,28 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
             return false
         return distanceToBeginning <= distanceToEnd
     }
+
     const nextPage = () => {
-        if (currentPage < totalPages) updatePage(currentPage + 1)
+        // TODO scroll not working properly when reaching last page
+        if (currentPage < totalPages) {
+            updatePage(currentPage + 1)
+            turnOffFirstLoad()
+        }
     }
+
     const prevPage = () => {
-        if (currentPage > 1) updatePage(currentPage - 1)
+        // TODO scroll not working properly when reaching first page
+        if (currentPage > 1) {
+            updatePage(currentPage - 1)
+            turnOffFirstLoad()
+        }
     }
+
+    const turnOffFirstLoad = () => {
+        if (!firstLoad) return
+        setFirstLoad(false)
+    }
+
     return (
         <div className="flex justify-center gap-2">
             <button
@@ -45,6 +73,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === 1 ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
                             updatePage(1)
+                            turnOffFirstLoad()
                         }}
                     >
                         <span>1</span>
@@ -60,6 +89,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === page ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
                             updatePage(page)
+                            turnOffFirstLoad()
                         }}
                     >
                         <span key={page} className="w-4">
@@ -76,6 +106,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === totalPages ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
                             updatePage(totalPages)
+                            turnOffFirstLoad()
                         }}
                     >
                         <span>{totalPages}</span>

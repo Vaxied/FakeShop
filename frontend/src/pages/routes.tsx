@@ -12,7 +12,7 @@ import TermsAndConditions from '@pages/TermsAndConditions'
 import Product from '@pages/Product'
 import ProtectedRoute from '@components/containers/ProtectedRoute'
 import ShoppingCart from '@components/features/shoppingCart/ShoppingCart'
-import ProductReviewsPage from './ProductReviewsPage'
+import ProductReviews from './ProductReviews'
 
 export const AppRoutes = () => {
     let routes = useRoutes([
@@ -40,7 +40,7 @@ export const AppRoutes = () => {
         },
         {
             path: '/products/:productId/reviews',
-            element: <ProductReviewsPage />
+            element: <ProductReviews />
         },
         {
             path: '/login',
