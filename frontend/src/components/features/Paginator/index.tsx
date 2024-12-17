@@ -6,12 +6,9 @@ type PaginatorProps = {
     render: (content: any) => ReactNode
     elementsPerPage: number
     content: any
-    scrollToTopOfReviews: () => void
-    resourceToFilter?: number
-    shouldResetPaginator?: boolean
-    setShouldResetPaginator?: (state: boolean) => void
     firstLoad: boolean
     setFirstLoad: (state: boolean) => void
+    contentContainer: HTMLDivElement | null
 }
 
 function Paginator(props: Readonly<PaginatorProps>) {
@@ -20,18 +17,16 @@ function Paginator(props: Readonly<PaginatorProps>) {
         render,
         content,
         elementsPerPage,
-        scrollToTopOfReviews,
-        resourceToFilter,
-        shouldResetPaginator,
-        setShouldResetPaginator,
         firstLoad,
-        setFirstLoad
+        setFirstLoad,
+        contentContainer
     } = props
-    const [adyacentPages, setAdjyacentPages] = useState([1, 2, 3])
+    // const [adyacentPages, setAdjyacentPages] = useState([1, 2, 3])
     const pagesArr = useRef<number[]>([1])
     const [isLoading, setIsLoading] = useState(true)
     console.log(content)
 
+    let adyacentPages = [1, 2, 3]
     const totalPages = Math.ceil(content.length / elementsPerPage)
 
     const buildPagesArr = () => {
@@ -48,44 +43,47 @@ function Paginator(props: Readonly<PaginatorProps>) {
             return
         }
         setCurrentPage(page)
-    }
-
-    const resetPaginator = () => {
-        updatePage(1)
-        setAdjyacentPages([1, 2, 3])
+        updateAdyacentPages(page)
     }
 
     useEffect(() => {
-        if (shouldResetPaginator && setShouldResetPaginator) {
-            resetPaginator()
-            setShouldResetPaginator(false)
-            return
-        }
-        updateAdyacentPages(currentPage)
         if (isLoading) setTimeout(() => setIsLoading(false), 1000)
         if (!firstLoad) {
             console.log('scrolling to reviews')
-            scrollToTopOfReviews()
+            scrollToTopOfContent()
             return
         }
-    }, [currentPage, isLoading, resourceToFilter, firstLoad])
+    }, [currentPage])
 
     const updateAdyacentPages = (page: number) => {
         console.log('totalpages', totalPages)
         console.log('this is page', page)
         if (page === 1) {
             console.log('checking if less')
-            setAdjyacentPages([1, 2, 3])
+            adyacentPages = [1, 2, 3]
             return
         } else if (page + 2 >= totalPages || page + 1 >= totalPages) {
             console.log('checking if more')
-            setAdjyacentPages([totalPages - 2, totalPages - 1, totalPages])
+            adyacentPages = [totalPages - 2, totalPages, -1, totalPages]
         } else {
             console.log('just updating')
-            setAdjyacentPages([page, page + 1, page + 2])
+            adyacentPages = [page, page + 1, page + 2]
         }
     }
     console.log('content', content)
+
+    const scrollToTopOfContent = () => {
+        console.log('scrolling to reviews')
+        if (contentContainer) {
+            console.log('OFFSET!', contentContainer.offsetTop)
+            const offset = contentContainer.offsetTop - 72 //substracting navbar
+            console.log('Scrolling')
+            window.scroll({
+                top: offset,
+                behavior: 'smooth'
+            })
+        }
+    }
 
     const getPagedData = (items: any) => {
         if (content.length > elementsPerPage && pagesArr.current.length === 1) {
@@ -101,6 +99,7 @@ function Paginator(props: Readonly<PaginatorProps>) {
     const showPaginatorControls = () => {
         return content.length > elementsPerPage
     }
+
     console.log(getPagedData(content))
     if (!content.length) {
         return (
@@ -127,11 +126,10 @@ function Paginator(props: Readonly<PaginatorProps>) {
                     updatePage={updatePage}
                     pagesArr={pagesArr.current}
                     adyacentPages={adyacentPages}
-                    setIsCurrentPage={setCurrentPage}
                     totalPages={totalPages}
-                    scrollToTopOfReviews={scrollToTopOfReviews}
                     firstLoad={firstLoad}
                     setFirstLoad={setFirstLoad}
+                    scrollToTopOfContent={scrollToTopOfContent}
                 />
             )}
         </div>

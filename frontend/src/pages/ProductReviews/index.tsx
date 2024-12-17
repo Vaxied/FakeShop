@@ -32,7 +32,11 @@ function ProductReviews() {
                 </div>
             </div>
 
-            <ProductReviewList product={product} starToFilter={starToFilter} />
+            <ProductReviewList
+                product={product}
+                starToFilter={starToFilter}
+                key={starToFilter}
+            />
         </div>
     )
 }

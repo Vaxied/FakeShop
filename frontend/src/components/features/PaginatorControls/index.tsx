@@ -1,16 +1,14 @@
 import ArrowIcon from '@components/icons/ArrowIcon'
-import { useEffect, useState } from 'react'
 
 type PaginatorControlsProps = {
     updatePage: (page: number) => void
     currentPage: number
-    setIsCurrentPage: (page: number) => void
     adyacentPages: number[]
     pagesArr: number[]
     totalPages: number
-    scrollToTopOfReviews: () => void
     firstLoad: boolean
     setFirstLoad: (state: boolean) => void
+    scrollToTopOfContent: () => void
 }
 
 function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
@@ -28,7 +26,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
         const distanceToBeginning = currentPage - 1
         const distanceToEnd = totalPages - currentPage
         console.log('DB', distanceToBeginning, 'DE', distanceToEnd)
-        // Edge case when total there are not enough distance between beginning and end
+        // Edge case when final page appears in adyacentPages
         if (
             distanceToBeginning <= distanceToEnd &&
             adyacentPages.includes(totalPages)
@@ -38,24 +36,25 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
     }
 
     const nextPage = () => {
-        // TODO scroll not working properly when reaching last page
         if (currentPage < totalPages) {
-            updatePage(currentPage + 1)
-            turnOffFirstLoad()
+            updatePageAndFirstLoadState(currentPage + 1)
         }
     }
 
     const prevPage = () => {
-        // TODO scroll not working properly when reaching first page
         if (currentPage > 1) {
-            updatePage(currentPage - 1)
-            turnOffFirstLoad()
+            updatePageAndFirstLoadState(currentPage - 1)
         }
     }
 
     const turnOffFirstLoad = () => {
         if (!firstLoad) return
         setFirstLoad(false)
+    }
+
+    const updatePageAndFirstLoadState = (page: number) => {
+        updatePage(page)
+        turnOffFirstLoad()
     }
 
     return (
@@ -72,8 +71,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                     <button
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === 1 ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
-                            updatePage(1)
-                            turnOffFirstLoad()
+                            updatePageAndFirstLoadState(1)
                         }}
                     >
                         <span>1</span>
@@ -88,8 +86,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                     <button
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === page ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
-                            updatePage(page)
-                            turnOffFirstLoad()
+                            updatePageAndFirstLoadState(page)
                         }}
                     >
                         <span key={page} className="w-4">
@@ -105,8 +102,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                     <button
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === totalPages ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
-                            updatePage(totalPages)
-                            turnOffFirstLoad()
+                            updatePageAndFirstLoadState(totalPages)
                         }}
                     >
                         <span>{totalPages}</span>

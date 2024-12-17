@@ -23,7 +23,6 @@ function ProductReviewDistribution(
 
     //TODO createFakeDistribution()
 
-    // console.log('star', starToFilter, 'function', setStarToFilter)
     //Object.entries was sorting the keys
     const calculateStarDistribution = () => {
         for (let i = 4; i >= 0; i--) {

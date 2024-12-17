@@ -16,14 +16,13 @@ function ProductReviewList(
     props: Readonly<{ product: IProduct; starToFilter: number | undefined }>
 ) {
     const { starToFilter } = props
-    const reviewsContainer = useRef<HTMLDivElement | null>(null)
+
     const [lastFilteredStar, setLastFilteredStar] = useState<number | null>(
         null
     )
-    const [shouldResetPaginator, setShouldResetPaginator] = useState(false)
-    const filteredReviews = useRef<Review[] | null>(null)
     const [firstLoad, setFirstLoad] = useState(true)
 
+    const contentContainer = useRef<HTMLDivElement | null>(null)
     const mockedReviews = useRef<Review[]>([
         {
             reviewId: 1,
@@ -163,61 +162,31 @@ function ProductReviewList(
         window.scrollTo(0, 0)
     }
 
-    // IDEA Reset Paginador to FIRST LOAD WHEN FILTERING
     const filterReviewsByStar = (star: number) => {
         console.log('filtering reviews')
-        filteredReviews.current = mockedReviews.current.filter(
+        const filteredReviews = mockedReviews.current.filter(
             ({ rating }) => star.toString() == rating
         )
         setLastFilteredStar(star)
-        setReviewsToShow(filteredReviews.current)
-        setShouldResetPaginator(true)
+        setReviewsToShow(filteredReviews)
         scrollToTopAfterLoading()
-        // when to turn this to false??
-        setFirstLoad(true)
     }
 
-    const resetFilter = () => {
-        console.log('resetting filter')
-        setLastFilteredStar(null)
-        setReviewsToShow(mockedReviews.current)
-        setShouldResetPaginator(true)
-        scrollToTopAfterLoading()
-        setFirstLoad(true)
-    }
     if (starToFilter && starToFilter !== lastFilteredStar) {
         filterReviewsByStar(starToFilter)
     }
-    if (!starToFilter && lastFilteredStar) {
-        resetFilter()
-    }
-
-    //TODO fix scroll bug when using prev or next page buttons in paginatorcontrols
-    const scrollToTopOfReviews = () => {
-        console.log('scrolling to reviews')
-        if (reviewsContainer.current) {
-            console.log('OFFSET!', reviewsContainer.current.offsetTop)
-            const offset = reviewsContainer.current.offsetTop - 64 //substracting navbar
-            console.log('Scrolling')
-            window.scroll({
-                top: offset,
-                behavior: 'smooth'
-            })
-        }
-    }
-
-    // use a key to reset all state from child component when key changes
+    if (firstLoad) scrollToTopAfterLoading()
 
     return (
-        <div className="w-full flex flex-wrap pt-8" ref={reviewsContainer}>
-            <div className="md:max-2xl:pr-[25%] w-full">
+        <div className="w-full flex flex-wrap" ref={contentContainer}>
+            <div
+                id="review-paginator-container"
+                className="md:max-2xl:pr-[25%] w-full"
+            >
                 <Paginator
                     content={reviewsToShow}
+                    contentContainer={contentContainer.current}
                     elementsPerPage={3}
-                    scrollToTopOfReviews={scrollToTopOfReviews}
-                    resourceToFilter={starToFilter}
-                    shouldResetPaginator={shouldResetPaginator}
-                    setShouldResetPaginator={setShouldResetPaginator}
                     firstLoad={firstLoad}
                     setFirstLoad={setFirstLoad}
                     render={content =>
