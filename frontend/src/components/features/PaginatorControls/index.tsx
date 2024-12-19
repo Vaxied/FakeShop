@@ -3,10 +3,10 @@ import ArrowIcon from '@components/icons/ArrowIcon'
 type PaginatorControlsProps = {
     updatePage: (page: number) => void
     currentPage: number
-    adyacentPages: number[]
+    adyacentPages?: number[]
     pagesArr: number[]
     totalPages: number
-    firstLoad: boolean
+    firstLoad?: boolean
     setFirstLoad: (state: boolean) => void
     scrollToTopOfContent: () => void
 }
@@ -29,7 +29,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
         // Edge case when final page appears in adyacentPages
         if (
             distanceToBeginning <= distanceToEnd &&
-            adyacentPages.includes(totalPages)
+            adyacentPages?.includes(totalPages)
         )
             return false
         return distanceToBeginning <= distanceToEnd
@@ -66,7 +66,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
             >
                 <ArrowIcon />
             </button>
-            {!adyacentPages.includes(1) && !isCloserToBeginning() && (
+            {!adyacentPages?.includes(1) && !isCloserToBeginning() && (
                 <div className="flex left-indicator gap-2">
                     <button
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === 1 ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
@@ -82,7 +82,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                 </div>
             )}
             {pagesArr.length > 1 &&
-                adyacentPages.map(page => (
+                adyacentPages?.map(page => (
                     <button
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === page ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
@@ -94,7 +94,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                         </span>
                     </button>
                 ))}
-            {!adyacentPages.includes(totalPages) && isCloserToBeginning() && (
+            {!adyacentPages?.includes(totalPages) && isCloserToBeginning() && (
                 <div className="flex right-indicator gap-2">
                     <span className="flex justify-center items-end w-12 tracking-wide text-accent text-3xl leading-none">
                         ...

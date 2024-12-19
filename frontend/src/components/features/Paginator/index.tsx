@@ -6,74 +6,69 @@ type PaginatorProps = {
     render: (content: any) => ReactNode
     elementsPerPage: number
     content: any
-    firstLoad: boolean
-    setFirstLoad: (state: boolean) => void
+    firstLoad?: boolean
+    setFirstLoad?: (state: boolean) => void
     contentContainer: HTMLDivElement | null
 }
 
 function Paginator(props: Readonly<PaginatorProps>) {
     const [currentPage, setCurrentPage] = useState(1)
+    const [lastPage, setLastPage] = useState<number | null>(null)
     const {
         render,
         content,
         elementsPerPage,
-        firstLoad,
+        firstLoad = false,
         setFirstLoad,
         contentContainer
     } = props
     // const [adyacentPages, setAdjyacentPages] = useState([1, 2, 3])
     const pagesArr = useRef<number[]>([1])
     const [isLoading, setIsLoading] = useState(true)
-    console.log(content)
 
-    let adyacentPages = [1, 2, 3]
+    // let adyacentPages = updateAdyacentPages(currentPage)
     const totalPages = Math.ceil(content.length / elementsPerPage)
 
     const buildPagesArr = () => {
         for (let i = 2; i <= totalPages; i++) {
             pagesArr.current.push(i)
         }
-        console.log('pagesArr', pagesArr.current)
     }
 
     const updatePage = (page: number) => {
         setIsLoading(true)
-        if (currentPage === page) {
+        if (currentPage === lastPage) {
             console.log('samePage')
             return
         }
+        setLastPage(currentPage)
         setCurrentPage(page)
-        updateAdyacentPages(page)
     }
 
     useEffect(() => {
         if (isLoading) setTimeout(() => setIsLoading(false), 1000)
         if (!firstLoad) {
-            console.log('scrolling to reviews')
             scrollToTopOfContent()
             return
         }
     }, [currentPage])
 
-    const updateAdyacentPages = (page: number) => {
-        console.log('totalpages', totalPages)
-        console.log('this is page', page)
+    const updateAdyacentPages = (page: number): number[] => {
+        let adyacentPages
         if (page === 1) {
-            console.log('checking if less')
             adyacentPages = [1, 2, 3]
-            return
-        } else if (page + 2 >= totalPages || page + 1 >= totalPages) {
-            console.log('checking if more')
-            adyacentPages = [totalPages - 2, totalPages, -1, totalPages]
+        } else if (page === totalPages) {
+            adyacentPages = [totalPages - 2, totalPages - 1, totalPages]
+        } else if (page + 1 === totalPages) {
+            adyacentPages = [currentPage - 1, currentPage, currentPage + 1]
         } else {
-            console.log('just updating')
             adyacentPages = [page, page + 1, page + 2]
         }
+        return adyacentPages
     }
-    console.log('content', content)
 
+    let contextPages = updateAdyacentPages(currentPage)
     const scrollToTopOfContent = () => {
-        console.log('scrolling to reviews')
         if (contentContainer) {
             console.log('OFFSET!', contentContainer.offsetTop)
             const offset = contentContainer.offsetTop - 72 //substracting navbar
@@ -89,7 +84,6 @@ function Paginator(props: Readonly<PaginatorProps>) {
         if (content.length > elementsPerPage && pagesArr.current.length === 1) {
             buildPagesArr()
         }
-        console.log('currentPage', currentPage)
         const start = (currentPage - 1) * elementsPerPage
         const end = start + elementsPerPage
         console.log(start, end)
@@ -97,10 +91,9 @@ function Paginator(props: Readonly<PaginatorProps>) {
     }
 
     const showPaginatorControls = () => {
-        return content.length > elementsPerPage
+        return content.length > elementsPerPage && !isLoading
     }
 
-    console.log(getPagedData(content))
     if (!content.length) {
         return (
             <p className="text-center font-medium text-lg">
@@ -125,10 +118,10 @@ function Paginator(props: Readonly<PaginatorProps>) {
                     currentPage={currentPage}
                     updatePage={updatePage}
                     pagesArr={pagesArr.current}
-                    adyacentPages={adyacentPages}
+                    adyacentPages={contextPages}
                     totalPages={totalPages}
                     firstLoad={firstLoad}
-                    setFirstLoad={setFirstLoad}
+                    setFirstLoad={setFirstLoad!}
                     scrollToTopOfContent={scrollToTopOfContent}
                 />
             )}
