@@ -1,7 +1,7 @@
 import React from 'react'
 import useForms from '@hooks/useForms'
 import TextInputBase from '@components/features/forms/TextInputBase'
-import ActionButton from '@components/buttons/PrimaryButton'
+import ActionButton from '@components/buttons/ActionButton'
 import { InputProp, InputProps } from './Interfaces'
 
 function SignUpForm() {
@@ -10,7 +10,7 @@ function SignUpForm() {
         isNameValid,
         isEmailValid,
         isPasswordValid,
-        arePasswordsEqual,
+        arePasswordsEqual
     } = useForms()
 
     const [formState, setFormState] = React.useState({
@@ -18,7 +18,7 @@ function SignUpForm() {
         lastName: '',
         email: '',
         password: '',
-        confirmedPassword: '',
+        confirmedPassword: ''
     })
 
     const [showInputErr, setShowInputErr] = React.useState({
@@ -26,7 +26,7 @@ function SignUpForm() {
         lastName: false,
         email: false,
         password: false,
-        diffPassword: false,
+        diffPassword: false
     })
 
     const inputProps: InputProps = [
@@ -38,7 +38,7 @@ function SignUpForm() {
             placeholder: 'First Name',
             value: 'firstName',
             inputErr: '* Please input letters only',
-            validationFunc: isNameValid,
+            validationFunc: isNameValid
         },
         {
             id: 'last-name',
@@ -48,7 +48,7 @@ function SignUpForm() {
             placeholder: 'Last Name',
             value: 'lastName',
             inputErr: '* Please input letters only',
-            validationFunc: isNameValid,
+            validationFunc: isNameValid
         },
         {
             id: 'email',
@@ -58,7 +58,7 @@ function SignUpForm() {
             placeholder: 'something@domain.tld',
             value: 'email',
             inputErr: '* Please input a valid email format.',
-            validationFunc: isEmailValid,
+            validationFunc: isEmailValid
         },
         {
             id: 'password',
@@ -72,9 +72,9 @@ function SignUpForm() {
                 length: '* Minimum 8 characters long',
                 uppercase: '* At least one uppercase character',
                 lowercase: '* At least one lowercase character',
-                special: '* At least one special character',
+                special: '* At least one special character'
             },
-            validationFunc: isPasswordValid,
+            validationFunc: isPasswordValid
         },
         {
             id: 'confirm-password',
@@ -85,27 +85,25 @@ function SignUpForm() {
             maxLength: 20,
             value: 'confirmedPassword',
             inputErr: 'Passwords must be equal.',
-            validationFunc: arePasswordsEqual,
-        },
+            validationFunc: arePasswordsEqual
+        }
     ]
 
     const stateProps = {
         formState,
         setFormState,
         showInputErr,
-        setShowInputErr,
+        setShowInputErr
     }
 
     return (
-        <div className='flex flex-col items-center justify-center w-[500px]'>
+        <div className="flex flex-col items-center justify-center w-[500px]">
             {/* h-[calc(100vh-134px)] */}
             <form
-                className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container'
-                onSubmit={(event) =>
-                    handleSubmit(event, formState, showInputErr)
-                }
+                className="flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container"
+                onSubmit={event => handleSubmit(event, formState, showInputErr)}
             >
-                <p className='font-bold text-lg text-center'>Sign Up</p>
+                <p className="font-bold text-lg text-center">Sign Up</p>
                 {inputProps.map((inputProp: InputProp) => (
                     <TextInputBase
                         inputProp={inputProp}
@@ -113,10 +111,10 @@ function SignUpForm() {
                         key={inputProp.id}
                     />
                 ))}
-                <div className='w-full flex justify-center'>
+                <div className="w-full flex justify-center">
                     <ActionButton
                         text={'Create account'}
-                        type='submit'
+                        type="submit"
                         action={undefined}
                         route={undefined}
                     />

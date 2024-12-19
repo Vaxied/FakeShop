@@ -4,7 +4,7 @@ import useShoppingCart from '@hooks/useShoppingCart'
 import { StoreContextType } from '@@types/store'
 import ShoppingCartProduct from '../ShoppingCartProduct'
 import PrimaryContainer from '@components/containers/PrimaryContainer'
-import ActionButton from '@components/buttons/PrimaryButton'
+import ActionButton from '@components/buttons/ActionButton'
 
 function ShoppingCart() {
     const { shoppingCartProducts } = React.useContext(
@@ -21,19 +21,19 @@ function ShoppingCart() {
 
     return (
         <PrimaryContainer>
-            <div className='flex flex-col justify-between min-h-full'>
+            <div className="flex flex-col justify-between min-h-full">
                 <div>
-                    <p className='font-semibold mb-3'>My Cart</p>
-                    {shoppingCartProducts.map((product) => (
+                    <p className="font-semibold mb-3">My Cart</p>
+                    {shoppingCartProducts.map(product => (
                         <ShoppingCartProduct
                             product={product}
                             key={product.product_id}
                         />
                     ))}
-                    <div className='w-full flex justify-end'>
-                        <div className='w-32 px-2 py-2 flex justify-between'>
+                    <div className="w-full flex justify-end">
+                        <div className="w-32 px-2 py-2 flex justify-between">
                             <p>Total:</p>
-                            <p className='font-bold'>${totalPrice}</p>
+                            <p className="font-bold">${totalPrice}</p>
                         </div>
                     </div>
                 </div>
@@ -46,10 +46,10 @@ function ShoppingCart() {
                         Checkout
                     </button>
                 </div> */}
-                <div className='w-full flex justify-center'>
+                <div className="w-full flex justify-end">
                     <ActionButton
-                        text={'To my cart'}
-                        type='submit'
+                        text={'Go to checkout'}
+                        type="submit"
                         action={undefined}
                         route={'/checkout'}
                     />

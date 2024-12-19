@@ -4,14 +4,14 @@ import { StoreContextType } from '@@types/store'
 import useApi from '@hooks/useApi'
 import PrimaryContainer from '@components/containers/PrimaryContainer'
 import ShoppingCartProduct from '@components/features/shoppingCart/ShoppingCartProduct'
-import ActionButton from '@components/buttons/PrimaryButton'
+import ActionButton from '@components/buttons/ActionButton'
 
 function CheckoutPage() {
     const {
         shoppingCartProducts,
         setShoppingCartProducts,
         calculateTotalPrice,
-        addNewOrder,
+        addNewOrder
     } = React.useContext(StoreContext) as StoreContextType
     const { loadResource } = useApi()
 
@@ -32,26 +32,26 @@ function CheckoutPage() {
 
     return (
         <PrimaryContainer>
-            <div className='flex flex-col justify-between min-h-full'>
+            <div className="flex flex-col justify-between min-h-full">
                 <div>
-                    <p className='font-semibold mb-3'>My Order</p>
-                    {shoppingCartProducts.map((product) => (
+                    <p className="font-semibold mb-3">My Order</p>
+                    {shoppingCartProducts.map(product => (
                         <ShoppingCartProduct
                             product={product}
                             key={product.product_id}
                         />
                     ))}
-                    <div className='w-full flex justify-end'>
-                        <div className='w-32 px-2 py-2 flex justify-between'>
+                    <div className="w-full flex justify-end">
+                        <div className="w-32 px-2 py-2 flex justify-between">
                             <p>Total:</p>
-                            <p className='font-bold'>
+                            <p className="font-bold">
                                 ${calculateTotalPrice(shoppingCartProducts)}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div className='w-full flex justify-center'>
+                <div className="w-full flex justify-center">
                     <ActionButton
                         text={'Place order'}
                         type={'button'}
