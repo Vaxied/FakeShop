@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react'
+import { useRef, useCallback, useState, useEffect } from 'react'
 import useIntersectionObserver from '@hooks/useIntersectionObserver'
 import { useLocation } from 'react-router-dom'
 type StarData = {
@@ -30,7 +30,6 @@ function ReviewsStarDistribution(props: Readonly<ReviewStarDistributionProps>) {
             if (entry.isIntersecting) {
                 // Custom Action
                 setHasAnimated(true)
-                unobserve(starDistributionContainer.current)
             }
         },
         []
@@ -53,10 +52,16 @@ function ReviewsStarDistribution(props: Readonly<ReviewStarDistributionProps>) {
     if (starDistribution.current.length && !hasAnimated)
         observe(starDistributionContainer.current)
 
-    console.log('starToFilter', starToFilter)
+    // TODO Fix loading bar animation
+    useEffect(() => {
+        if (isPathInReviews()) return
+        observe(starDistributionContainer.current)
+        // cleanupObserver
+        return unobserve(starDistributionContainer.current)
+    }, [])
     return (
-        <div id="stars-container" ref={starDistributionContainer}>
-            <ul className="flex flex-wrap">
+        <div id='stars-container' ref={starDistributionContainer}>
+            <ul className='flex flex-wrap'>
                 {starDistribution.current.map(({ stars, percentValue }) => (
                     <li
                         key={stars}
@@ -64,10 +69,10 @@ function ReviewsStarDistribution(props: Readonly<ReviewStarDistributionProps>) {
                       ${!starToFilter ? 'text-secondary' : ''}`}
                         onClick={() => filterByStar(stars)}
                     >
-                        <span className="min-w-12">
+                        <span className='min-w-12'>
                             {singularOrPlural(stars)}
                         </span>
-                        <div className="w-60 border-2 border-gray-400 bg-white rounded-lg overflow-hidden">
+                        <div className='w-60 border-2 border-gray-400 bg-white rounded-lg overflow-hidden'>
                             <div
                                 className={`w-full h-full bg-gradient-to-r from-secondary to-secondary transition-transform origin-left duration-[1.5s] ease-linear
                                     } ${isPathInReviews() ? 'w-[percentValue]' : ''}`}
@@ -80,7 +85,7 @@ function ReviewsStarDistribution(props: Readonly<ReviewStarDistributionProps>) {
                                 }
                             ></div>
                         </div>
-                        <span className="min-w-8 text-end">
+                        <span className='min-w-8 text-end'>
                             {percentValue}%
                         </span>
                     </li>
