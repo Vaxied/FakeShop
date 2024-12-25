@@ -18,7 +18,7 @@ function OrderInfo(props: Readonly<{ order: Order }>) {
                 <span className='pr-1'>{order.productList.length}</span>
                 <span>item(s)</span>
             </p>
-            <p className='flex items-center w-[5.5rem]'>
+            <p className='flex items-center min-w-24'>
                 {order.date && order?.date.substring(0, 10)}
             </p>
             {order.orderId && <ViewButton id={order.orderId} />}
