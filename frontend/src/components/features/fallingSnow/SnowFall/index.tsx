@@ -1,27 +1,17 @@
 import Snowflake from '@components/icons/Snowflake'
-import { ReactElement, useEffect, useRef, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
 type WindData = {
     direction: 'right' | 'left'
     strength: 'light' | 'strong'
 }
 function SnowFall() {
-    const snowParticles = useRef<ReactElement[] | null>([])
-    const particleNumber = 30
+    const particleNumber = 10
+    const particles = Array.from({ length: particleNumber })
     const [windState, setWindState] = useState<WindData>({
-        direction: 'right',
+        direction: 'left',
         strength: 'light'
     })
-
-    function createSnowFallArr() {
-        console.log('creating ARR')
-        for (let i = 0; i < particleNumber; i++) {
-            const data = gererateSnowParticleData()
-            snowParticles.current?.push(
-                <Snowflake key={i} data={data} windState={windState} />
-            )
-        }
-    }
 
     function gererateSnowParticleData() {
         const particleData = {
@@ -30,24 +20,30 @@ function SnowFall() {
         }
         return particleData
     }
+    console.log('snowfall windState:', windState)
     const changeWindDirection = () => {
         const availableWindDirections = ['right', 'left']
         const availableWindForces = ['light', 'strong']
         const direction = availableWindDirections[Math.floor(Math.random() * 2)]
         const strength = availableWindForces[Math.floor(Math.random() * 2)]
-
-        setWindState({ direction: direction, strength: strength } as WindData)
+        // console.log('new wind state: ', direction, strength)
+        const newWindState = { direction: direction, strength: strength }
+        setWindState(newWindState as WindData)
     }
     useEffect(() => {
-        const interval = setInterval(changeWindDirection, 5000)
+        const interval = setInterval(changeWindDirection, 250)
         return () => {
             clearInterval(interval)
         }
     }, [])
 
-    if (!snowParticles.current?.length) createSnowFallArr()
-
-    return <>{snowParticles.current?.map(particle => particle)}</>
+    return (
+        <>
+            {particles.map(() => (
+                <Snowflake windState={windState} />
+            ))}
+        </>
+    )
 }
 
 export default SnowFall

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 type SnowflakeProps = {
-    data: { size: number; xCoordinate: number }
     windState: WindData
 }
 
@@ -9,13 +8,13 @@ type WindData = {
     strength: 'light' | 'strong'
 }
 
-function Snowflake(props: SnowflakeProps) {
-    const { windState } = props
+function Snowflake({ windState }: SnowflakeProps) {
     let particleRef = useRef<HTMLDivElement>(null)
     const [showSnowflake, setShowSnowflake] = useState(false)
 
     const regenerateData = () => {
-        const size = generateSize()
+        // const size = generateSize()
+        const size = 24
         const style = {
             left: generateXCoord()
         }
@@ -85,12 +84,39 @@ function Snowflake(props: SnowflakeProps) {
         }, 500)
     }
 
-    useEffect(() => {
-        requestAnimationFrame(checkPosition)
-        return () => {
-            cancelAnimationFrame(checkPosition as unknown as number)
+    const leftPosition = particleRef.current?.getBoundingClientRect().left
+
+    const getAnimationClass = (
+        size: any,
+        windDirection: any,
+        windStrength: any
+    ) => {
+        if (size >= 20) {
+            return windDirection === 'right'
+                ? windStrength === 'strong'
+                    ? 'animate-fall-fast-right-strong'
+                    : 'animate-fall-fast-right-light'
+                : windStrength === 'strong'
+                  ? 'animate-fall-fast-left-strong'
+                  : 'animate-fall-fast-left-light'
+        } else if (data.size >= 10) {
+            return windDirection === 'right'
+                ? windStrength === 'strong'
+                    ? 'animate-fall-medium-right-strong'
+                    : 'animate-fall-medium-right-light'
+                : windStrength === 'strong'
+                  ? 'animate-fall-medium-left-strong'
+                  : 'animate-fall-medium-left-light'
+        } else {
+            return windDirection === 'right'
+                ? windStrength === 'strong'
+                    ? 'animate-fall-slow-right-strong'
+                    : 'animate-fall-slow-right-light'
+                : windStrength === 'strong'
+                  ? 'animate-fall-slow-left-strong'
+                  : 'animate-fall-slow-left-light'
         }
-    }, [])
+    }
 
     useEffect(() => {
         if (showSnowflake) {
@@ -98,22 +124,26 @@ function Snowflake(props: SnowflakeProps) {
                 particleRef.current.style.top = '0px'
             }
         }
+        requestAnimationFrame(checkPosition)
+        return () => {
+            cancelAnimationFrame(checkPosition as unknown as number)
+        }
     }, [showSnowflake])
 
     if (!showSnowflake) {
         delayRender(Math.random() * 10000)
         return null
     }
-    const fallingAnimationSpeedClass =
-        data.size > 20
-            ? `animate-fall-fast-${windState.direction}-${windState.strength}`
-            : data.size > 10
-              ? `animate-fall-medium-${windState.direction}-${windState.strength}`
-              : `animate-fall-slow-${windState.direction}-${windState.strength}`
 
+    //
+    // const test = 'animate-fall-fast-right-strong'
+    // const directionTest =
+    //     windState.direction === 'right'
+    //         ? 'animate-fall-right'
+    //         : 'animate-fall-left'
     return (
         <div
-            className={`w-[24px] h-[24px] snow-particle fixed z-20 ${fallingAnimationSpeedClass}`}
+            className={`snow-particle fixed z-20 ${getAnimationClass(data.size, windState.direction, windState.strength)}`}
             ref={particleRef}
             style={
                 showSnowflake && {
