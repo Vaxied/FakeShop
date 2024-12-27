@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import SnowflakeIcon from '@components/icons/SnowflakeIcon'
 type SnowflakeProps = {
     windState: WindData
 }
@@ -11,41 +12,66 @@ type WindData = {
 function Snowflake({ windState }: SnowflakeProps) {
     let particleRef = useRef<HTMLDivElement>(null)
     const [showSnowflake, setShowSnowflake] = useState(false)
-    const wobble = useRef(0)
+    const colors = ['red', 'darkgreen', '']
+    const pickedColor = colors[Math.floor(Math.random() * 3)]
+    const delayBetweenRenders = Math.random() * 5000
 
     const regenerateData = () => {
-        const size = generateSize() + 5
+        const size = generateSize()
         const style = {
             left: generateXCoord()
         }
-        setData({ ...data, size: size, style: style })
+        setData({ ...data, size: size, style: style, color: pickedColor })
         setShowSnowflake(false)
-        const delay = Math.random() * 5000
-        delayRender(delay)
+        delayRender(delayBetweenRenders)
     }
 
     const delayRender = (delay: number) =>
         setTimeout(() => setShowSnowflake(true), delay)
 
     const generateXCoord = () => {
-        return Math.floor(Math.random() * window.innerWidth)
+        const spawnRightSide = Math.floor(
+            Math.random() +
+                window.innerWidth / 2 +
+                (Math.random() * window.innerWidth) / 2
+        )
+
+        const spawnLeftSide = Math.floor(
+            (Math.random() * window.innerWidth) / 2
+        )
+
+        const shouldSpawnOnOppositeSide = () => {
+            return Math.random() <= 0.75
+        }
+        let xCoord = 0
+        if (windState.direction === 'right') {
+            if (shouldSpawnOnOppositeSide()) xCoord = spawnLeftSide
+            else xCoord = spawnRightSide
+        } else if (windState.direction === 'left') {
+            if (shouldSpawnOnOppositeSide()) {
+                xCoord = spawnRightSide
+            } else xCoord = spawnLeftSide
+        }
+        return xCoord
     }
+
     const generateSize = () => {
-        return Math.floor(Math.random() * 25)
+        return Math.floor(Math.random() * 16) + 8
     }
 
     const [data, setData] = useState({
         size: generateSize(),
-        style: { left: generateXCoord() }
+        style: { left: generateXCoord() },
+        color: pickedColor
     })
 
     const changeDirection = (position: string) => {
-        wobble.current += 0.02
         const newPosition = parseInt(position.slice(0, position.length - 2))
         const distance = getLateralDistance(data.size, windState.strength)
+        // return newPosition
         return windState.direction === 'right'
-            ? `${newPosition + distance + Math.sin(wobble.current) * 2}px`
-            : `${newPosition - distance + Math.sin(wobble.current) * 2}px`
+            ? `${newPosition + distance}px`
+            : `${newPosition - distance}px`
     }
 
     const reachedBottom = () => {
@@ -92,13 +118,7 @@ function Snowflake({ windState }: SnowflakeProps) {
     }
 
     useEffect(() => {
-        if (showSnowflake) {
-            if (particleRef.current && reachedBottom()) {
-                particleRef.current.style.top = '0px'
-            }
-        }
-        if (particleRef.current) {
-            // console.log(particleRef.current.style.left)
+        if (particleRef.current && showSnowflake) {
             particleRef.current.style.left = changeDirection(
                 particleRef.current.style.left
             )
@@ -108,7 +128,7 @@ function Snowflake({ windState }: SnowflakeProps) {
         return () => {
             cancelAnimationFrame(checkPosition as unknown as number)
         }
-    }, [showSnowflake, windState])
+    }, [windState])
 
     if (!showSnowflake) {
         delayRender(Math.random() * 15000)
@@ -126,24 +146,7 @@ function Snowflake({ windState }: SnowflakeProps) {
                 }
             }
         >
-            <svg
-                width={data?.size}
-                height={data?.size}
-                strokeWidth='1.5'
-                viewBox='0 0 24 24'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-                color='#000000'
-            >
-                <path
-                    d='M3 7L6.5 9M21 17L17.5 15M12 12L6.5 9M12 12L6.5 15M12 12V5M12 12V18.5M12 12L17.5 15M12 12L17.5 9M12 2V5M12 22V18.5M21 7L17.5 9M3 17L6.5 15M6.5 9L3 10M6.5 9L6 5.5M6.5 15L3 14M6.5 15L6 18.5M12 5L9.5 4M12 5L14.5 4M12 18.5L14.5 20M12 18.5L9.5 20M17.5 15L18 18.5M17.5 15L21 14M17.5 9L21 10M17.5 9L18 5.5'
-                    stroke=''
-                    strokeWidth='1.5'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    className={`stroke-secondary`}
-                ></path>
-            </svg>{' '}
+            <SnowflakeIcon data={data} />
         </div>
     )
 }

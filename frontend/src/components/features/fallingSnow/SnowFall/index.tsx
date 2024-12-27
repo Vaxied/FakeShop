@@ -1,5 +1,5 @@
-import Snowflake from '@components/icons/Snowflake'
-import { ReactElement, useEffect, useState } from 'react'
+import Snowflake from '@components/features/fallingSnow/Snowflake'
+import { useEffect, useState } from 'react'
 
 type WindData = {
     direction: 'right' | 'left'
@@ -9,17 +9,10 @@ function SnowFall() {
     const particleNumber = 50
     const particles = Array.from({ length: particleNumber })
     const [windState, setWindState] = useState<WindData>({
-        direction: 'left',
+        direction: 'right',
         strength: 'light'
     })
 
-    function gererateSnowParticleData() {
-        const particleData = {
-            size: Math.floor(Math.random() * 24),
-            xCoordinate: Math.random() * window.innerWidth
-        }
-        return particleData
-    }
     const changeWindDirection = () => {
         const availableWindDirections = ['right', 'left']
         const availableWindForces = ['light', 'strong']
