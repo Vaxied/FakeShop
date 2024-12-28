@@ -30,8 +30,8 @@ function SnowFall() {
     }, [])
     return (
         <>
-            {particles.map(() => (
-                <Snowflake windState={windState} />
+            {particles.map((particle, index: number) => (
+                <Snowflake key={index} windState={windState} />
             ))}
         </>
     )
