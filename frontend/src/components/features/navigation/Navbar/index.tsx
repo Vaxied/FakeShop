@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { NavLink } from 'react-router-dom'
 import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
 import ShoppingCartIcon from '@components/features/shoppingCart/ShoppingCartIcon'
+
+interface NavLink {
+    content: ReactElement | string
+    to: string
+    className?: string
+    action?: () => void
+}
 
 function Navbar() {
     const activeStyle = 'underline underline-offset-4 font-semibold'
@@ -18,39 +25,40 @@ function Navbar() {
         {
             content: 'FakeShop',
             to: '/',
-            className: 'font-semibold text-lg',
+            className: 'font-semibold text-lg'
         },
         {
             content: 'Men',
-            to: '/category/men',
+            to: '/category/men'
         },
         {
             content: 'Women',
-            to: '/category/women',
+            to: '/category/women'
         },
         {
             content: 'Electronics',
-            to: '/category/electronics',
+            to: '/category/electronics'
         },
         {
             content: 'Jewelry',
-            to: '/category/jewelry',
-        },
+            to: '/category/jewelry'
+        }
     ]
 
-    const navLinksRight = {
+    const navLinksRight: { isLoggedIn: NavLink[]; isNotLoggedIn: NavLink[] } = {
         isLoggedIn: [
             {
                 content: 'My Orders',
-                to: '/my-orders',
+                to: '/my-orders'
             },
             {
                 content: 'My Account',
-                to: '/my-account',
+                to: '/my-account'
             },
             {
                 content: 'Sign Out',
                 to: '/',
+                action: logOut
             },
             {
                 content: (
@@ -59,21 +67,21 @@ function Navbar() {
                     />
                 ),
                 to: `${loggedIn ? '/shopping-cart' : '/login'}`,
-                className: 'relative',
-            },
+                className: 'relative'
+            }
         ],
         isNotLoggedIn: [
             {
                 content: 'My Orders',
-                to: '/my-orders',
+                to: '/my-orders'
             },
             {
                 content: 'My Account',
-                to: '/my-account',
+                to: '/my-account'
             },
             {
                 content: 'Sign In',
-                to: '/login',
+                to: '/login'
             },
             {
                 content: (
@@ -82,9 +90,9 @@ function Navbar() {
                     />
                 ),
                 to: `${loggedIn ? '/shopping-cart' : '/login'}`,
-                className: 'relative',
-            },
-        ],
+                className: 'relative'
+            }
+        ]
     }
 
     const rightNavElements = loggedIn
@@ -109,11 +117,18 @@ function Navbar() {
             </ul>
             <ul className='flex items-center gap-3'>
                 {loggedIn && <li className='text-black/80'>Hi, {username}!</li>}
-                {rightNavElements.map(({ content, to, className = '' }) => (
-                    <li className={className}>
-                        <NavLink to={to}>{content}</NavLink>
-                    </li>
-                ))}
+                {rightNavElements.map(
+                    ({ content, to, className = '', action }) => (
+                        <li
+                            className={className}
+                            onClick={() => {
+                                if (action) action()
+                            }}
+                        >
+                            <NavLink to={to}>{content}</NavLink>
+                        </li>
+                    )
+                )}
             </ul>
         </nav>
     )
