@@ -13,7 +13,7 @@ type props = {
 function Card({ product }: Readonly<props>) {
     const { addItemToShoppingCart } = useShoppingCart()
     const navigate = useNavigate()
-    console.log('product', product)
+    // console.log('product', product)
     return (
         <div
             role='button'
