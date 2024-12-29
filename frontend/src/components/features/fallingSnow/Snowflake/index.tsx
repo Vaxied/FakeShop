@@ -19,7 +19,7 @@ function Snowflake({ windState }: SnowflakeProps) {
     const regenerateData = () => {
         const size = generateSize()
         const style = {
-            left: generateXCoord()
+            left: generateXCoord(),
         }
         setData({ ...data, size: size, style: style, color: pickedColor })
         setShowSnowflake(false)
@@ -33,11 +33,11 @@ function Snowflake({ windState }: SnowflakeProps) {
         const spawnRightSide = Math.floor(
             Math.random() +
                 window.innerWidth / 2 +
-                (Math.random() * window.innerWidth) / 2
+                (Math.random() * window.innerWidth) / 2,
         )
 
         const spawnLeftSide = Math.floor(
-            (Math.random() * window.innerWidth) / 2
+            (Math.random() * window.innerWidth) / 2,
         )
 
         const shouldSpawnOnOppositeSide = () => {
@@ -62,10 +62,10 @@ function Snowflake({ windState }: SnowflakeProps) {
     const [data, setData] = useState({
         size: generateSize(),
         style: { left: generateXCoord() },
-        color: pickedColor
+        color: pickedColor,
     })
 
-    const changeDirection = (position: string) => {
+    const getNewPosition = (position: string) => {
         const newPosition = parseInt(position.slice(0, position.length - 2))
         const distance = getLateralDistance(data.size, windState.strength)
         // return newPosition
@@ -117,16 +117,19 @@ function Snowflake({ windState }: SnowflakeProps) {
         }
     }
 
-    useEffect(() => {
+    const updatePosition = () => {
         if (particleRef.current && showSnowflake) {
-            particleRef.current.style.left = changeDirection(
-                particleRef.current.style.left
+            particleRef.current.style.left = getNewPosition(
+                particleRef.current.style.left,
             )
         }
+    }
 
-        requestAnimationFrame(checkPosition)
+    useEffect(() => {
+        updatePosition()
+        const frameRequest = requestAnimationFrame(checkPosition)
         return () => {
-            cancelAnimationFrame(checkPosition as unknown as number)
+            cancelAnimationFrame(frameRequest)
         }
     }, [windState])
 
@@ -142,7 +145,7 @@ function Snowflake({ windState }: SnowflakeProps) {
             style={
                 showSnowflake && {
                     left: `${data.style.left}px`,
-                    transition: `left ${getTransitionDuration(data.size, windState.strength)} ease-out`
+                    transition: `left ${getTransitionDuration(data.size, windState.strength)} ease-out`,
                 }
             }
         >
