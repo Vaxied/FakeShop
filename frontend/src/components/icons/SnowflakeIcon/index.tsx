@@ -1,12 +1,7 @@
 type SnowflakeIconProps = {
-    data: SnowflakeData
+    data: { size: number; color?: string }
 }
 
-type SnowflakeData = {
-    size: number
-    style: { left: number }
-    color?: string
-}
 function SnowflakeIcon(props: Readonly<SnowflakeIconProps>) {
     const { data } = props
     return (

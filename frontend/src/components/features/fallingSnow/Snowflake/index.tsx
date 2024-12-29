@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import SnowflakeIcon from '@components/icons/SnowflakeIcon'
-type SnowflakeProps = {
-    windState: WindData
-}
 
-type WindData = {
-    direction: 'right' | 'left'
-    strength: 'light' | 'strong'
+type SnowflakeProps = {
+    windState: { direction: 'right' | 'left'; strength: 'light' | 'strong' }
 }
 
 function Snowflake({ windState }: SnowflakeProps) {
@@ -21,7 +17,7 @@ function Snowflake({ windState }: SnowflakeProps) {
         const style = {
             left: generateXCoord(),
         }
-        setData({ ...data, size: size, style: style, color: pickedColor })
+        setData({ ...data, size, style, color: pickedColor })
         setShowSnowflake(false)
         delayRender(delayBetweenRenders)
     }
@@ -45,12 +41,13 @@ function Snowflake({ windState }: SnowflakeProps) {
         }
         let xCoord = 0
         if (windState.direction === 'right') {
-            if (shouldSpawnOnOppositeSide()) xCoord = spawnLeftSide
-            else xCoord = spawnRightSide
+            xCoord = shouldSpawnOnOppositeSide()
+                ? spawnLeftSide
+                : spawnRightSide
         } else if (windState.direction === 'left') {
-            if (shouldSpawnOnOppositeSide()) {
-                xCoord = spawnRightSide
-            } else xCoord = spawnLeftSide
+            xCoord = shouldSpawnOnOppositeSide()
+                ? spawnRightSide
+                : spawnLeftSide
         }
         return xCoord
     }
@@ -65,13 +62,14 @@ function Snowflake({ windState }: SnowflakeProps) {
         color: pickedColor,
     })
 
-    const getNewPosition = (position: string) => {
-        const newPosition = parseInt(position.slice(0, position.length - 2))
+    const getNewPosition = (position: number) => {
+        const currentPosition = position
         const distance = getLateralDistance(data.size, windState.strength)
-        // return newPosition
-        return windState.direction === 'right'
-            ? `${newPosition + distance}px`
-            : `${newPosition - distance}px`
+        const newPosition =
+            windState.direction === 'right'
+                ? currentPosition + distance
+                : currentPosition - distance
+        return newPosition
     }
 
     const reachedBottom = () => {
@@ -119,9 +117,10 @@ function Snowflake({ windState }: SnowflakeProps) {
 
     const updatePosition = () => {
         if (particleRef.current && showSnowflake) {
-            particleRef.current.style.left = getNewPosition(
-                particleRef.current.style.left,
-            )
+            setData({
+                ...data,
+                style: { left: getNewPosition(data.style.left) },
+            })
         }
     }
 
@@ -131,13 +130,12 @@ function Snowflake({ windState }: SnowflakeProps) {
         return () => {
             cancelAnimationFrame(frameRequest)
         }
-    }, [windState])
+    }, [windState?.direction, windState?.strength])
 
     if (!showSnowflake) {
         delayRender(Math.random() * 15000)
         return null
     }
-
     return (
         <div
             className={`snow-particle fixed z-20 ${getAnimationClass(data.size)}`}

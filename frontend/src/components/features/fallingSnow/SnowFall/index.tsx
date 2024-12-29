@@ -10,7 +10,7 @@ function SnowFall() {
     const particles = Array.from({ length: particleNumber })
     const [windState, setWindState] = useState<WindData>({
         direction: 'right',
-        strength: 'light'
+        strength: 'light',
     })
 
     const changeWindDirection = () => {
@@ -18,12 +18,11 @@ function SnowFall() {
         const availableWindForces = ['light', 'strong']
         const direction = availableWindDirections[Math.floor(Math.random() * 2)]
         const strength = availableWindForces[Math.floor(Math.random() * 2)]
-        // console.log('new wind state: ', direction, strength)
         const newWindState = { direction: direction, strength: strength }
         setWindState(newWindState as WindData)
     }
     useEffect(() => {
-        const interval = setInterval(changeWindDirection, 5000)
+        const interval = setInterval(changeWindDirection, 4000)
         return () => {
             clearInterval(interval)
         }
