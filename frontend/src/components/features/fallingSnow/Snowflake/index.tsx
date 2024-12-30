@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import SnowflakeIcon from '@components/icons/SnowflakeIcon'
+import { set } from 'react-hook-form'
 
 type SnowflakeProps = {
     windState: { direction: 'right' | 'left'; strength: 'light' | 'strong' }
@@ -8,8 +9,9 @@ type SnowflakeProps = {
 function Snowflake({ windState }: SnowflakeProps) {
     let particleRef = useRef<HTMLDivElement>(null)
     const [showSnowflake, setShowSnowflake] = useState(false)
+    const [isMoving, setIsMoving] = useState(false)
     const colors = ['red', 'darkgreen', '']
-    const pickedColor = colors[Math.floor(Math.random() * 3)]
+    const pickColor = () => colors[Math.floor(Math.random() * 3)]
     const delayBetweenRenders = Math.random() * 5000
 
     const regenerateData = () => {
@@ -17,9 +19,11 @@ function Snowflake({ windState }: SnowflakeProps) {
         const style = {
             left: generateXCoord(),
         }
-        setData({ ...data, size, style, color: pickedColor })
-        setShowSnowflake(false)
-        delayRender(delayBetweenRenders)
+        console.log('regenerating, new spawnpoint: ', style.left)
+        setData({ ...data, size, style, color: pickColor() })
+        // setShowSnowflake(false)
+        setIsMoving(false)
+        // delayRender(delayBetweenRenders)
     }
 
     const delayRender = (delay: number) =>
@@ -59,7 +63,7 @@ function Snowflake({ windState }: SnowflakeProps) {
     const [data, setData] = useState({
         size: generateSize(),
         style: { left: generateXCoord() },
-        color: pickedColor,
+        color: pickColor(),
     })
 
     const getNewPosition = (position: number) => {
@@ -121,34 +125,94 @@ function Snowflake({ windState }: SnowflakeProps) {
                 ...data,
                 style: { left: getNewPosition(data.style.left) },
             })
+            console.log('updating state')
         }
     }
 
-    useEffect(() => {
-        updatePosition()
-        const frameRequest = requestAnimationFrame(checkPosition)
-        return () => {
-            cancelAnimationFrame(frameRequest)
-        }
-    }, [windState?.direction, windState?.strength])
+    // useEffect(() => {
+    //     updatePosition()
+    //     const frameRequest = requestAnimationFrame(checkPosition)
+    //     return () => {
+    //         cancelAnimationFrame(frameRequest)
+    //     }
+    // }, [windState?.direction, windState?.strength])
 
     if (!showSnowflake) {
         delayRender(Math.random() * 15000)
-        return null
+        // return null
     }
+
+    const handleVerticalAnimationStart = (event: any) => {
+        console.log('animation started')
+        setTimeout(() => setData({ ...data, style: { left: 500 } }), 500)
+        updatePosition()
+        if (!particleRef.current) return
+    }
+    const handleVerticalAnimationEnd = (event: any) => {
+        console.log('animation ended')
+        regenerateData()
+        if (!particleRef.current) return
+    }
+
+    const handleLateralTransitionStart = (event: any) => {
+        // console.log('event', event.propertyName)
+        if (event.propertyName !== 'left' || !particleRef.current) return
+        console.log('transition started')
+        if (isMoving) return
+        console.log('is not moving')
+        setIsMoving(true)
+    }
+    const handleLateralTransitionEnd = (event: any) => {
+        if (event.propertyName !== 'left' || !particleRef.current) return
+        console.log('transition ended')
+        console.log('is moving')
+        setIsMoving(false)
+        updatePosition()
+    }
+
+    useEffect(() => {
+        if (!particleRef.current || !showSnowflake) return
+        particleRef.current.addEventListener('transitionstart', event =>
+            handleLateralTransitionStart(event),
+        )
+        particleRef.current.addEventListener('transitionend', event =>
+            handleLateralTransitionEnd(event),
+        )
+        particleRef.current.addEventListener('animationstart', event =>
+            handleVerticalAnimationStart(event),
+        )
+        particleRef.current.addEventListener('animationend', event =>
+            handleVerticalAnimationEnd(event),
+        )
+        console.log('adding listeners')
+        // updatePosition()
+        // setTimeout(() => setData({ ...data, style: { left: 500 } }), 500)
+        console.log('updated left position')
+        console.log('left', data.style.left)
+
+        // const frameRequest = requestAnimationFrame(checkPosition)
+        return () => {
+            // cancelAnimationFrame(frameRequest)
+            removeEventListener('transitionstart', handleLateralTransitionStart)
+            removeEventListener('transitionend', handleLateralTransitionEnd)
+        }
+    }, [showSnowflake])
+
     return (
-        <div
-            className={`snow-particle fixed z-20 ${getAnimationClass(data.size)}`}
-            ref={particleRef}
-            style={
-                showSnowflake && {
-                    left: `${data.style.left}px`,
-                    transition: `left ${getTransitionDuration(data.size, windState.strength)} ease-out`,
-                }
-            }
-        >
-            <SnowflakeIcon data={data} />
-        </div>
+        <>
+            {(showSnowflake || isMoving) && (
+                <div
+                    className={`snow-particle fixed z-20 ${getAnimationClass(data.size)}`}
+                    ref={particleRef}
+                    style={{
+                        left: `${data.style.left}px`,
+                        transition: `left ${getTransitionDuration(data.size, windState.strength)} ease-out`,
+                    }}
+                >
+                    <SnowflakeIcon data={data} />
+                </div>
+            )}
+        </>
     )
 }
 
