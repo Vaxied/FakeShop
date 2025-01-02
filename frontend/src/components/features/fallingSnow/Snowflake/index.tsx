@@ -12,6 +12,7 @@ function Snowflake({ windState }: SnowflakeProps) {
     const colors = ['red', 'darkgreen', '']
     const pickColor = () => colors[Math.floor(Math.random() * 3)]
     const delayBetweenRenders = Math.random() * 10000
+    const [lastWindState, setLastWindState] = useState(windState)
 
     const regenerateData = () => {
         const size = generateSize()
@@ -19,7 +20,6 @@ function Snowflake({ windState }: SnowflakeProps) {
             left: generateXCoord(),
         }
         setData({ ...data, size, style, color: pickColor() })
-        setIsMoving(false)
     }
 
     const delayRender = (delay: number) =>
@@ -108,9 +108,10 @@ function Snowflake({ windState }: SnowflakeProps) {
         }
     }
 
-    useEffect(() => {
+    if (lastWindState !== windState) {
         updatePosition()
-    }, [windState?.direction, windState?.strength])
+        setLastWindState(windState)
+    }
 
     if (!showSnowflake) {
         delayRender(delayBetweenRenders)
@@ -124,6 +125,7 @@ function Snowflake({ windState }: SnowflakeProps) {
     const handleVerticalAnimationEnd = (event: any) => {
         setShowSnowflake(false)
         regenerateData()
+        setIsMoving(false)
     }
 
     const handleLateralTransitionStart = (event: any) => {
@@ -152,10 +154,19 @@ function Snowflake({ windState }: SnowflakeProps) {
         )
 
         return () => {
-            removeEventListener('transitionstart', handleLateralTransitionStart)
-            removeEventListener('transitionend', handleLateralTransitionEnd)
-            removeEventListener('animationstart', handleVerticalAnimationStart)
-            removeEventListener(
+            particleRef?.current?.removeEventListener(
+                'transitionstart',
+                handleLateralTransitionStart,
+            )
+            particleRef?.current?.removeEventListener(
+                'transitionend',
+                handleLateralTransitionEnd,
+            )
+            particleRef?.current?.removeEventListener(
+                'animationstart',
+                handleVerticalAnimationStart,
+            )
+            particleRef?.current?.removeEventListener(
                 'animationiteration',
                 handleVerticalAnimationEnd,
             )
@@ -168,12 +179,10 @@ function Snowflake({ windState }: SnowflakeProps) {
                 <div
                     className={`snow-particle fixed z-20 ${getAnimationClass(data.size)}`}
                     ref={particleRef}
-                    style={
-                        showSnowflake && {
-                            left: `${data?.style?.left}px`,
-                            transition: `left ${getTransitionDuration(data?.size, windState?.strength)} ease-out`,
-                        }
-                    }
+                    style={{
+                        left: `${data?.style?.left}px`,
+                        transition: `left ${getTransitionDuration(data?.size, windState?.strength)} ease-out`,
+                    }}
                 >
                     <SnowflakeIcon data={data} />
                 </div>
