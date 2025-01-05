@@ -25,74 +25,76 @@ function Navbar() {
         {
             content: 'FakeShop',
             to: '/',
-            className: 'font-semibold text-lg'
+            className: 'font-semibold text-lg',
         },
         {
             content: 'Men',
-            to: '/category/men'
+            to: '/category/men',
         },
         {
             content: 'Women',
-            to: '/category/women'
+            to: '/category/women',
         },
         {
             content: 'Electronics',
-            to: '/category/electronics'
+            to: '/category/electronics',
         },
         {
             content: 'Jewelry',
-            to: '/category/jewelry'
-        }
+            to: '/category/jewelry',
+        },
     ]
 
     const navLinksRight: { isLoggedIn: NavLink[]; isNotLoggedIn: NavLink[] } = {
         isLoggedIn: [
             {
                 content: 'My Orders',
-                to: '/my-orders'
+                to: '/my-orders',
             },
             {
                 content: 'My Account',
-                to: '/my-account'
+                to: '/my-account',
             },
             {
                 content: 'Sign Out',
                 to: '/',
-                action: logOut
+                action: logOut,
             },
             {
                 content: (
                     <ShoppingCartIcon
                         numberOfItems={shoppingCartProducts.length}
+                        loggedIn={loggedIn}
                     />
                 ),
                 to: `${loggedIn ? '/shopping-cart' : '/login'}`,
-                className: 'relative'
-            }
+                className: 'relative',
+            },
         ],
         isNotLoggedIn: [
             {
                 content: 'My Orders',
-                to: '/my-orders'
+                to: '/my-orders',
             },
             {
                 content: 'My Account',
-                to: '/my-account'
+                to: '/my-account',
             },
             {
                 content: 'Sign In',
-                to: '/login'
+                to: '/login',
             },
             {
                 content: (
                     <ShoppingCartIcon
                         numberOfItems={shoppingCartProducts.length}
+                        loggedIn={loggedIn}
                     />
                 ),
                 to: `${loggedIn ? '/shopping-cart' : '/login'}`,
-                className: 'relative'
-            }
-        ]
+                className: 'relative',
+            },
+        ],
     }
 
     const rightNavElements = loggedIn
@@ -128,7 +130,7 @@ function Navbar() {
                         >
                             <NavLink to={to}>{content}</NavLink>
                         </li>
-                    )
+                    ),
                 )}
             </ul>
         </nav>

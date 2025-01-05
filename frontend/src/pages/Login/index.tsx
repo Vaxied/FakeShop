@@ -11,6 +11,7 @@ function Login() {
         if (isAuthenticated()) navigate('/')
     }, [])
     if (!isAuthenticated()) return <LoginForm />
+    else navigate('/')
 }
 
 export default Login
