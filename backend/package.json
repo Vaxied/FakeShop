@@ -19,6 +19,7 @@
         "knex:migrate:latest": "npm run knx migrate:latest"
     },
     "dependencies": {
+        "@paypal/paypal-server-sdk": "^0.6.0",
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.2",
         "cookie-parser": "^1.4.6",
