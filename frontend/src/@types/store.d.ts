@@ -6,7 +6,6 @@ export type StoreContextType = {
     shoppingCartProducts: IProduct[] | []
     orders: Order[]
     productToShow: IProduct | null
-    isProductDetailOpen: boolean
     isCartSideMenuOpen: boolean
     loggedIn: boolean
     username: string
@@ -17,13 +16,10 @@ export type StoreContextType = {
     setItems: (products: items) => void
     setShoppingCartProducts: (products: IProduct[]) => void
     setProductToShow: (product: IProduct) => void
-    setIsProductDetailOpen: (boolean: boolean) => void
     setLoggedIn: (boolean: boolean) => void
     setOrders: (Orders: Orders) => void
     setUsername: (string: string) => void
     setSearchByTitle: (string: string) => void
-    openProductDetail: (product: IProduct) => void
-    closeProductDetail: (event: React.MouseEvent) => void
     openCartSideMenu: (event: React.MouseEvent<HTMLButtonElement>) => void
     closeCartSideMenu: () => void
     addNewOrder: () => void
@@ -31,7 +27,7 @@ export type StoreContextType = {
     logOut: () => void
     navigateWithClosing: (
         event: React.MouseEvent<HTMLAnchorElement>,
-        to: string
+        to: string,
     ) => void
     filterItems: (searchTerm?: string, category?: string) => IProduct[]
     setIsLoading: (boolean: boolean) => void

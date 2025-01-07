@@ -18,9 +18,8 @@ function StoreProvider({ children }: Readonly<props>) {
         IProduct[] | []
     >([])
 
-    const [isProductDetailOpen, setIsProductDetailOpen] = React.useState(false)
     const [productToShow, setProductToShow] = React.useState<IProduct | null>(
-        null
+        null,
     )
 
     const [isCartSideMenuOpen, setIsCartSideMenuOpen] = React.useState(false)
@@ -39,26 +38,11 @@ function StoreProvider({ children }: Readonly<props>) {
         men: "men's clothing",
         women: "women's clothing",
         electronics: 'electronics',
-        jewelery: 'jewelery'
-    }
-
-    // console.log('cart products', shoppingCartProducts)
-    // console.log('loading', isLoading)
-    function openProductDetail(product: IProduct) {
-        setIsProductDetailOpen(true)
-        setProductToShow(product)
-        setIsCartSideMenuOpen(false)
-    }
-
-    function closeProductDetail(event: React.MouseEvent) {
-        event.stopPropagation()
-        setIsProductDetailOpen(false)
-        setProductToShow(null)
+        jewelery: 'jewelery',
     }
 
     function openCartSideMenu(event: React.MouseEvent<HTMLButtonElement>) {
         event.stopPropagation()
-        closeProductDetail(event)
         setIsCartSideMenuOpen(true)
     }
 
@@ -109,10 +93,9 @@ function StoreProvider({ children }: Readonly<props>) {
 
     function navigateWithClosing(
         event: React.MouseEvent<HTMLAnchorElement>,
-        to: string
+        to: string,
     ) {
         closeCartSideMenu()
-        closeProductDetail(event)
         navigate(to)
     }
 
@@ -128,17 +111,17 @@ function StoreProvider({ children }: Readonly<props>) {
                     item.title
                         .toLowerCase()
                         .includes(searchTerm.toLowerCase()) &&
-                    item.category.toLowerCase() === category.toLowerCase()
+                    item.category.toLowerCase() === category.toLowerCase(),
             )
             console.log('post filtro')
         } else if (searchTerm && !category) {
             filteredItems = newItems.filter((item: IProduct) =>
-                item.title.toLowerCase().includes(searchTerm.toLowerCase())
+                item.title.toLowerCase().includes(searchTerm.toLowerCase()),
             )
         } else if (!searchTerm && category) {
             filteredItems = newItems.filter(
                 (item: IProduct) =>
-                    item.category.toLowerCase() === category.toLowerCase()
+                    item.category.toLowerCase() === category.toLowerCase(),
             )
         }
         console.log('filteredItems', filteredItems)
@@ -152,14 +135,13 @@ function StoreProvider({ children }: Readonly<props>) {
                 let r = (Math.random() * 16) | 0,
                     v = c == 'x' ? r : (r & 0x3) | 0x8
                 return v.toString(16)
-            }
+            },
         )
     }
 
     const value = {
         items,
         username,
-        isProductDetailOpen,
         productToShow,
         shoppingCartProducts,
         isCartSideMenuOpen,
@@ -169,9 +151,6 @@ function StoreProvider({ children }: Readonly<props>) {
         productCategories,
         setItems,
         setProductToShow,
-        setIsProductDetailOpen,
-        openProductDetail,
-        closeProductDetail,
         setShoppingCartProducts,
         openCartSideMenu,
         closeCartSideMenu,
@@ -189,7 +168,7 @@ function StoreProvider({ children }: Readonly<props>) {
         policy,
         setPolicy,
         terms,
-        setTerms
+        setTerms,
     }
 
     const values = useMemo(() => value, [value])
