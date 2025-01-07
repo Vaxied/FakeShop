@@ -3,12 +3,14 @@ import Snowflake from '@components/features/fallingSnow/Snowflake'
 function SnowFall() {
     const particleNumber = 50
     const particles = Array.from({ length: particleNumber })
+    const showSnowFall = false
 
     return (
         <>
-            {particles.map((particle, index: number) => (
-                <Snowflake key={index} />
-            ))}
+            {showSnowFall &&
+                particles.map((particle, index: number) => (
+                    <Snowflake key={index} />
+                ))}
         </>
     )
 }
