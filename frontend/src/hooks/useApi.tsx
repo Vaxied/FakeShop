@@ -21,6 +21,7 @@ function useApi() {
         setPolicy,
         terms,
         setTerms,
+        logOut,
     } = React.useContext(StoreContext) as StoreContextType
 
     const [tries, setTries] = React.useState(0)
@@ -45,12 +46,12 @@ function useApi() {
                         setTries(0)
                         const products = await loadResource(
                             'json',
-                            '/load-cart'
+                            '/load-cart',
                         )
                         products
                             ? setShoppingCartProducts(products)
                             : console.log(
-                                  "User has no products in cart or products couldn't be fetched"
+                                  "User has no products in cart or products couldn't be fetched",
                               )
                     }
                     loadCart()
@@ -62,7 +63,7 @@ function useApi() {
                         setTries(0)
                         const user = await loadResource('json', '/refresh-user')
                         if (user.error) {
-                            localStorage.removeItem('accessToken')
+                            logOut()
                         }
                         console.log('response.status', user?.status)
                         if (user?.first_name) {
@@ -97,7 +98,7 @@ function useApi() {
     async function loadResource(
         responseType: 'json' | 'text',
         endpoint: string | null = null,
-        headerOpts = { 'Content-type': 'application/json' }
+        headerOpts = { 'Content-type': 'application/json' },
     ) {
         const url = endpoint ? `${API}${endpoint}` : API
         setTimeout(() => setTries(tries + 1), 1000)
@@ -115,7 +116,7 @@ function useApi() {
         if (!terms) {
             const termsData = await loadResource(
                 'text',
-                '/terms-and-conditions'
+                '/terms-and-conditions',
             )
             console.log('LOADING TERMS AND CONDITIONS')
             if (termsData) setTerms(termsData)
