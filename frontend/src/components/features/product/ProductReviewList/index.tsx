@@ -1,7 +1,7 @@
 import ProductReview from '../ProductReview'
 import { useRef, useState } from 'react'
 import { IProduct } from '@@types/product'
-import Paginator from '@components/features/Paginator'
+import Paginator from '@features/Paginator'
 
 type Review = {
     reviewId: number

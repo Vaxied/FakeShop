@@ -1,7 +1,7 @@
 import React from 'react'
 import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
-import StaticText from '@components/features/navigation/StaticText'
+import StaticText from '@features/navigation/StaticText'
 
 function TermsAndConditions() {
     const { terms } = React.useContext(StoreContext) as StoreContextType

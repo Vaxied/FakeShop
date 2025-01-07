@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { IProduct } from '@@types/product'
-import Spinner from '@components/features/loading/Spinner'
-import ProductListInfo from '@components/features/product/ProductList/ProductListInfo'
+import Spinner from '@features/loading/Spinner'
+import ProductListInfo from '@features/product/ProductList/ProductListInfo'
 
 function ShoppingCartProduct(
     props: Readonly<{

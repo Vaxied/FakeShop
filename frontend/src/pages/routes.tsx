@@ -11,7 +11,7 @@ import Privacy from '@pages/Privacy'
 import TermsAndConditions from '@pages/TermsAndConditions'
 import Product from '@pages/Product'
 import ProtectedRoute from '@components/containers/ProtectedRoute'
-import ShoppingCart from '@components/features/shoppingCart/ShoppingCart'
+import ShoppingCart from '@features/shoppingCart/ShoppingCart'
 import ProductReviews from './ProductReviews'
 
 export const AppRoutes = () => {

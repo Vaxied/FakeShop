@@ -3,7 +3,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { postData } from '@lib/services/fetchWrapper'
 import { StoreContext } from '@components/Context/context'
-import InputError from '@components/features/forms/InputError'
+import InputError from '@features/forms/InputError'
 import { StoreContextType } from '@@types/store'
 import ActionButton from '@components/buttons/ActionButton'
 

@@ -3,10 +3,10 @@ import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
 import useApi from '@hooks/useApi'
 import PrimaryContainer from '@components/containers/PrimaryContainer'
-import ShoppingCartProduct from '@components/features/shoppingCart/ShoppingCartProduct'
+import ShoppingCartProduct from '@features/shoppingCart/ShoppingCartProduct'
 import ActionButton from '@components/buttons/ActionButton'
-import TextInput from '@components/features/forms/TextInput'
-import CheckoutForm from '@components/features/forms/CheckoutForm'
+import TextInput from '@features/forms/TextInput'
+import CheckoutForm from '@features/forms/CheckoutForm'
 
 function CheckoutPage() {
     const {

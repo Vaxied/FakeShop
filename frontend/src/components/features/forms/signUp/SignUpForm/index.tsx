@@ -1,6 +1,6 @@
 import React from 'react'
 import useForms from '@hooks/useForms'
-import TextInputBase from '@components/features/forms/TextInputBase'
+import TextInputBase from '@features/forms/TextInputBase'
 import ActionButton from '@components/buttons/ActionButton'
 import { InputProp, InputProps } from './Interfaces'
 

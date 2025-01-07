@@ -1,4 +1,4 @@
-import ProductDetail from '@components/features/product/ProductDetail'
+import ProductDetail from '@features/product/ProductDetail'
 function Product() {
     return <ProductDetail />
 }

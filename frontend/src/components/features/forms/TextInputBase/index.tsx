@@ -1,5 +1,8 @@
 import React from 'react'
-import { InputProp, StateProps } from '../signUp/SignUpForm/Interfaces'
+import {
+    InputProp,
+    StateProps,
+} from '@features/forms/signUp/SignUpForm/Interfaces'
 
 type props = {
     inputProp: InputProp
@@ -27,7 +30,7 @@ function TextInputBase(props: Readonly<props>) {
                     name={inputProp?.name}
                     type={inputProp?.type}
                     placeholder={inputProp?.placeholder}
-                    onChange={(event) => {
+                    onChange={event => {
                         stateProps.setFormState({
                             ...stateProps?.formState,
                             [inputProp.value]: event.target.value,
@@ -35,7 +38,7 @@ function TextInputBase(props: Readonly<props>) {
                         stateProps.setShowInputErr({
                             ...stateProps?.showInputErr,
                             [inputProp.value]: !inputProp.validationFunc(
-                                event.target.value
+                                event.target.value,
                             ),
                         })
                     }}

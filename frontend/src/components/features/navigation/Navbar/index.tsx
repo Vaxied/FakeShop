@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { NavLink } from 'react-router-dom'
 import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
-import ShoppingCartIcon from '@components/features/shoppingCart/ShoppingCartIcon'
+import ShoppingCartIcon from '@features/shoppingCart/ShoppingCartIcon'
 
 interface NavLink {
     content: ReactElement | string

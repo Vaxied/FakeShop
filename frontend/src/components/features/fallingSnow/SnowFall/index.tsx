@@ -1,4 +1,4 @@
-import Snowflake from '@components/features/fallingSnow/Snowflake'
+import Snowflake from '@features/fallingSnow/Snowflake'
 
 function SnowFall() {
     const particleNumber = 50

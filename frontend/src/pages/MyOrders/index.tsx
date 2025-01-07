@@ -1,5 +1,5 @@
 import React from 'react'
-import OrderList from '@components/features/orders/OrderList'
+import OrderList from '@features/orders/OrderList'
 import { StoreContextType } from '@@types/store'
 import { StoreContext } from '@components/Context/context'
 

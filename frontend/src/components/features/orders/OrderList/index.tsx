@@ -3,7 +3,7 @@ import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
 import PrimaryContainer from '@components/containers/PrimaryContainer'
 import OrderInfo from '../OrderInfo'
-import Paginator from '@components/features/Paginator'
+import Paginator from '@features/Paginator'
 
 function OrderList() {
     const { orders } = React.useContext(StoreContext) as StoreContextType

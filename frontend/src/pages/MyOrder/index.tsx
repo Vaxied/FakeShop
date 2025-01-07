@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
 import PrimaryContainer from '@components/containers/PrimaryContainer'
-import ProductList from '@components/features/product/ProductList'
+import ProductList from '@features/product/ProductList'
 
 function MyOrder() {
     const { orders } = React.useContext(StoreContext) as StoreContextType

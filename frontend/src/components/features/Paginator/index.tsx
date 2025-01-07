@@ -1,6 +1,6 @@
 import { ReactNode, useState, useRef, useEffect } from 'react'
-import Spinner from '../loading/Spinner'
-import PaginatorControls from '../PaginatorControls'
+import Spinner from '@features/loading/Spinner'
+import PaginatorControls from '@features/PaginatorControls'
 
 type PaginatorProps = {
     render: (content: any) => ReactNode
@@ -20,7 +20,7 @@ function Paginator(props: Readonly<PaginatorProps>) {
         elementsPerPage,
         firstLoad = false,
         setFirstLoad,
-        contentContainer
+        contentContainer,
     } = props
     // const [adyacentPages, setAdjyacentPages] = useState([1, 2, 3])
     const pagesArr = useRef<number[]>([1])
@@ -75,7 +75,7 @@ function Paginator(props: Readonly<PaginatorProps>) {
             console.log('Scrolling')
             window.scroll({
                 top: offset,
-                behavior: 'smooth'
+                behavior: 'smooth',
             })
         }
     }
@@ -96,18 +96,18 @@ function Paginator(props: Readonly<PaginatorProps>) {
 
     if (!content.length) {
         return (
-            <p className="text-center font-medium text-lg">
+            <p className='text-center font-medium text-lg'>
                 No reviews at the moment
             </p>
         )
     }
 
     return (
-        <div id="paginator" className="flex flex-col justify-between">
-            <div className="min-h-[70vh] h-full">
+        <div id='paginator' className='flex flex-col justify-between'>
+            <div className='min-h-[70vh] h-full'>
                 {isLoading ? (
-                    <div className="flex h-[70vh] items-center w-full">
-                        <Spinner size="8" />
+                    <div className='flex h-[70vh] items-center w-full'>
+                        <Spinner size='8' />
                     </div>
                 ) : (
                     <div>{render(getPagedData(content))}</div>
