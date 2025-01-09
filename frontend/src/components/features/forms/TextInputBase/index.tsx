@@ -65,10 +65,9 @@ function TextInputBase(props: Readonly<props>) {
                         : 'hidden'
                 }`}
                     >
-                        <span>{inputProp?.inputErr.length}</span>
-                        <span>{inputProp?.inputErr.uppercase}</span>
-                        <span>{inputProp?.inputErr.lowercase}</span>
-                        <span>{inputProp?.inputErr.special}</span>
+                        {Object.values(inputProp.inputErr).map(err => (
+                            <span>{err}</span>
+                        ))}
                     </p>
                 )}
             </div>

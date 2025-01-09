@@ -1,16 +1,32 @@
-function CheckInput(props: Readonly<{ content: string; index: number }>) {
-    const { content, index } = props
+function CheckInput(
+    props: Readonly<{
+        id?: string
+        name: string
+        content: string | string[]
+        index: number
+    }>,
+) {
+    const { id, name, content, index } = props
     return (
         <>
             <input
-                id={content}
-                type='checkbox'
+                id={id}
+                name={name}
+                type='radio'
                 defaultChecked={index === 0}
                 readOnly={true}
-                value={'Address 1'}
-                className='self-start border rounded-full mt-2'
+                value={content}
+                className='border rounded-full'
             />
-            <label htmlFor='address-1'>{content}</label>
+            {typeof content === 'string' ? (
+                <label htmlFor={name}>{content}</label>
+            ) : (
+                <label htmlFor={name}>
+                    {content.map(element => (
+                        <span className='block'>{element}</span>
+                    ))}
+                </label>
+            )}
         </>
     )
 }

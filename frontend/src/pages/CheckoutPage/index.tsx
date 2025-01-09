@@ -36,9 +36,9 @@ function CheckoutPage() {
         <div>
             <PrimaryContainer>
                 <div className='flex h-full'>
-                    <div className='flex flex-col w-1/2 justify-between'>
+                    <div className='flex flex-col w-3/5 justify-between mr-8'>
                         <div>
-                            <p className='font-semibold mb-3'>My Order</p>
+                            <p className='font-semibold mb-3'>Order summary</p>
                             {shoppingCartProducts.map(product => (
                                 <ShoppingCartProduct
                                     product={product}
@@ -47,7 +47,14 @@ function CheckoutPage() {
                             ))}
                         </div>
                         <CheckoutForm />
-                        <div className='w-full flex justify-center'>
+                    </div>
+                    <div className='flex flex-wrap w-2/5 px-2 bg-teal-500'>
+                        here goes info
+                        <p>Total:</p>
+                        <p className='font-bold'>
+                            ${calculateTotalPrice(shoppingCartProducts)}
+                        </p>
+                        <div className='w-full flex self-start justify-center'>
                             <ActionButton
                                 text={'Place order'}
                                 type={'button'}
@@ -55,13 +62,6 @@ function CheckoutPage() {
                                 route={undefined}
                             />
                         </div>
-                    </div>
-                    <div className='flex flex-wrap w-1/2 px-2'>
-                        here goes info
-                        <p>Total:</p>
-                        <p className='font-bold'>
-                            ${calculateTotalPrice(shoppingCartProducts)}
-                        </p>
                     </div>
                 </div>
             </PrimaryContainer>

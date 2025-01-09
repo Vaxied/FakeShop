@@ -15,7 +15,7 @@ function TextInput({ name, content, showLabel = true }: TextInputProps) {
             </label>
             <input
                 className={inputStyle}
-                id='address'
+                id={name}
                 type='text'
                 placeholder={content}
                 value={content}
