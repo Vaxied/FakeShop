@@ -2,15 +2,15 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"],
-            "@components/*": ["src/components/*"],
             "@features/*": ["src/components/features/*"],
+            "@components/*": ["src/components/*"],
             "@pages/*": ["./src/pages/*"],
             "@hooks/*": ["./src/hooks/*"],
             "@lib/*": ["./src/lib/*"],
             "@@types/*": ["./src/@types/*"],
             "@classes/*": ["./src/classes/*"],
-            "@assets/*": ["./public/assets/*"]
+            "@assets/*": ["./public/assets/*"],
+            "@/*": ["src/*"],
         },
         /* Visit https://aka.ms/tsconfig to read more about this file */
 
