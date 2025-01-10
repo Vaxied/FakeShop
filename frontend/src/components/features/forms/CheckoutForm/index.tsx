@@ -1,5 +1,13 @@
+import PaymentForm from '@features/forms/PaymentForm'
 import CheckInput from '../CheckInput'
 import TextInput from '../TextInput'
+import TextInputBase from '@features/forms/TextInputBase'
+import useForms from '@hooks/useForms'
+import { useState } from 'react'
+import {
+    FormState,
+    ShowInputErr,
+} from '@features/forms/TextInputBase/Interfaces'
 
 type CustomerAddress = {
     id?: string
@@ -13,6 +21,32 @@ type CustomerAddress = {
 }
 
 function CheckoutForm() {
+    const [formState, setFormState] = useState<FormState>({
+        firstName: '',
+        lastName: '',
+        street: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        country: '',
+    })
+    const [showInputErr, setShowInputErr] = useState<ShowInputErr>({
+        firstName: false,
+        lastName: false,
+        street: false,
+        city: false,
+        state: false,
+        zipCode: false,
+        country: false,
+    })
+
+    const stateProps = {
+        formState,
+        setFormState,
+        showInputErr,
+        setShowInputErr,
+    }
+
     const formatAddress = (address: CustomerAddress) => {
         let fullAddress = []
         const fullName = address.firstName + ' ' + address.lastName
@@ -23,6 +57,7 @@ function CheckoutForm() {
 
         return fullAddress
     }
+    const { isNameValid } = useForms()
     const mockAddresses = [
         {
             id: '1',
@@ -56,7 +91,7 @@ function CheckoutForm() {
             value: 'firstName',
             inputErr: '* Please input letters only',
             className: `col-span-3`,
-            // validationFunc: isNameValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'last-name',
@@ -67,7 +102,7 @@ function CheckoutForm() {
             value: 'lastName',
             inputErr: '* Please input letters only',
             className: `col-span-3`,
-            // validationFunc: isNameValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'address',
@@ -77,7 +112,7 @@ function CheckoutForm() {
             placeholder: 'Address',
             value: 'address',
             inputErr: '',
-            // validationFunc: isEmailValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'apt-suite',
@@ -87,7 +122,7 @@ function CheckoutForm() {
             placeholder: 'Apartment, suite, etc. (optional)',
             value: 'appSuite',
             inputErr: '',
-            // validationFunc: isEmailValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'city',
@@ -98,7 +133,7 @@ function CheckoutForm() {
             value: 'city',
             inputErr: '',
             className: `col-span-2`,
-            // validationFunc: isEmailValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'zip-code',
@@ -109,7 +144,7 @@ function CheckoutForm() {
             value: 'phone',
             inputErr: '',
             className: `col-span-2`,
-            // validationFunc: isEmailValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'zip-code',
@@ -120,7 +155,7 @@ function CheckoutForm() {
             value: 'phone',
             inputErr: '',
             className: `col-span-2`,
-            // validationFunc: isEmailValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'phone',
@@ -130,7 +165,7 @@ function CheckoutForm() {
             placeholder: 'Phone',
             value: 'phone',
             inputErr: '',
-            // validationFunc: isEmailValid,
+            validationFunc: isNameValid,
         },
     ]
 
@@ -144,7 +179,7 @@ function CheckoutForm() {
             value: 'firstName',
             inputErr: '* Please input letters only',
             className: `col-span-3`,
-            // validationFunc: isNameValid,
+            validationFunc: isNameValid,
         },
         {
             id: 'last-name',
@@ -229,7 +264,7 @@ function CheckoutForm() {
                 <div className='flex flex-col gap-y-2'>
                     {mockAddresses.map(
                         (address: CustomerAddress, index: number) => (
-                            <div className='flex items-center p-3 gap-4 bg-white border rounded-lg'>
+                            <div className='flex items-center p-3 gap-4 bg-container border rounded-lg text-gray-700'>
                                 <CheckInput
                                     id={address.id}
                                     name={'address'}
@@ -249,15 +284,16 @@ function CheckoutForm() {
                                     field.className ?? 'col-span-6'
                                 }`}
                             >
-                                <TextInput
-                                    name={field.name}
-                                    content={field.value}
+                                <TextInputBase
+                                    inputProp={field}
+                                    stateProps={stateProps}
                                     showLabel={false}
                                 />
                             </div>
                         )
                     })}
                 </div>
+                {/* <PaymentForm paymentFormData={paymentFormData} /> */}
             </div>
         </form>
     )

@@ -1,77 +1,65 @@
 import React from 'react'
-import {
-    InputProp,
-    StateProps,
-} from '@features/forms/signUp/SignUpForm/Interfaces'
+import { InputProp, StateProps } from '@features/forms/TextInputBase/Interfaces'
 
 type props = {
     inputProp: InputProp
     stateProps: StateProps
+    showLabel?: boolean
 }
 
 function TextInputBase(props: Readonly<props>) {
-    const { inputProp, stateProps } = props
+    const { inputProp, stateProps, showLabel = true } = props
     // console.log('state props:', stateProps)
     return (
-        <>
-            <label htmlFor={inputProp.id} className='py-2 font-semibold'>
-                {inputProp?.label}
+        <div className='relative'>
+            <label htmlFor={inputProp.id} className='block pb-1 font-semibold'>
+                {showLabel && inputProp.label}
             </label>
-            <div
-                className={`relative ${
-                    stateProps?.showInputErr.password &&
-                    inputProp?.id === 'password'
-                        ? 'pb-16 mb-2'
-                        : 'mb-2'
-                }`}
-            >
-                <input
-                    id={inputProp?.id}
-                    name={inputProp?.name}
-                    type={inputProp?.type}
-                    placeholder={inputProp?.placeholder}
-                    onChange={event => {
-                        stateProps.setFormState({
-                            ...stateProps?.formState,
-                            [inputProp.value]: event.target.value,
-                        })
-                        stateProps.setShowInputErr({
-                            ...stateProps?.showInputErr,
-                            [inputProp.value]: !inputProp.validationFunc(
-                                event.target.value,
-                            ),
-                        })
-                    }}
-                    className='border border-gray-400 rounded-lg mb-4 px-4 py-2 outline-none w-full'
-                />
-                {typeof inputProp?.inputErr === 'string' && (
-                    <span
-                        className={`after:content-[""] block text-red-500 absolute
-                bottom-[-8px] left-2 text-sm ${
-                    stateProps.showInputErr[inputProp.value]
-                        ? 'block'
-                        : 'hidden'
-                }`}
-                    >
-                        {inputProp?.inputErr}
-                    </span>
-                )}
-                {typeof inputProp?.inputErr === 'object' && (
-                    <p
-                        className={`after:content-[""] block text-red-500 absolute
-                bottom-[-8px] left-2 text-sm ${
-                    stateProps.showInputErr?.password
-                        ? 'flex flex-col'
-                        : 'hidden'
-                }`}
-                    >
-                        {Object.values(inputProp.inputErr).map(err => (
-                            <span>{err}</span>
-                        ))}
-                    </p>
-                )}
-            </div>
-        </>
+            <input
+                id={inputProp?.id}
+                name={inputProp?.name}
+                type={inputProp.type ?? 'text'}
+                placeholder={inputProp?.placeholder}
+                onChange={event => {
+                    stateProps.setFormState({
+                        ...stateProps?.formState,
+                        [inputProp.value]: event.target.value,
+                    })
+                    stateProps.setShowInputErr({
+                        ...stateProps?.showInputErr,
+                        [inputProp.value]: !inputProp?.validationFunc(
+                            event.target.value,
+                        ),
+                    })
+                }}
+                className={`border border-gray-400 rounded-lg px-4 py-2 outline-none w-full`}
+            />
+            {typeof inputProp?.inputErr === 'string' ? (
+                <span
+                    className={`pl-2 pt-2 block text-red-500
+                 text-sm ${
+                     stateProps.showInputErr[inputProp.value]
+                         ? 'block'
+                         : 'hidden'
+                 }`}
+                >
+                    {inputProp?.inputErr}
+                </span>
+            ) : (
+                <p
+                    className={`pl-2 pt-2 flex flex-col text-red-500
+                 text-sm ${
+                     stateProps.showInputErr[inputProp.value]
+                         ? 'block'
+                         : 'hidden'
+                 }`}
+                >
+                    {Object.values(inputProp.inputErr).map(err => (
+                        <span>{err}</span>
+                    ))}
+                </p>
+            )}
+        </div>
     )
 }
 

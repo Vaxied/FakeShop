@@ -2,7 +2,12 @@ import React from 'react'
 import useForms from '@hooks/useForms'
 import TextInputBase from '@features/forms/TextInputBase'
 import ActionButton from '@components/buttons/ActionButton'
-import { InputProp, InputProps } from './Interfaces'
+import {
+    FormState,
+    InputProp,
+    InputProps,
+    ShowInputErr,
+} from '@features/forms/TextInputBase/Interfaces'
 
 function SignUpForm() {
     const {
@@ -10,23 +15,23 @@ function SignUpForm() {
         isNameValid,
         isEmailValid,
         isPasswordValid,
-        arePasswordsEqual
+        arePasswordsEqual,
     } = useForms()
 
-    const [formState, setFormState] = React.useState({
+    const [formState, setFormState] = React.useState<FormState>({
         firstName: '',
         lastName: '',
         email: '',
         password: '',
-        confirmedPassword: ''
+        confirmedPassword: '',
     })
 
-    const [showInputErr, setShowInputErr] = React.useState({
+    const [showInputErr, setShowInputErr] = React.useState<ShowInputErr>({
         firstName: false,
         lastName: false,
         email: false,
         password: false,
-        diffPassword: false
+        diffPassword: false,
     })
 
     const inputProps: InputProps = [
@@ -34,31 +39,31 @@ function SignUpForm() {
             id: 'first-name',
             name: 'firstName',
             label: 'first name',
-            type: 'text',
             placeholder: 'First Name',
             value: 'firstName',
             inputErr: '* Please input letters only',
-            validationFunc: isNameValid
+            validationFunc: isNameValid,
+            className: 'pb-2',
         },
         {
             id: 'last-name',
             name: 'lastName',
             label: 'last name',
-            type: 'text',
             placeholder: 'Last Name',
             value: 'lastName',
             inputErr: '* Please input letters only',
-            validationFunc: isNameValid
+            validationFunc: isNameValid,
+            className: 'pb-2',
         },
         {
             id: 'email',
             name: 'email',
             label: 'email',
-            type: 'text',
             placeholder: 'something@domain.tld',
             value: 'email',
-            inputErr: '* Please input a valid email format.',
-            validationFunc: isEmailValid
+            inputErr: '* Please input a valid email format',
+            validationFunc: isEmailValid,
+            className: 'pb-2',
         },
         {
             id: 'password',
@@ -72,9 +77,10 @@ function SignUpForm() {
                 length: '* Minimum 8 characters long',
                 uppercase: '* At least one uppercase character',
                 lowercase: '* At least one lowercase character',
-                special: '* At least one special character'
+                special: '* At least one special character',
             },
-            validationFunc: isPasswordValid
+            validationFunc: isPasswordValid,
+            className: 'pb-2',
         },
         {
             id: 'confirm-password',
@@ -84,37 +90,40 @@ function SignUpForm() {
             placeholder: '********',
             maxLength: 20,
             value: 'confirmedPassword',
-            inputErr: 'Passwords must be equal.',
-            validationFunc: arePasswordsEqual
-        }
+            inputErr: '* Passwords must be equal',
+            validationFunc: arePasswordsEqual,
+            className: 'pb-2',
+        },
     ]
 
     const stateProps = {
         formState,
         setFormState,
         showInputErr,
-        setShowInputErr
+        setShowInputErr,
     }
 
     return (
-        <div className="flex flex-col items-center justify-center w-[500px]">
+        <div className='flex flex-col items-center justify-center w-[500px]'>
             {/* h-[calc(100vh-134px)] */}
             <form
-                className="flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container"
+                className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container'
                 onSubmit={event => handleSubmit(event, formState, showInputErr)}
             >
-                <p className="font-bold text-lg text-center">Sign Up</p>
+                <p className='font-bold text-lg text-center'>Sign Up</p>
                 {inputProps.map((inputProp: InputProp) => (
-                    <TextInputBase
-                        inputProp={inputProp}
-                        stateProps={stateProps}
-                        key={inputProp.id}
-                    />
+                    <div className='pb-3'>
+                        <TextInputBase
+                            inputProp={inputProp}
+                            stateProps={stateProps}
+                            key={inputProp.id}
+                        />
+                    </div>
                 ))}
-                <div className="w-full flex justify-center">
+                <div className='w-full flex justify-center'>
                     <ActionButton
                         text={'Create account'}
-                        type="submit"
+                        type='submit'
                         action={undefined}
                         route={undefined}
                     />
