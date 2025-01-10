@@ -16,7 +16,7 @@ function useForms() {
     async function handleSubmit(
         event: React.FormEvent<HTMLFormElement>,
         formState: formState,
-        inputErrs: inputErrs
+        inputErrs: inputErrs,
     ) {
         event.preventDefault()
         console.log(formState)
@@ -41,7 +41,7 @@ function useForms() {
     function isPasswordValid(password: string) {
         if (!password) return true
         return /(?=.{8,20})(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "])/g.test(
-            password
+            password,
         )
     }
 

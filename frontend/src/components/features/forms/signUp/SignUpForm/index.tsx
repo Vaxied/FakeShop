@@ -105,7 +105,6 @@ function SignUpForm() {
 
     return (
         <div className='flex flex-col items-center justify-center w-[500px]'>
-            {/* h-[calc(100vh-134px)] */}
             <form
                 className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container'
                 onSubmit={event => handleSubmit(event, formState, showInputErr)}

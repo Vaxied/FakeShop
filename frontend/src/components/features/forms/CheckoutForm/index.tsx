@@ -87,9 +87,9 @@ function CheckoutForm() {
             name: 'firstName',
             label: 'first name',
             type: 'text',
-            placeholder: 'First Name',
+            placeholder: 'First name',
             value: 'firstName',
-            inputErr: '* Please input letters only',
+            inputErr: 'Please input letters only',
             className: `col-span-3`,
             validationFunc: isNameValid,
         },
@@ -98,9 +98,9 @@ function CheckoutForm() {
             name: 'lastName',
             label: 'last name',
             type: 'text',
-            placeholder: 'Last Name',
+            placeholder: 'Last name',
             value: 'lastName',
-            inputErr: '* Please input letters only',
+            inputErr: 'Please input letters only',
             className: `col-span-3`,
             validationFunc: isNameValid,
         },
@@ -111,7 +111,7 @@ function CheckoutForm() {
             type: 'text',
             placeholder: 'Address',
             value: 'address',
-            inputErr: '',
+            inputErr: 'Invalid address',
             validationFunc: isNameValid,
         },
         {
@@ -121,7 +121,7 @@ function CheckoutForm() {
             type: 'text',
             placeholder: 'Apartment, suite, etc. (optional)',
             value: 'appSuite',
-            inputErr: '',
+            inputErr: 'Invalid address',
             validationFunc: isNameValid,
         },
         {
@@ -131,7 +131,17 @@ function CheckoutForm() {
             type: 'text',
             placeholder: 'City',
             value: 'city',
-            inputErr: '',
+            inputErr: 'Invalid city',
+            className: `col-span-2`,
+            validationFunc: isNameValid,
+        },
+        {
+            id: 'zip-code',
+            name: 'zipCode',
+            label: 'ZIP code',
+            placeholder: 'ZIP code',
+            value: 'zipCode',
+            inputErr: 'Invalid ZIP code',
             className: `col-span-2`,
             validationFunc: isNameValid,
         },
@@ -142,18 +152,7 @@ function CheckoutForm() {
             type: 'text',
             placeholder: 'Zip code',
             value: 'phone',
-            inputErr: '',
-            className: `col-span-2`,
-            validationFunc: isNameValid,
-        },
-        {
-            id: 'zip-code',
-            name: 'zipCode',
-            label: 'zip-code',
-            type: 'text',
-            placeholder: 'Zip code',
-            value: 'phone',
-            inputErr: '',
+            inputErr: 'Invalid ZIP code',
             className: `col-span-2`,
             validationFunc: isNameValid,
         },
@@ -164,107 +163,60 @@ function CheckoutForm() {
             type: 'text',
             placeholder: 'Phone',
             value: 'phone',
-            inputErr: '',
+            inputErr: 'Invalid phone number',
             validationFunc: isNameValid,
         },
     ]
 
     const paymentFormData = [
         {
-            id: 'first-name',
-            name: 'firstName',
-            label: 'first name',
-            type: 'text',
-            placeholder: 'First Name',
-            value: 'firstName',
-            inputErr: '* Please input letters only',
-            className: `col-span-3`,
+            id: 'name-on-card',
+            name: 'nameOnCard',
+            label: 'Name on card',
+            placeholder: 'Name on card',
+            value: '',
+            inputErr: 'Please input letters only',
             validationFunc: isNameValid,
         },
         {
-            id: 'last-name',
-            name: 'lastName',
-            label: 'last name',
-            type: 'text',
-            placeholder: 'Last Name',
-            value: 'lastName',
-            inputErr: '* Please input letters only',
-            className: `col-span-3`,
-            // validationFunc: isNameValid,
+            id: 'card-number',
+            name: 'cardNumber',
+            label: 'Card number',
+            placeholder: 'Card number',
+            value: 'cardNumber',
+            inputErr: 'Invalid credit card number',
+            validationFunc: isNameValid,
         },
         {
-            id: 'address',
-            name: 'address',
-            label: '',
-            type: 'text',
-            placeholder: 'Address',
-            value: 'address',
-            inputErr: '',
-            // validationFunc: isEmailValid,
+            id: 'expiration-date',
+            name: 'expirationDate',
+            label: 'Expiration Date',
+            placeholder: 'Expiration date (MM/YY)',
+            value: 'expirationDate',
+            inputErr: 'Invalid expiration date',
+            validationFunc: isNameValid,
+            className: 'col-span-3',
         },
         {
-            id: 'apt-suite',
-            name: 'appSuite',
-            label: 'appSuite',
-            type: 'text',
-            placeholder: 'Apartment, suite, etc. (optional)',
-            value: 'appSuite',
-            inputErr: '',
-            // validationFunc: isEmailValid,
-        },
-        {
-            id: 'city',
-            name: 'city',
-            label: 'city',
-            type: 'text',
-            placeholder: 'City',
-            value: 'city',
-            inputErr: '',
-            className: `col-span-2`,
-            // validationFunc: isEmailValid,
-        },
-        {
-            id: 'zip-code',
-            name: 'zipCode',
-            label: 'zip-code',
-            type: 'text',
-            placeholder: 'Zip code',
-            value: 'phone',
-            inputErr: '',
-            className: `col-span-2`,
-            // validationFunc: isEmailValid,
-        },
-        {
-            id: 'zip-code',
-            name: 'zipCode',
-            label: 'zip-code',
-            type: 'text',
-            placeholder: 'Zip code',
-            value: 'phone',
-            inputErr: '',
-            className: `col-span-2`,
-            // validationFunc: isEmailValid,
-        },
-        {
-            id: 'phone',
-            name: 'phone',
-            label: 'phone',
-            type: 'text',
-            placeholder: 'Phone',
-            value: 'phone',
-            inputErr: '',
-            // validationFunc: isEmailValid,
+            id: 'security-code',
+            name: 'securityCode',
+            label: 'Security code',
+            placeholder: 'Security code',
+            value: 'securityCode',
+            inputErr: 'Invalid CVC number',
+            validationFunc: isNameValid,
+            className: 'col-span-3',
         },
     ]
 
     return (
         <form action='' className='flex pt-3 flex-wrap gap-3 w-full'>
             <span className='font-semibold'>Your registered addresses</span>
-            <div className='flex flex-col gap-3'>
+            <div className='w-full'>
                 <div className='flex flex-col gap-y-2'>
                     {mockAddresses.map(
                         (address: CustomerAddress, index: number) => (
-                            <div className='flex items-center p-3 gap-4 bg-container border rounded-lg text-gray-700'>
+                            <div className='flex items-center p-3 gap-4 bg-container border rounded-lg text-gray-700 text-sm'>
                                 <CheckInput
                                     id={address.id}
                                     name={'address'}
@@ -275,7 +227,9 @@ function CheckoutForm() {
                         ),
                     )}
                 </div>
-                <span className='font-semibold'>Delivery</span>
+            </div>
+            <div>
+                <span className='block pb-2 font-semibold'>Delivery</span>
                 <div className='grid grid-cols-6 gap-2'>
                     {deliveryFormStructure.map(field => {
                         return (
@@ -293,7 +247,24 @@ function CheckoutForm() {
                         )
                     })}
                 </div>
-                {/* <PaymentForm paymentFormData={paymentFormData} /> */}
+            </div>
+            <div>
+                <span className='block text-md font-semibold pb-2'>
+                    Shipping method
+                </span>
+                <div className='p-3 text-xs bg-container rounded-lg'>
+                    Enter your shipping address to view available shipping
+                    methods.
+                </div>
+            </div>
+            <div className='w-full'>
+                <div className='pb-2'>
+                    <p className='font-semibold'>Payment</p>
+                    <p className='font-light text-xs text-gray-400'>
+                        All transations are secure and encrypted
+                    </p>
+                </div>
+                <PaymentForm paymentFormData={paymentFormData} />
             </div>
         </form>
     )

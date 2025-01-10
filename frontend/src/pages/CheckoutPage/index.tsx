@@ -36,9 +36,11 @@ function CheckoutPage() {
         <div>
             <PrimaryContainer>
                 <div className='flex h-full'>
-                    <div className='flex flex-col w-3/5 justify-between mr-8'>
+                    <div className='flex flex-col w-3/5 justify-between mr-8 text-sm'>
                         <div>
-                            <p className='font-semibold mb-3'>Order summary</p>
+                            <p className='text-lg font-semibold mb-3'>
+                                Order summary
+                            </p>
                             {shoppingCartProducts.map(product => (
                                 <ShoppingCartProduct
                                     product={product}

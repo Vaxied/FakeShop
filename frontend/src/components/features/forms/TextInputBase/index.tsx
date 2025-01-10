@@ -12,7 +12,10 @@ function TextInputBase(props: Readonly<props>) {
     // console.log('state props:', stateProps)
     return (
         <div className='relative'>
-            <label htmlFor={inputProp.id} className='block pb-1 font-semibold'>
+            <label
+                htmlFor={inputProp.id}
+                className={`block pb-1 font-semibold ${showLabel ? '' : 'absolute top-1/4 left-1/4 w-6'}`}
+            >
                 {showLabel && inputProp.label}
             </label>
             <input
@@ -32,30 +35,30 @@ function TextInputBase(props: Readonly<props>) {
                         ),
                     })
                 }}
-                className={`border border-gray-400 rounded-lg px-4 py-2 outline-none w-full`}
+                className={`border border-gray-400 rounded-lg text-sm px-2 py-2 outline-none w-full ${stateProps.showInputErr[inputProp.value] ? 'border-red-500' : ''}`}
             />
             {typeof inputProp?.inputErr === 'string' ? (
                 <span
                     className={`pl-2 pt-2 block text-red-500
-                 text-sm ${
+                 text-xs ${
                      stateProps.showInputErr[inputProp.value]
                          ? 'block'
                          : 'hidden'
                  }`}
                 >
-                    {inputProp?.inputErr}
+                    * {inputProp?.inputErr}
                 </span>
             ) : (
                 <p
                     className={`pl-2 pt-2 flex flex-col text-red-500
-                 text-sm ${
+                 text-xs ${
                      stateProps.showInputErr[inputProp.value]
                          ? 'block'
                          : 'hidden'
                  }`}
                 >
                     {Object.values(inputProp.inputErr).map(err => (
-                        <span>{err}</span>
+                        <span>* {err}</span>
                     ))}
                 </p>
             )}
