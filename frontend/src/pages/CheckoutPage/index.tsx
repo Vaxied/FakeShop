@@ -28,35 +28,58 @@ function CheckoutPage() {
         validateShoppingCart()
     }, [])
 
-    // console.log('orders', orders)
     if (!Array.isArray(shoppingCartProducts) || !shoppingCartProducts.length)
         return <p>You don&apos;t have any products yet</p>
 
     return (
-        <div>
-            <PrimaryContainer>
-                <div className='flex h-full'>
-                    <div className='flex flex-col w-3/5 justify-between mr-8 text-sm'>
-                        <div>
-                            <p className='text-lg font-semibold mb-3'>
-                                Order summary
-                            </p>
-                            {shoppingCartProducts.map(product => (
-                                <ShoppingCartProduct
-                                    product={product}
-                                    key={product.product_id}
-                                />
-                            ))}
-                        </div>
+        <PrimaryContainer>
+            <div>
+                <div className='flex flex-wrap gap-4 md:flex-nowrap h-full'>
+                    <div className='flex flex-col w-full md:w-1/2 justify-between text-sm'>
                         <CheckoutForm />
                     </div>
-                    <div className='flex flex-wrap w-2/5 px-2 bg-teal-500'>
-                        here goes info
-                        <p>Total:</p>
-                        <p className='font-bold'>
-                            ${calculateTotalPrice(shoppingCartProducts)}
-                        </p>
-                        <div className='w-full flex self-start justify-center'>
+                    <div className='flex items-start flex-wrap w-full md:w-1/2'>
+                        <div className='flex flex-wrap min-w-80'>
+                            <div className='w-full'>
+                                <p className='text-sm font-bold mb-3'>
+                                    Order summary
+                                </p>
+                                <div className='text-sm min-w-80'>
+                                    {shoppingCartProducts.map(product => (
+                                        <ShoppingCartProduct
+                                            product={product}
+                                            key={product.product_id}
+                                        />
+                                    ))}
+                                </div>
+                                <div className='w-full flex justify-between self-start font-light text-sm'>
+                                    <p className='flex gap-2 flex-col'>
+                                        <span>Subtotal</span>
+                                        <span>Shipping</span>
+                                        <span className='text-base font-semibold'>
+                                            Total
+                                        </span>
+                                    </p>
+
+                                    <p className='flex gap-2 flex-col text-end'>
+                                        <span>
+                                            $
+                                            {calculateTotalPrice(
+                                                shoppingCartProducts,
+                                            )}
+                                        </span>
+                                        <span>Enter shipping address</span>
+                                        <span className='text-base font-semibold'>
+                                            $
+                                            {calculateTotalPrice(
+                                                shoppingCartProducts,
+                                            )}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='w-full flex self-end justify-end pt-3'>
                             <ActionButton
                                 text={'Place order'}
                                 type={'button'}
@@ -66,8 +89,8 @@ function CheckoutPage() {
                         </div>
                     </div>
                 </div>
-            </PrimaryContainer>
-        </div>
+            </div>
+        </PrimaryContainer>
     )
 }
 

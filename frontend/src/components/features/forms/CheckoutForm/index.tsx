@@ -210,7 +210,7 @@ function CheckoutForm() {
     ]
 
     return (
-        <form action='' className='flex pt-3 flex-wrap gap-3 w-full'>
+        <form action='' className='flex flex-wrap gap-3 w-full'>
             <span className='font-semibold'>Your registered addresses</span>
             <div className='w-full'>
                 <div className='flex flex-col gap-y-2'>
@@ -228,7 +228,7 @@ function CheckoutForm() {
                     )}
                 </div>
             </div>
-            <div>
+            <div className='w-full'>
                 <span className='block pb-2 font-semibold'>Delivery</span>
                 <div className='grid grid-cols-6 gap-2'>
                     {deliveryFormStructure.map(field => {
@@ -248,7 +248,7 @@ function CheckoutForm() {
                     })}
                 </div>
             </div>
-            <div>
+            <div className='w-full'>
                 <span className='block text-md font-semibold pb-2'>
                     Shipping method
                 </span>

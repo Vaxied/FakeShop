@@ -1,13 +1,19 @@
 import { useNavigate } from 'react-router-dom'
-
-function ActionButton(
-    props: Readonly<{
-        text: string
-        type: 'submit' | 'reset' | 'button' | undefined
-        action: (() => void) | undefined
-        route: string | undefined
-    }>
-) {
+type ActionButtonProps = {
+    text: string
+    type: 'submit' | 'reset' | 'button' | undefined
+    action?: () => void
+    route?: string
+    max?: boolean
+}
+function ActionButton(props: ActionButtonProps) {
+    const {
+        text,
+        type,
+        action = undefined,
+        route = undefined,
+        max = false,
+    } = props
     const handleAction = () => {
         if (!action && route) {
             navigate(route)
@@ -15,10 +21,9 @@ function ActionButton(
     }
 
     const navigate = useNavigate()
-    const { text, type, action, route } = props
     return (
         <button
-            className={`border border-gray px-4 py-2 w-[--action-btn-width] bg-secondary
+            className={`w-full border border-gray px-4 py-2 ${max ? 'max-w-36' : ''} bg-secondary
                     text-white rounded-lg`}
             type={type}
             onClick={() => handleAction()}
