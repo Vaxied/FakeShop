@@ -3,16 +3,13 @@
 // /**
 //  * @type { Object.<string, import("knex").Knex.Config> }
 //  */
-import createKnex, { Knex } from 'knex'
-import dotenv from 'dotenv'
-dotenv.config({ path: '../../.env' })
-const host = process.env.DB_HOST
-const port = Number(process.env.DB_PORT)
-const user = process.env.DB_USER
-const database = process.env.DB_NAME
-const password = process.env.DB_PASSWORD
+import { config } from '../config'
+import { Knex } from 'knex'
 
-export const config: Knex.Config = {
+const { host, dbPort, user, database, password } = config
+const port = dbPort
+
+export const knexConfig: Knex.Config = {
     client: 'pg',
     connection: {
         host,
@@ -31,4 +28,4 @@ export const config: Knex.Config = {
 
 // exporting default knex gives error : select * - SELECT * with no tables specified is not valid
 // export const knex = createKnex(config)
-export default config
+export default knexConfig

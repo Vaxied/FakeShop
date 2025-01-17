@@ -4,7 +4,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
-const PORT = process.env.API_PORT
+import { config } from './config'
+const PORT = config.apiPort
 
 import { createUser, verifyUser } from './controllers/users'
 import { createOrder, getUserOrders } from './controllers/orders'
@@ -27,7 +28,7 @@ app.use(bodyParser.json())
 app.use(
     bodyParser.urlencoded({
         extended: true,
-    })
+    }),
 )
 app.use(passport.initialize())
 passport.use('local', new LocalStrategy(authUser))
@@ -52,7 +53,7 @@ app.get(
     isAuthenticated,
     (request, response, next) => {
         return createOrder(request, response, next)
-    }
+    },
 )
 
 app.post(
@@ -61,7 +62,7 @@ app.post(
     (request, response, next) => {
         console.log('\n add product request')
         return addProduct(request, response, next)
-    }
+    },
 )
 
 app.get(
@@ -70,7 +71,7 @@ app.get(
     (request, response, next) => {
         console.log('load cart request')
         return loadShoppingCart(request, response, next)
-    }
+    },
 )
 
 app.delete(
@@ -79,7 +80,7 @@ app.delete(
     (request, response, next) => {
         console.log('remove product request')
         return removeProduct(request, response, next)
-    }
+    },
 )
 
 app.patch(
@@ -88,7 +89,7 @@ app.patch(
     (request, response, next) => {
         console.log('increase quantity request')
         return increaseProductQuantity(request, response, next)
-    }
+    },
 )
 
 app.get(
@@ -97,7 +98,7 @@ app.get(
     (request, response, next) => {
         console.log('getting orders')
         return getUserOrders(request, response, next)
-    }
+    },
 )
 
 app.get(routes.user.refreshUser, isAuthenticated, (request, response, next) => {
@@ -113,6 +114,11 @@ app.get(routes.static.privacy, (request, response, next) => {
 app.get(routes.static.terms, (request, response, next) => {
     console.log('app restarted, getting terms')
     return getTerms(request, response)
+})
+
+app.get(routes.payment.clientId, (request, response, next) => {
+    console.log('app restarted, getting client id')
+    return response.json({ clientId: config.clientId })
 })
 
 app.listen(PORT, () => console.log(`\nListening on ${PORT}`))

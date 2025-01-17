@@ -1,6 +1,6 @@
 // import knex from 'knex'
 import createKnex from 'knex'
-import config from './knexfile'
+import knexConfig from './knexfile'
 
 // export const db = knex({
 //     client: 'pg',
@@ -14,4 +14,4 @@ import config from './knexfile'
 // })
 
 // can also be created with knex(config)
-export const knex = createKnex(config)
+export const knex = createKnex(knexConfig)
