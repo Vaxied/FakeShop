@@ -123,7 +123,7 @@ function useApi() {
         }
     }
 
-    return { items, setItems, loadResource, policy, setPolicy }
+    return { items, setItems, loadResource, policy, setPolicy, getData }
 }
 
 export default useApi
