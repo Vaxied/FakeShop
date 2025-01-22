@@ -1,16 +1,15 @@
-import { IProduct } from '@@types/product'
 function CartProductCloseButton(
     props: Readonly<{
-        product: IProduct
+        id: number
         removeProductFromShoppingCart: (id: number) => void
-    }>
+    }>,
 ) {
-    const { product, removeProductFromShoppingCart } = props
+    const { id, removeProductFromShoppingCart } = props
     return (
         <button
             type='button'
             className='h-8'
-            onClick={() => removeProductFromShoppingCart(product.product_id)}
+            onClick={() => removeProductFromShoppingCart(id)}
         >
             <svg
                 xmlns='http://www.w3.org/2000/svg'

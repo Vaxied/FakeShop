@@ -3,6 +3,7 @@ import { IProduct } from '@@types/product'
 import useShoppingCart from '@hooks/useShoppingCart'
 import Spinner from '@features/loading/Spinner'
 import './index.css'
+import CartProductCloseButton from '@features/shoppingCart/CartProductCloseButton'
 
 function CartSideMenuProduct(
     props: Readonly<{
@@ -10,12 +11,12 @@ function CartSideMenuProduct(
         index?: number
         isLoadingAnimation?: boolean
         shoppingCartProducts?: IProduct[]
-    }>
+    }>,
 ) {
     const { removeProductFromShoppingCart } = useShoppingCart()
     const { product, index, shoppingCartProducts } = props
     const [isLoadingAnimation, setIsLoadingAnimation] = React.useState(
-        shoppingCartProducts && index === 0
+        shoppingCartProducts && index === 0,
     )
 
     const stopLoadingAnimation = () =>
@@ -55,28 +56,12 @@ function CartSideMenuProduct(
                                 ).toFixed(2)}
                         </p>
                     </div>
-                    <button
-                        type='button'
-                        className='h-8'
-                        onClick={() =>
-                            removeProductFromShoppingCart(product.product_id)
+                    <CartProductCloseButton
+                        id={product.product_id}
+                        removeProductFromShoppingCart={
+                            removeProductFromShoppingCart
                         }
-                    >
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth={1.5}
-                            stroke='currentColor'
-                            className='w-5 h-5'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M6 18 18 6M6 6l12 12'
-                            />
-                        </svg>
-                    </button>
+                    />
                 </>
             )}
         </div>

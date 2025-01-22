@@ -9,11 +9,12 @@ function ShoppingCartProduct(
         index?: number
         isLoadingAnimation?: boolean
         shoppingCartProducts?: IProduct[]
-    }>
+        closeButtonEnabled?: boolean
+    }>,
 ) {
-    const { product, index, shoppingCartProducts } = props
+    const { product, index, shoppingCartProducts, closeButtonEnabled } = props
     const [isLoadingAnimation, setIsLoadingAnimation] = React.useState(
-        shoppingCartProducts && index === shoppingCartProducts.length - 1
+        shoppingCartProducts && index === shoppingCartProducts.length - 1,
     )
 
     const stopLoadingAnimation = () =>
@@ -27,7 +28,12 @@ function ShoppingCartProduct(
     ) {
         return <Spinner size={'4'} />
     }
-    return <ProductListInfo product={product} />
+    return (
+        <ProductListInfo
+            product={product}
+            closeButtonEnabled={closeButtonEnabled}
+        />
+    )
 }
 
 export default ShoppingCartProduct
