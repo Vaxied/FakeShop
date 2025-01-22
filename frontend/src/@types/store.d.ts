@@ -23,7 +23,7 @@ export type StoreContextType = {
     openCartSideMenu: (event: React.MouseEvent<HTMLButtonElement>) => void
     closeCartSideMenu: () => void
     addNewOrder: () => void
-    calculateTotalPrice: (items: IProduct[]) => string
+    calculateTotalPrice: (items: IProduct[]) => number
     logOut: () => void
     navigateWithClosing: (
         event: React.MouseEvent<HTMLAnchorElement>,

@@ -6,7 +6,7 @@ export interface IProduct {
     category: string
     image: string
     rating: Rating
-    product_quantity?: number
+    product_quantity: number | 1
     average_rating: string
     rating_count: string
 }
