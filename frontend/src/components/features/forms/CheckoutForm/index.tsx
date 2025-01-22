@@ -136,7 +136,7 @@ function CheckoutForm() {
             validationFunc: isNameValid,
         },
         {
-            id: 'zip-code',
+            id: 'code',
             name: 'zipCode',
             label: 'ZIP code',
             placeholder: 'ZIP code',
