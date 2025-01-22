@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { StoreContext } from './context'
+import { StoreContext } from '@components/Context/context'
 import { getData } from '@lib/services/fetchWrapper'
 import { Order } from '@@types/order'
 import { IProduct } from '@@types/product'
@@ -57,7 +57,7 @@ function StoreProvider({ children }: Readonly<props>) {
             const price = product.price * product.product_quantity
             total = total + price
         })
-        return total.toFixed(2)
+        return total
     }
     async function addNewOrder() {
         if (
