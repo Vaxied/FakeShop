@@ -40,8 +40,8 @@ function Navbar() {
             to: '/category/electronics',
         },
         {
-            content: 'Jewelry',
-            to: '/category/jewelry',
+            content: 'Jewelery',
+            to: '/category/jewelery',
         },
     ]
 
