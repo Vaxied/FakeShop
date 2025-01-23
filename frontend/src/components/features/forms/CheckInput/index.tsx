@@ -16,7 +16,7 @@ function CheckInput(
                 defaultChecked={index === 0}
                 readOnly={true}
                 value={content}
-                className='border rounded-full'
+                className='border rounded-full hover:cursor-pointer'
             />
             {typeof content === 'string' ? (
                 <label htmlFor={name}>{content}</label>
