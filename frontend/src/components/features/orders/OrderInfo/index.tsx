@@ -11,7 +11,7 @@ function OrderInfo(props: Readonly<{ order: Order }>) {
             <img
                 src={order.productList[0].image}
                 alt={order.title}
-                className='w-12 h-12 rounded-lg min-w-12 min-h-12 '
+                className='w-12 h-12 rounded-lg min-w-12 min-h-12 object-contain'
             />
             <p className='w-[70px]'>${order.totalPrice}</p>
             <p className='flex items-center max-[600px]:justify-center'>

@@ -28,7 +28,7 @@ function CartSideMenuProduct(
     return (
         <div
             key={product.product_id}
-            className='h-[60px] flex items-center mb-3 p-2 justify-between bg-white border border-gray rounded-lg gap-4 text-sm'
+            className='h-[60px] flex items-center mb-3 p-2 justify-between bg-white border border-gray rounded-lg gap-4 text-xs'
         >
             {isLoadingAnimation && shoppingCartProducts && index === 0 ? (
                 <Spinner size={'4'} />
@@ -38,14 +38,14 @@ function CartSideMenuProduct(
                         <img
                             src={product?.image}
                             alt={product.title}
-                            className='w-12 h-12 min-w-12 min-h-12 rounded-lg'
+                            className='w-12 h-12 min-w-12 min-h-12 rounded-lg object-contain'
                         />
                         <p id='side-product-title' className='max-w-[122px]'>
                             {product?.title}
                         </p>
                     </div>
                     <div className='flex-col items-center justify-center gap-4'>
-                        <p className='min-w-[48px] flex flex-nowrap items-center text-xs'>
+                        <p className='min-w-[48px] flex flex-nowrap items-center'>
                             Qty: {product?.product_quantity}
                         </p>
                         <p className='flex w-16 items-center'>
