@@ -53,25 +53,29 @@ function OrderSuccess() {
 
     return (
         <PrimaryContainer>
-            <div className='flex flex-col relative'>
+            <div className='flex flex-col p-3 md:p-8 relative'>
                 <div className='absolute top-0 right-0'>
                     <button className=''>
                         <PrintIcon />
                     </button>
                 </div>
-                <h2 className='pb-4'>Order details</h2>
+                <h2 className='pb-4 font-semibold'>Order details</h2>
                 <div className='text-sm'>
-                    <p>Order #{id}</p>
-                    <p>Paypal order id (for reference) : #somehting</p>
-                    <p>
-                        {order.date &&
-                            `Placed on ${order.date.substring(0, 10)} at
+                    <div className='pb-4'>
+                        <p className='flex flex-wrap gap-x-2'>
+                            <span>Order</span>
+                            <span className='font-medium'>#{id}</span>
+                        </p>
+                        <p>Paypal order reference: #somehting</p>
+                        <p>
+                            {order.date &&
+                                `Placed on ${order.date.substring(0, 10)} at
                     ${order.date.substring(11, 16)}`}
-                    </p>
-                    <p className='pb-4'>{order.productList.length} item(s)</p>
-                    <div className='flex justify-between pb-4'>
+                        </p>
+                    </div>
+                    <div className='flex flex-wrap pb-4 gap-y-3'>
                         <div className='flex flex-col w-full md:w-1/2'>
-                            <span>Shipped to:</span>
+                            <span className='font-medium'>Shipped to:</span>
                             <span>
                                 {mockAddresses[0].firstName}{' '}
                                 {mockAddresses[0].lastName}
@@ -89,9 +93,6 @@ function OrderSuccess() {
                                 </span>
                             </p>
                             <span>{mockAddresses[0].country}</span>
-                            <p className='py-3'>
-                                To track this order insert link
-                            </p>
                         </div>
                         <div className='flex flex-col md:w-1/2 w-full'>
                             <span>Billed to:</span>
@@ -115,9 +116,12 @@ function OrderSuccess() {
                         </div>
                     </div>
                 </div>
+                <p className='py-3 font-semibold'>
+                    item list ( {order.productList.length} )
+                </p>
                 <ProductList products={order.productList} />
                 <div className='w-full flex justify-end font-light text-sm'>
-                    <div className='flex gap-8'>
+                    <div className='flex w-64 justify-between gap-8 p-2'>
                         <p className='flex gap-2 flex-col'>
                             <span>Subtotal</span>
                             <span>Shipping</span>
@@ -137,14 +141,6 @@ function OrderSuccess() {
                         </p>
                     </div>
                 </div>
-
-                {/*     <div className='w-32 py-2'> */}
-                {/*         <p className='font-semibold flex justify-end'> */}
-                {/*             <span>Subtotal: </span> */}
-                {/*             Total: ${order.totalPrice} */}
-                {/*         </p> */}
-                {/*     </div> */}
-                {/* </div> */}
             </div>
         </PrimaryContainer>
     )
