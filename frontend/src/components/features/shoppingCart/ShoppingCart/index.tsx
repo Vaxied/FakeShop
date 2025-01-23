@@ -28,7 +28,9 @@ function ShoppingCart() {
                     <div className='w-full flex justify-end'>
                         <div className='w-32 px-2 py-2 flex justify-between'>
                             <p>Total:</p>
-                            <p className='font-bold'>${totalPrice}</p>
+                            <p className='font-bold'>
+                                ${totalPrice.toFixed(2)}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -37,6 +39,7 @@ function ShoppingCart() {
                         text={'Go to checkout'}
                         type='submit'
                         route={'/checkout'}
+                        max={true}
                     />
                 </div>
             </div>
