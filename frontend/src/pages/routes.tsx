@@ -13,12 +13,13 @@ import Product from '@pages/Product'
 import ProtectedRoute from '@components/containers/ProtectedRoute'
 import ShoppingCart from '@features/shoppingCart/ShoppingCart'
 import ProductReviews from './ProductReviews'
+import OrderSuccess from '@pages/OrderSuccess'
 
 export const AppRoutes = () => {
     let routes = useRoutes([
         {
             path: '/',
-            element: <Home />
+            element: <Home />,
         },
         {
             path: '/category',
@@ -26,71 +27,75 @@ export const AppRoutes = () => {
             children: [
                 {
                     path: '',
-                    element: <Navigate to={'/'} />
+                    element: <Navigate to={'/'} />,
                 },
                 {
                     path: '*',
-                    element: <Home />
-                }
-            ]
+                    element: <Home />,
+                },
+            ],
         },
         {
             path: '/products/:productId',
-            element: <Product />
+            element: <Product />,
         },
         {
             path: '/products/:productId/reviews',
-            element: <ProductReviews />
+            element: <ProductReviews />,
         },
         {
             path: '/login',
-            element: <Login />
+            element: <Login />,
         },
         {
             path: '/sign-up',
-            element: <SignUp />
+            element: <SignUp />,
         },
         {
             path: '/privacy',
-            element: <Privacy />
+            element: <Privacy />,
         },
         {
             path: '/terms',
-            element: <TermsAndConditions />
+            element: <TermsAndConditions />,
         },
         {
             element: <ProtectedRoute />,
             children: [
                 {
                     path: 'my-account',
-                    element: <MyAccount />
+                    element: <MyAccount />,
                 },
                 {
                     path: 'my-order',
-                    element: <MyOrder />
+                    element: <MyOrder />,
                 },
                 {
                     path: 'my-orders',
-                    element: <MyOrders />
+                    element: <MyOrders />,
                 },
                 {
                     path: 'my-orders/:id',
-                    element: <MyOrder />
+                    element: <MyOrder />,
                 },
                 {
                     path: 'shopping-cart',
-                    element: <ShoppingCart />
+                    element: <ShoppingCart />,
                 },
                 {
                     path: 'checkout',
-                    element: <CheckoutPage />
-                }
-            ]
+                    element: <CheckoutPage />,
+                },
+                {
+                    path: 'orderSuccess/:id',
+                    element: <OrderSuccess />,
+                },
+            ],
         },
         {
             path: '/*',
-            element: <NotFound />
-        }
+            element: <NotFound />,
+        },
     ])
     return routes
 }
