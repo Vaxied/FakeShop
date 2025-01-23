@@ -18,6 +18,7 @@ type CustomerAddress = {
     state: string
     zipCode: string
     country: string
+    phone: string
 }
 
 function CheckoutForm() {
@@ -29,6 +30,7 @@ function CheckoutForm() {
         state: '',
         zipCode: '',
         country: '',
+        phone: '',
     })
     const [showInputErr, setShowInputErr] = useState<ShowInputErr>({
         firstName: false,
@@ -38,6 +40,7 @@ function CheckoutForm() {
         state: false,
         zipCode: false,
         country: false,
+        phone: false,
     })
 
     const stateProps = {
@@ -52,6 +55,7 @@ function CheckoutForm() {
         const fullName = address.firstName + ' ' + address.lastName
         const mainAddress = `${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`
         fullAddress.push(fullName)
+        fullAddress.push(address.phone)
         fullAddress.push(mainAddress)
         fullAddress.push(address.country)
 
@@ -68,6 +72,7 @@ function CheckoutForm() {
             state: 'Iowa',
             zipCode: '52402',
             country: 'United States',
+            phone: '(123) 456-7890',
         },
         {
             id: '2',
@@ -78,6 +83,7 @@ function CheckoutForm() {
             state: 'California',
             zipCode: '90302',
             country: 'United States',
+            phone: '(123) 456-7890',
         },
     ]
 
@@ -210,13 +216,13 @@ function CheckoutForm() {
     ]
 
     return (
-        <form action='' className='flex flex-wrap gap-3 w-full'>
-            <span className='font-semibold'>Your registered addresses</span>
+        <form action='' className='flex flex-wrap gap-3 w-full text-xs'>
+            <span className='font-semibold text-sm'>Choose your address</span>
             <div className='w-full'>
-                <div className='flex flex-col gap-y-2'>
+                <div className='flex flex-wrap gap-3'>
                     {mockAddresses.map(
                         (address: CustomerAddress, index: number) => (
-                            <div className='flex items-center p-3 gap-4 bg-container border rounded-lg text-gray-700 text-sm'>
+                            <div className='w-full flex items-center gap-3 p-3 md:gap-6 md:px-8 py-3 bg-white rounded-lg text-gray-700 border border-gray-400'>
                                 <CheckInput
                                     id={address.id}
                                     name={'address'}
@@ -229,7 +235,9 @@ function CheckoutForm() {
                 </div>
             </div>
             <div className='w-full'>
-                <span className='block pb-2 font-semibold'>Delivery</span>
+                <span className='block pb-2 font-semibold text-sm'>
+                    Delivery
+                </span>
                 <div className='grid grid-cols-6 gap-2'>
                     {deliveryFormStructure.map(field => {
                         return (
@@ -249,7 +257,7 @@ function CheckoutForm() {
                 </div>
             </div>
             <div className='w-full'>
-                <span className='block text-md font-semibold pb-2'>
+                <span className='block text-md font-semibold pb-2 text-sm'>
                     Shipping method
                 </span>
                 <div className='p-3 text-xs bg-container rounded-lg'>
@@ -257,15 +265,15 @@ function CheckoutForm() {
                     methods.
                 </div>
             </div>
-            <div className='w-full'>
-                <div className='pb-2'>
-                    <p className='font-semibold'>Payment</p>
-                    <p className='font-light text-xs text-gray-400'>
-                        All transations are secure and encrypted
-                    </p>
-                </div>
-                <PaymentForm paymentFormData={paymentFormData} />
-            </div>
+            {/* <div className='w-full'> */}
+            {/*     <div className='pb-2'> */}
+            {/*         <p className='font-semibold text-sm'>Payment</p> */}
+            {/*         <p className='font-light text-xs text-gray-400'> */}
+            {/*             All transations are secure and encrypted */}
+            {/*         </p> */}
+            {/*     </div> */}
+            {/* <PaymentForm paymentFormData={paymentFormData} /> */}
+            {/* </div> */}
         </form>
     )
 }
