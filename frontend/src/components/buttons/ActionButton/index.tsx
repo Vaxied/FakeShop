@@ -23,7 +23,7 @@ function ActionButton(props: ActionButtonProps) {
     const navigate = useNavigate()
     return (
         <button
-            className={`w-full border border-gray px-4 py-2 ${max ? 'max-w-36' : ''} bg-secondary
+            className={`w-full h-10 border border-gray px-4 py-2 ${max ? 'max-w-56' : ''} bg-secondary
                     text-white rounded-lg`}
             type={type}
             onClick={() => handleAction()}
