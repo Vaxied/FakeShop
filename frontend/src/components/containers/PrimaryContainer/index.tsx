@@ -1,7 +1,7 @@
 type props = { children: React.ReactNode }
 function PrimaryContainer({ children }: Readonly<props>) {
     return (
-        <div className='w-full border border-gray px-6 py-4 rounded-lg bg-gray-100'>
+        <div className='w-full border border-gray p-3 md:px-6 md:py-4 rounded-lg bg-gray-100'>
             {children}
         </div>
     )
