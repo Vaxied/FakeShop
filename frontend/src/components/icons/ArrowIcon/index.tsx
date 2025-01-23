@@ -1,4 +1,4 @@
-type rotation = '-90' | '0' | '90'
+type rotation = '-90' | '0' | '90' | '180'
 type rotationValues = {
     [key: string]: string
 }
@@ -8,6 +8,7 @@ function ArrowIcon({ rotation = '0' }: { rotation?: rotation }) {
         '-90': '-rotate-90',
         '0': 'rotate-0',
         '90': '-rotate-90',
+        '180': 'rotate-180',
     }
     return (
         <>

@@ -19,7 +19,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
         pagesArr,
         totalPages,
         firstLoad,
-        setFirstLoad
+        setFirstLoad,
     } = props
 
     const isCloserToBeginning = () => {
@@ -58,7 +58,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
     }
 
     return (
-        <div className="flex justify-center gap-2">
+        <div className='flex justify-center gap-2'>
             <button
                 className={`flex justify-center py-2 bg-accent rounded-lg w-12 disabled:bg-gray-400`}
                 onClick={() => prevPage()}
@@ -67,7 +67,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                 <ArrowIcon />
             </button>
             {!adyacentPages?.includes(1) && !isCloserToBeginning() && (
-                <div className="flex left-indicator gap-2">
+                <div className='flex left-indicator gap-2'>
                     <button
                         className={`px-4 py-2 bg-accent rounded-lg w-12 ${currentPage === 1 ? 'text-white bg-primary' : 'text-white bg-secondary'}`}
                         onClick={() => {
@@ -76,7 +76,7 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                     >
                         <span>1</span>
                     </button>
-                    <span className="flex justify-center items-end w-12 tracking-wide text-accent text-3xl leading-none">
+                    <span className='flex justify-center items-end w-12 tracking-wide text-accent text-3xl leading-none'>
                         ...
                     </span>
                 </div>
@@ -89,14 +89,14 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
                             updatePageAndFirstLoadState(page)
                         }}
                     >
-                        <span key={page} className="w-4">
+                        <span key={page} className='w-4'>
                             {page}
                         </span>
                     </button>
                 ))}
             {!adyacentPages?.includes(totalPages) && isCloserToBeginning() && (
-                <div className="flex right-indicator gap-2">
-                    <span className="flex justify-center items-end w-12 tracking-wide text-accent text-3xl leading-none">
+                <div className='flex right-indicator gap-2'>
+                    <span className='flex justify-center items-end w-12 tracking-wide text-accent text-3xl leading-none'>
                         ...
                     </span>
                     <button
@@ -111,11 +111,11 @@ function PaginatorControls(props: Readonly<PaginatorControlsProps>) {
             )}
 
             <button
-                className="flex justify-center py-2 bg-accent rounded-lg w-12 disabled:bg-gray-400"
+                className='flex justify-center py-2 bg-accent rounded-lg w-12 disabled:bg-gray-400'
                 onClick={() => nextPage()}
                 disabled={currentPage === totalPages}
             >
-                <ArrowIcon deg="180" />
+                <ArrowIcon rotation='180' />
             </button>
         </div>
     )
