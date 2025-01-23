@@ -4,6 +4,7 @@ import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
 import PrimaryContainer from '@components/containers/PrimaryContainer'
 import ProductList from '@features/product/ProductList'
+import ArrowIcon from '@components/icons/ArrowIcon'
 
 function MyOrder() {
     const { orders } = React.useContext(StoreContext) as StoreContextType
@@ -11,7 +12,7 @@ function MyOrder() {
 
     console.log('params', orderId)
     console.log('orders', orders)
-    const index = orders?.findIndex((order) => order.orderId == orderId)
+    const index = orders?.findIndex(order => order.orderId == orderId)
     console.log('index', index)
     if (index === -1) return null
     const order = orders[index]
@@ -20,20 +21,7 @@ function MyOrder() {
         <PrimaryContainer>
             <div className='flex items-center pb-2'>
                 <Link to='/my-orders'>
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='size-7 pr-2'
-                    >
-                        <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M15.75 19.5 8.25 12l7.5-7.5'
-                        />
-                    </svg>
+                    <ArrowIcon />
                 </Link>
                 <p className='font-semibold'>My Order</p>
             </div>
