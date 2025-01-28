@@ -51,6 +51,16 @@ function OrderSuccess() {
     // }
 
     console.log('state: ', order)
+    const calculateOrderData = () => {
+        const tax = (Number(order.totalPrice) * 0.08).toFixed(2)
+        const shipping = (Number(order.totalPrice) * 0.05).toFixed(2)
+        const total = (
+            Number(order.totalPrice) +
+            Number(shipping) +
+            Number(tax)
+        ).toFixed(2)
+        return { tax, shipping, total }
+    }
 
     return (
         <PrimaryContainer>
@@ -64,13 +74,16 @@ function OrderSuccess() {
                 {/* <hr className='border-none mb-4 bg-gray-300 h-[1px]' /> */}
                 <div className='text-sm'>
                     <div className='pb-4'>
-                        <p className='flex flex-wrap gap-x-2'>
-                            <span>Order</span>
-                            <span className='font-medium'>#{id}</span>
-                        </p>
-                        <p className='pb-4'>
-                            Paypal order reference: #somehting
-                        </p>
+                        <div className='pb-4'>
+                            <p className='flex flex-wrap gap-x-2'>
+                                <span>Order</span>
+                                <span className='font-medium'>#{id}</span>
+                            </p>
+                            <p>
+                                Paypal order reference:{' '}
+                                {order?.PaypalOrderId ?? 'none'}
+                            </p>
+                        </div>
                         <p>
                             {order.date &&
                                 `Placed on ${order.date.substring(0, 10)} at
@@ -124,7 +137,7 @@ function OrderSuccess() {
                 </div>
                 <div className='pb-1'>
                     <p className='pb-4 font-semibold'>
-                        item list ( {order.productList.length} )
+                        Item list ( {order.productList.length} )
                     </p>
                     <ProductList products={order.productList} />
                 </div>
@@ -140,10 +153,10 @@ function OrderSuccess() {
                         </p>
                         <p className='flex gap-2 flex-col text-end'>
                             <span>${order.totalPrice}</span>
-                            <span>$7.69</span>
-                            <span>$1.99</span>
+                            <span>${calculateOrderData().shipping}</span>
+                            <span>${calculateOrderData().tax}</span>
                             <span className='text-base font-semibold'>
-                                ${order.totalPrice}
+                                ${calculateOrderData().total}
                             </span>
                         </p>
                     </div>
