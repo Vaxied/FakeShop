@@ -20,6 +20,8 @@ function CartSideMenu() {
     if (
         location.pathname === '/my-order' ||
         location.pathname === '/shopping-cart' ||
+        location.pathname === '/checkout' ||
+        location.pathname.includes('order-success') ||
         !loggedIn
     )
         return null

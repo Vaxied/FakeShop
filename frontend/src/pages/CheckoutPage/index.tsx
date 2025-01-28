@@ -211,7 +211,7 @@ function CheckoutPage() {
                                 // testing order success
                                 action={() =>
                                     navigate(
-                                        `/orderSuccess/${orders[0].orderId}`,
+                                        `/order-success/${orders[0].orderId}`,
                                         { state: orders[0] },
                                     )
                                 }

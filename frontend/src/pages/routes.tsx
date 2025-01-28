@@ -87,7 +87,7 @@ export const AppRoutes = () => {
                     element: <CheckoutPage />,
                 },
                 {
-                    path: 'orderSuccess/:id',
+                    path: 'order-success/:id',
                     element: <OrderSuccess />,
                 },
             ],
