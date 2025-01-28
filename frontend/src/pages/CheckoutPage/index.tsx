@@ -1,14 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
 import useApi from '@hooks/useApi'
-import PrimaryContainer from '@components/containers/PrimaryContainer'
-import ShoppingCartProduct from '@features/shoppingCart/ShoppingCartProduct'
-import ActionButton from '@components/buttons/ActionButton'
-import CheckoutForm from '@features/forms/CheckoutForm'
+import PrimaryContainer from '@components/common/containers/PrimaryContainer'
+import ActionButton from '@components/common/buttons/ActionButton'
+import CheckoutForm from '@components/forms/CheckoutForm'
 import { useNavigate } from 'react-router-dom'
 import { IProduct } from '@@types/product'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
+import OrderSummary from '@components/orders/OrderSummary'
+import SectionHeaderText from '@components/common/text/SectionHeaderText'
+
+type Func = (...args: any[]) => void
 
 function CheckoutPage() {
     const {
@@ -19,6 +22,7 @@ function CheckoutPage() {
         orders,
     } = React.useContext(StoreContext) as StoreContextType
     const { loadResource } = useApi()
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768)
     const navigate = useNavigate()
 
     React.useEffect(() => {
@@ -30,7 +34,45 @@ function CheckoutPage() {
             }
         }
         validateShoppingCart()
+        window.addEventListener('load', debouncedResize)
+        return () => {
+            window.removeEventListener('load', debouncedResize)
+        }
     }, [])
+
+    useEffect(() => {
+        window.addEventListener('resize', debouncedResize)
+        return () => {
+            window.removeEventListener('resize', debouncedResize)
+        }
+    }, [isSmallScreen])
+
+    const debounce = (func: Func, wait: number) => {
+        let timeout: number
+        return function (this: any, ...args: any) {
+            const context = this
+            clearTimeout(timeout)
+            timeout = setTimeout(() => func.apply(context, args), wait)
+        }
+    }
+
+    const resize = () => {
+        console.log('resize entering')
+        console.log('screen width', window.innerWidth)
+        if (isSmallScreen && window.innerWidth <= 768) return
+        if (!isSmallScreen && window.innerWidth > 768) return
+        if (isSmallScreen && window.innerWidth > 768) {
+            console.log('resizing small')
+            setIsSmallScreen(false)
+        }
+        if (!isSmallScreen && window.innerWidth <= 768) {
+            console.log('resizing large')
+            setIsSmallScreen(true)
+        }
+        console.log('resize')
+    }
+
+    const debouncedResize = debounce(resize, 100)
 
     const initialPaymentOptions = {
         clientId: import.meta.env.VITE_CLIENT_ID,
@@ -102,56 +144,41 @@ function CheckoutPage() {
     if (!Array.isArray(shoppingCartProducts) || !shoppingCartProducts.length)
         return <p>You don&apos;t have any products yet</p>
 
+    console.log(isSmallScreen, 'is small screen')
     // TODO MOVE ORDER SUMMARY TO THE TOP ON SMALL SCREENS
     return (
         <PrimaryContainer>
+            <div className='w-full'>
+                <SectionHeaderText text='Order summary' />
+            </div>
             <div>
-                <div className='flex flex-wrap gap-6 md:flex-nowrap h-full text-xs'>
-                    <div className='flex flex-col w-full md:w-1/2 justify-between'>
+                <div className='flex flex-wrap md:flex-nowrap gap-6 h-full text-xs'>
+                    <div className='flex flex-col w-full md:w-1/2'>
+                        {isSmallScreen && (
+                            <div id='order-summary' className='w-full'>
+                                <span className='block font-semibold text-sm pb-2'>
+                                    Your cart
+                                </span>
+                                <OrderSummary />
+                            </div>
+                        )}
                         <CheckoutForm />
                     </div>
                     <div className='flex items-start flex-wrap w-full md:w-1/2'>
-                        <div className='flex flex-wrap min-w-80'>
-                            <div className='w-full'>
-                                <p className='text-sm font-bold mb-3'>
-                                    Order summary
-                                </p>
-                                <div className='min-w-80'>
-                                    {shoppingCartProducts.map(product => (
-                                        <ShoppingCartProduct
-                                            product={product}
-                                            key={product.product_id}
-                                        />
-                                    ))}
+                        <div className='flex flex-wrap min-w-80 w-full'>
+                            {!isSmallScreen && (
+                                <div id='order-summary' className='w-full'>
+                                    <span className='block font-semibold text-sm pb-2'>
+                                        Your cart
+                                    </span>
+                                    <OrderSummary />
                                 </div>
-                                <div className='w-full flex justify-between self-start font-light'>
-                                    <p className='flex gap-1 flex-col text-sm'>
-                                        <span>Subtotal</span>
-                                        <span>Shipping</span>
-                                        <span className='font-semibold'>
-                                            Total
-                                        </span>
-                                    </p>
-
-                                    <p className='flex gap-1 flex-col text-end text-sm'>
-                                        <span>
-                                            $
-                                            {calculateTotalPrice(
-                                                shoppingCartProducts,
-                                            ).toFixed(2)}
-                                        </span>
-                                        <span>Enter shipping address</span>
-                                        <span className='font-semibold'>
-                                            $
-                                            {calculateTotalPrice(
-                                                shoppingCartProducts,
-                                            ).toFixed(2)}
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
+                            )}
                         </div>
-                        <div className='w-full flex flex-wrap self-end justify-end pt-6 text-sm'>
+                        <div className='w-full flex flex-wrap self-end text-sm'>
+                            <span className='block font-semibold text-sm pb-2'>
+                                Choose your payment method
+                            </span>
                             <div className='w-full'>
                                 <PayPalScriptProvider
                                     options={initialPaymentOptions}

@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom'
 import StoreProvider from '@components/Context'
-import Layout from '@components/containers/Layout'
+import Layout from '@components/common/containers/Layout'
 import { AppRoutes } from '@pages/routes'
 import './App.css'
 

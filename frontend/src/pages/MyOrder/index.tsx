@@ -2,9 +2,10 @@ import React from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { StoreContext } from '@components/Context/context'
 import { StoreContextType } from '@@types/store'
-import PrimaryContainer from '@components/containers/PrimaryContainer'
-import ProductList from '@features/product/ProductList'
+import PrimaryContainer from '@components/common/containers/PrimaryContainer'
+import ProductList from '@components/product/ProductList'
 import ArrowIcon from '@components/icons/ArrowIcon'
+import SectionHeaderText from '@components/common/text/SectionHeaderText'
 
 function MyOrder() {
     const { orders } = React.useContext(StoreContext) as StoreContextType
@@ -23,7 +24,7 @@ function MyOrder() {
                 <Link to='/my-orders'>
                     <ArrowIcon />
                 </Link>
-                <p className='font-semibold'>My Order</p>
+                <SectionHeaderText text='My Order' />
             </div>
             <p className='font-semibold'>order #{order.orderId}</p>
             <p>

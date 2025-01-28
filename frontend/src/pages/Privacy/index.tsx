@@ -1,7 +1,7 @@
 import React from 'react'
 import { StoreContextType } from '@@types/store'
 import { StoreContext } from '@components/Context/context'
-import StaticText from '@features/navigation/StaticText'
+import StaticText from '@components/navigation/StaticText'
 function Privacy() {
     const { policy } = React.useContext(StoreContext) as StoreContextType
     return (

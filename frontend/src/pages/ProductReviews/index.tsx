@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import ProductReviewDistribution from '@features/product/ProductReviewDistribution'
-import ProductReviewList from '@features/product/ProductReviewList'
+import ProductReviewDistribution from '@components/product/ProductReviewDistribution'
+import ProductReviewList from '@components/product/ProductReviewList'
 
 function ProductReviews() {
     const location = useLocation()

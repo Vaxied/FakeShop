@@ -10,9 +10,9 @@ import CheckoutPage from '@pages/CheckoutPage'
 import Privacy from '@pages/Privacy'
 import TermsAndConditions from '@pages/TermsAndConditions'
 import Product from '@pages/Product'
-import ProtectedRoute from '@components/containers/ProtectedRoute'
-import ShoppingCart from '@features/shoppingCart/ShoppingCart'
-import ProductReviews from './ProductReviews'
+import ProtectedRoute from '@components/common/containers/ProtectedRoute'
+import ShoppingCart from '@pages/ShoppingCart'
+import ProductReviews from '@pages/ProductReviews'
 import OrderSuccess from '@pages/OrderSuccess'
 
 export const AppRoutes = () => {
