@@ -28,8 +28,8 @@ function ShoppingCart() {
                     <ShoppingCartProductList closeButtonEnabled={true} />
                     <div className='w-full flex justify-end'>
                         <div className='w-32 px-2 py-2 flex justify-between'>
-                            <p>Total:</p>
-                            <p className='font-bold'>
+                            <p className='font-semibold'>Total:</p>
+                            <p className='font-semibold'>
                                 ${totalPrice.toFixed(2)}
                             </p>
                         </div>
