@@ -17,7 +17,7 @@ function Card({ product }: Readonly<props>) {
     return (
         <div
             role='button'
-            className='bg-white w-56 cursor-pointer rounded-lg border-2 border-accent overflow-hidden group'
+            className='flex flex-col bg-white w-60 aspect-[4/5] shadow-md shadow-secondary cursor-pointer rounded-lg border-2 border-accent overflow-hidden group'
             onClick={() =>
                 navigate(`/products/${product.product_id}`, {
                     state: product,
@@ -36,7 +36,7 @@ function Card({ product }: Readonly<props>) {
                 />
                 <CategoryLabel product={product} />
             </figure>
-            <div className='flex flex-col bg-secondary/60 justify-center h-17 p-2'>
+            <div className='flex flex-col flex-1 bg-primary-container justify-center p-2'>
                 <div className='flex items-center h-7'>
                     <span className='font-medium pr-1'>
                         {product.average_rating.substring(0, 3)}
@@ -44,12 +44,12 @@ function Card({ product }: Readonly<props>) {
                     <span>
                         <StarIcon />
                     </span>
-                    <span className='pl-1 font-normal'>
+                    <span className='pl-1 text-primary-text-color'>
                         ({product.rating_count})
                     </span>
                 </div>
                 <p className='flex justify-between items-center'>
-                    <span className='text-sm text-black/60 truncate mr-2'>
+                    <span className='text-sm text-primary-text-color truncate mr-2'>
                         {product.title}
                     </span>
                     <span className='text-lg text-black font-medium'>
