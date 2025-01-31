@@ -7,12 +7,13 @@ const styles = StyleSheet.create({
     page: {
         padding: 20,
         flexDirection: 'row',
-        backgroundColor: '#E4E4E4',
+        backgroundColor: '#fff',
         flexWrap: 'wrap',
         boxSizing: 'border-box',
+        height: '100%',
     },
     section: {
-        margin: 10,
+        marginVertical: 10,
         flexGrow: 1,
         width: '100%',
     },
@@ -21,6 +22,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         height: '1',
         marginVertical: 10,
+    },
+    addressColumn: {
+        flexDirection: 'column',
+        width: '50%',
+        columnGap: 10,
     },
     table: {
         flexGrow: 1,
@@ -34,7 +40,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderBottom: '1 solid black',
-        backgroundColor: 'yellow',
     },
     tableCellFirstColumn: {
         width: '60%',
@@ -64,6 +69,31 @@ const styles = StyleSheet.create({
     },
     textLarge: {
         fontSize: 16,
+    },
+    costBreakdown: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 25,
+        width: 160,
+    },
+    costBreakdownFirstColumn: {
+        flexDirection: 'column',
+        gap: 5,
+        backgroundColor: 'green',
+    },
+    costBreakdownSecondColumn: {
+        flexDirection: 'column',
+        gap: 5,
+        backgroundColor: 'green',
+        alignItems: 'flex-end',
+    },
+    footer: {
+        position: 'absolute',
+        bottom: 10,
+        left: 0,
+        width: '100%',
+        textAlign: 'center',
+        fontSize: 10,
     },
 })
 
@@ -114,15 +144,29 @@ function OrderInvoice() {
     return (
         <Document>
             <Page size='A4' style={styles.page}>
-                <View style={styles.section}>
-                    <Text style={[styles.textLarge, { fontWeight: 'light' }]}>
-                        Order details
+                <View style={[styles.section, { fontSize: 20 }]}>
+                    <Text style={{ fontWeight: 'extrabold' }}>FakeShop</Text>
+                </View>
+                <View style={[styles.section, { textAlign: 'right' }]}>
+                    <Text
+                        style={[
+                            styles.textMedium,
+                            { fontWeight: 'light', paddingBottom: 10 },
+                        ]}
+                    >
+                        Order date: 24/12/2022
                     </Text>
                 </View>
-                <View style={[styles.section, styles.textMedium]}>
-                    <Text>Order date</Text>
-                    <Text>Order id</Text>
-                    <Text>Paypal order</Text>
+                <View
+                    style={[
+                        styles.section,
+                        styles.textMedium,
+                        { backgroundColor: 'green' },
+                    ]}
+                >
+                    {/* <Text>Placed on 24/12/2022</Text> */}
+                    <Text>Order reference: 123456789</Text>
+                    <Text>Paypal order reference: 123456789</Text>
                 </View>
                 <View style={styles.horizontalDivider}></View>
                 <View
@@ -132,13 +176,7 @@ function OrderInvoice() {
                         { flexDirection: 'row' },
                     ]}
                 >
-                    <View
-                        style={{
-                            flexDirection: 'column',
-                            width: '50%',
-                            columnGap: 10,
-                        }}
-                    >
+                    <View style={styles.addressColumn}>
                         <Text
                             style={{
                                 paddingBottom: 10,
@@ -183,7 +221,9 @@ function OrderInvoice() {
                 </View>
                 <View style={styles.horizontalDivider}></View>
                 <View style={[styles.section, styles.table, styles.textSmall]}>
-                    <View style={styles.tableRow}>
+                    <View
+                        style={[styles.tableRow, { backgroundColor: 'gray' }]}
+                    >
                         <View style={styles.tableCellFirstColumn}>
                             <Text>Item name</Text>
                         </View>
@@ -212,13 +252,12 @@ function OrderInvoice() {
                     </View>
                     {itemsArray.map((item, index) => (
                         <View
-                            style={{
-                                flexDirection: 'row',
-                                flexWrap: 'nowrap',
-                                width: '100%',
-                                alignItems: 'center',
-                                borderBottom: '1 solid black',
-                            }}
+                            style={[
+                                styles.tableRow,
+                                index % 2 === 0
+                                    ? { backgroundColor: 'lightgray' }
+                                    : { backgroundColor: 'white' },
+                            ]}
                         >
                             <View style={styles.tableCellFirstColumn}>
                                 <Text>{item.name}</Text>Text
@@ -257,40 +296,44 @@ function OrderInvoice() {
                         },
                     ]}
                 >
-                    <View
-                        style={[
-                            styles.textMedium,
-                            {
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                width: 180,
-                            },
-                        ]}
-                    >
+                    <View style={[styles.textMedium, styles.costBreakdown]}>
                         <View
-                            style={{
-                                backgroundColor: 'green',
-                                textAlign: 'left',
-                            }}
+                            style={[
+                                styles.costBreakdownFirstColumn,
+                                styles.textSmall,
+                            ]}
                         >
-                            <Text>Subtotal</Text>
-                            <Text>Shipping</Text>
-                            <Text>Tax</Text>
-                            <Text>Total</Text>
+                            <Text>Subtotal:</Text>
+                            <Text>Shipping:</Text>
+                            <Text>Tax:</Text>
+                            <View
+                                style={{
+                                    height: 1,
+                                    marginVertical: 10,
+                                    width: '100%',
+                                }}
+                            ></View>
+                            <Text style={styles.textMedium}>Total</Text>
                         </View>
                         <View
-                            style={{
-                                backgroundColor: 'red',
-                                flexDirection: 'column',
-                                alignItems: 'flex-end',
-                            }}
+                            style={[
+                                styles.costBreakdownSecondColumn,
+                                styles.textSmall,
+                            ]}
                         >
                             <Text>$90.00</Text>
                             <Text>$10.00</Text>
                             <Text>$10.00</Text>
-                            <Text>$110.00</Text>
+                            <View style={styles.horizontalDivider}></View>
+                            <Text style={styles.textMedium}>$110.00</Text>
                         </View>
                     </View>
+                </View>
+                <View style={[styles.footer, { backgroundColor: 'yellow' }]}>
+                    <Text>
+                        This document was generated using FakeShop for your
+                        records
+                    </Text>
                 </View>
             </Page>
         </Document>
