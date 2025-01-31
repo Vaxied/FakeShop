@@ -6,11 +6,14 @@ export default {
             colors: {
                 primary: '#00e0c4',
                 accent: '#d767eb',
+                'soft-accent': '#df85ef',
                 secondary: '#677beb',
+                'primary-container': '#a4b0f3',
                 container: '#aaf2e6',
                 triadic1: '#001ae0',
                 triadic2: '#c600e0',
                 complementary: '#e0001a',
+                'primary-text-color': '#424661',
             },
             fontFamily: {
                 sans: ['Inter', 'Roboto', 'Poppins', 'sans-serif'],
