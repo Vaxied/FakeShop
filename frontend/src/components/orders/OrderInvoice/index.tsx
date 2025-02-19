@@ -1,6 +1,46 @@
 import React from 'react'
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
+import interLight from '@assets/fonts/Inter_18pt-Light.ttf'
+import interRegular from '@assets/fonts/Inter_18pt-Regular.ttf'
+import interMedium from '@assets/fonts/Inter_18pt-Medium.ttf'
+import interSemibold from '@assets/fonts/Inter_18pt-SemiBold.ttf'
+import interBold from '@assets/fonts/Inter_18pt-Bold.ttf'
+import {
+    Document,
+    Page,
+    Text,
+    View,
+    StyleSheet,
+    Font,
+} from '@react-pdf/renderer'
+
 import { Order } from '@@types/order'
+
+Font.register({
+    // only font formats that are supported are ttf and woff
+    family: 'Inter',
+    fonts: [
+        {
+            src: interLight,
+            fontWeight: 'light',
+        },
+        {
+            src: interRegular,
+            fontWeight: 'normal',
+        },
+        {
+            src: interMedium,
+            fontWeight: 'medium',
+        },
+        {
+            src: interSemibold,
+            fontWeight: 'semibold',
+        },
+        {
+            src: interBold,
+            fontWeight: 'bold',
+        },
+    ],
+})
 
 // Create styles
 const styles = StyleSheet.create({
@@ -9,8 +49,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#fff',
         flexWrap: 'wrap',
-        boxSizing: 'border-box',
         height: '100%',
+        fontFamily: 'Inter',
+        color: '#424661',
+        fontSize: 12,
     },
     section: {
         marginVertical: 10,
@@ -19,9 +61,14 @@ const styles = StyleSheet.create({
     },
     horizontalDivider: {
         width: '100%',
-        backgroundColor: 'black',
+        backgroundColor: 'gray',
         height: '1',
         marginVertical: 10,
+    },
+    horizontalDividerWithoutMargin: {
+        width: '100%',
+        backgroundColor: '#677beb',
+        height: '1',
     },
     addressColumn: {
         flexDirection: 'column',
@@ -31,15 +78,23 @@ const styles = StyleSheet.create({
     table: {
         flexGrow: 1,
         width: '100%',
-        borderTop: '1 solid black',
-        borderLeft: '1 solid black',
-        borderRight: '1 solid black',
+        borderTop: '1 solid darkgray',
+        borderLeft: '1 solid darkgray',
+        borderRight: '1 solid darkgray',
+        fontFamily: 'Helvetica',
+        fontWeight: 700,
+    },
+    tableHeader: {
+        fontWeight: 'semibold',
+        color: 'white',
+        backgroundColor: '#677beb',
     },
     tableRow: {
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottom: '1 solid black',
+        borderBottom: '1 solid darkgray',
+        fontWeight: 'light',
     },
     tableCellFirstColumn: {
         width: '60%',
@@ -48,8 +103,9 @@ const styles = StyleSheet.create({
     },
     tableCellMiddleColumn: {
         width: '20%',
-        borderRight: '1 solid black',
-        borderLeft: '1 solid black',
+        // lighter gray borders
+        borderLeft: '1 solid darkgray',
+        borderRight: '1 solid darkgray',
     },
     tableCellLastColumn: {
         width: '20%',
@@ -79,12 +135,10 @@ const styles = StyleSheet.create({
     costBreakdownFirstColumn: {
         flexDirection: 'column',
         gap: 5,
-        backgroundColor: 'green',
     },
     costBreakdownSecondColumn: {
         flexDirection: 'column',
         gap: 5,
-        backgroundColor: 'green',
         alignItems: 'flex-end',
     },
     footer: {
@@ -94,6 +148,48 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: 'center',
         fontSize: 10,
+    },
+    title: {
+        color: '#677beb',
+        fontSize: 20,
+        fontWeight: 'bold',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+    },
+    boldHeader: {
+        fontWeight: 'bold',
+    },
+    fullBorder: {
+        border: '1 solid #677beb',
+    },
+    evenTableRow: {
+        backgroundColor: '#f2f2f2',
+    },
+    oddTableRow: { backgroundColor: '#ffffff' },
+    textCenter: {
+        textAlign: 'center',
+    },
+    fontBold: {
+        fontWeight: 'bold',
+    },
+    fontSemibold: {
+        fontWeight: 'semibold',
+    },
+    fontDemibold: {
+        fontWeight: 'demibold',
+    },
+    flexRow: {
+        flexDirection: 'row',
+    },
+    flexColumn: {
+        flexDirection: 'column',
+    },
+    justifySpaceBetween: {
+        justifyContent: 'space-between',
+    },
+    justifyFlexEnd: {
+        justifyContent: 'flex-end',
     },
 })
 
@@ -114,8 +210,38 @@ const itemsArray = [
         quantity: 2,
         price: 100,
     },
+    {
+        name: 'Item 1',
+        quantity: 2,
+        price: 100,
+    },
+    {
+        name: 'Item 1',
+        quantity: 2,
+        price: 100,
+    },
+    {
+        name: 'Item 1',
+        quantity: 2,
+        price: 100,
+    },
+    {
+        name: 'Item 1',
+        quantity: 2,
+        price: 100,
+    },
+    {
+        name: 'Item 1',
+        quantity: 2,
+        price: 100,
+    },
+    {
+        name: 'Item 1',
+        quantity: 2,
+        price: 100,
+    },
 ]
-const items = Array.from({ length: 5 })
+// const items = Array.from({ length: 5 })
 const mockAddresses = [
     {
         id: '1',
@@ -144,44 +270,58 @@ function OrderInvoice() {
     return (
         <Document>
             <Page size='A4' style={styles.page}>
-                <View style={[styles.section, { fontSize: 20 }]}>
-                    <Text style={{ fontWeight: 'extrabold' }}>FakeShop</Text>
+                <View style={styles.section}>
+                    <Text style={styles.title}>FakeShop</Text>
                 </View>
-                <View style={[styles.section, { textAlign: 'right' }]}>
-                    <Text
-                        style={[
-                            styles.textMedium,
-                            { fontWeight: 'light', paddingBottom: 10 },
-                        ]}
-                    >
-                        Order date: 24/12/2022
+                <View
+                    style={[
+                        styles.section,
+                        styles.textSmall,
+                        styles.textCenter,
+                        styles.fontSemibold,
+                        {
+                            paddingVertical: 30,
+                        },
+                    ]}
+                >
+                    <Text>Order details for order #123456789</Text>
+                    <Text>Please print this document for your records.</Text>
+                </View>
+                <View style={[styles.section, { paddingBottom: 20 }]}>
+                    <View style={[styles.flexRow, styles.justifySpaceBetween]}>
+                        <Text>Order reference: 123456789</Text>
+                        <Text>Order date: 24/12/2022</Text>
+                    </View>
+                    <Text>Paypal order reference: 123456789</Text>
+                </View>
+                <View style={styles.horizontalDividerWithoutMargin}></View>
+                <View
+                    style={[
+                        styles.section,
+                        styles.boldHeader,
+                        styles.textCenter,
+                    ]}
+                >
+                    <Text style={[styles.textMedium]}>
+                        Delivery information
                     </Text>
                 </View>
                 <View
                     style={[
                         styles.section,
-                        styles.textMedium,
-                        { backgroundColor: 'green' },
-                    ]}
-                >
-                    {/* <Text>Placed on 24/12/2022</Text> */}
-                    <Text>Order reference: 123456789</Text>
-                    <Text>Paypal order reference: 123456789</Text>
-                </View>
-                <View style={styles.horizontalDivider}></View>
-                <View
-                    style={[
-                        styles.section,
                         styles.textSmall,
-                        { flexDirection: 'row' },
+                        styles.flexRow,
+                        { paddingBottom: 20 },
                     ]}
                 >
                     <View style={styles.addressColumn}>
                         <Text
-                            style={{
-                                paddingBottom: 10,
-                                fontWeight: 'demibold',
-                            }}
+                            style={[
+                                styles.fontDemibold,
+                                {
+                                    paddingBottom: 10,
+                                },
+                            ]}
                         >
                             Shipped to:
                         </Text>
@@ -197,12 +337,14 @@ function OrderInvoice() {
                         </Text>
                         <Text>{mockAddresses[0].country}</Text>
                     </View>
-                    <View style={{ flexDirection: 'column', width: '50%' }}>
+                    <View style={[styles.flexColumn, { width: '50%' }]}>
                         <Text
-                            style={{
-                                paddingBottom: 10,
-                                fontWeight: 'demibold',
-                            }}
+                            style={[
+                                styles.fontDemibold,
+                                {
+                                    paddingBottom: 10,
+                                },
+                            ]}
                         >
                             Billed to:
                         </Text>
@@ -219,11 +361,18 @@ function OrderInvoice() {
                         <Text>{mockAddresses[0].country}</Text>
                     </View>
                 </View>
-                <View style={styles.horizontalDivider}></View>
+                <View style={styles.horizontalDividerWithoutMargin}></View>
+                <View
+                    style={[
+                        styles.section,
+                        styles.boldHeader,
+                        styles.textCenter,
+                    ]}
+                >
+                    <Text style={[styles.textMedium]}>Item List</Text>
+                </View>
                 <View style={[styles.section, styles.table, styles.textSmall]}>
-                    <View
-                        style={[styles.tableRow, { backgroundColor: 'gray' }]}
-                    >
+                    <View style={[styles.tableHeader, styles.tableRow]}>
                         <View style={styles.tableCellFirstColumn}>
                             <Text>Item name</Text>
                         </View>
@@ -233,13 +382,7 @@ function OrderInvoice() {
                                 styles.tableCell,
                             ]}
                         >
-                            <Text
-                                style={{
-                                    backgroundColor: 'green',
-                                }}
-                            >
-                                Quantity
-                            </Text>
+                            <Text>Unit(s)</Text>
                         </View>
                         <View
                             style={[
@@ -252,15 +395,16 @@ function OrderInvoice() {
                     </View>
                     {itemsArray.map((item, index) => (
                         <View
+                            key={item.name}
                             style={[
                                 styles.tableRow,
                                 index % 2 === 0
-                                    ? { backgroundColor: 'lightgray' }
-                                    : { backgroundColor: 'white' },
+                                    ? styles.evenTableRow
+                                    : styles.oddTableRow,
                             ]}
                         >
                             <View style={styles.tableCellFirstColumn}>
-                                <Text>{item.name}</Text>Text
+                                <Text>{item.name}</Text>
                             </View>
                             <View
                                 style={[
@@ -276,11 +420,7 @@ function OrderInvoice() {
                                     styles.tableCellLastColumn,
                                 ]}
                             >
-                                <Text
-                                    style={{
-                                        textAlign: 'center',
-                                    }}
-                                >
+                                <Text style={styles.textCenter}>
                                     ${item.price}
                                 </Text>
                             </View>
@@ -290,13 +430,17 @@ function OrderInvoice() {
                 <View
                     style={[
                         styles.section,
-                        {
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                        },
+                        styles.flexRow,
+                        styles.justifyFlexEnd,
                     ]}
                 >
-                    <View style={[styles.textMedium, styles.costBreakdown]}>
+                    <View
+                        style={[
+                            styles.textMedium,
+                            styles.costBreakdown,
+                            { padding: 5 },
+                        ]}
+                    >
                         <View
                             style={[
                                 styles.costBreakdownFirstColumn,
@@ -309,11 +453,15 @@ function OrderInvoice() {
                             <View
                                 style={{
                                     height: 1,
-                                    marginVertical: 10,
                                     width: '100%',
+                                    marginVertical: 10,
                                 }}
                             ></View>
-                            <Text style={styles.textMedium}>Total</Text>
+                            <Text
+                                style={[styles.textMedium, styles.boldHeader]}
+                            >
+                                Total
+                            </Text>
                         </View>
                         <View
                             style={[
@@ -325,11 +473,15 @@ function OrderInvoice() {
                             <Text>$10.00</Text>
                             <Text>$10.00</Text>
                             <View style={styles.horizontalDivider}></View>
-                            <Text style={styles.textMedium}>$110.00</Text>
+                            <Text
+                                style={[styles.textMedium, styles.boldHeader]}
+                            >
+                                $110.00
+                            </Text>
                         </View>
                     </View>
                 </View>
-                <View style={[styles.footer, { backgroundColor: 'yellow' }]}>
+                <View style={[styles.footer]}>
                     <Text>
                         This document was generated using FakeShop for your
                         records

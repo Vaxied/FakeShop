@@ -13,22 +13,27 @@ function OrderInvoicePDFViewer({
     setShowInvoice: (boolean: boolean) => void
 }) {
     return (
-        <div
-            id='invoice-container'
-            className='fixed top-20 bottom-6 left-12 right-12 z-30 bg-black'
-        >
-            <div className='flex justify-end w-full h-[10%]'>
-                <button
-                    className='bg-white text-black rounded-full p-2 m-2'
-                    onClick={() => setShowInvoice(false)}
+        <>
+            <div className='fixed top-16 bottom-0 left-0 right-0 z-30 bg-gray p-6 backdrop-blur-md'>
+                <div
+                    id='invoice-container'
+                    className='w-full h-full bg-black'
+                    // className='fixed top-20 left-12 right-12 bottom-6 bg-black z-40'
                 >
-                    Close
-                </button>
+                    <div className='flex justify-end w-full'>
+                        <button
+                            className='bg-white text-black rounded-full p-2 m-2'
+                            onClick={() => setShowInvoice(false)}
+                        >
+                            Close
+                        </button>
+                    </div>
+                    <PDFViewer>
+                        <OrderInvoice />
+                    </PDFViewer>
+                </div>
             </div>
-            <PDFViewer>
-                <OrderInvoice />
-            </PDFViewer>
-        </div>
+        </>
     )
 }
 
