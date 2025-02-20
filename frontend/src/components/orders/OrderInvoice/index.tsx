@@ -82,10 +82,9 @@ const styles = StyleSheet.create({
         borderLeft: '1 solid darkgray',
         borderRight: '1 solid darkgray',
         fontFamily: 'Helvetica',
-        fontWeight: 700,
+        // fontWeight: 700,
     },
     tableHeader: {
-        fontWeight: 'semibold',
         color: 'white',
         backgroundColor: '#677beb',
     },
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderBottom: '1 solid darkgray',
-        fontWeight: 'light',
+        // fontWeight: 'light',
     },
     tableCellFirstColumn: {
         width: '60%',
@@ -175,9 +174,6 @@ const styles = StyleSheet.create({
     },
     fontSemibold: {
         fontWeight: 'semibold',
-    },
-    fontDemibold: {
-        fontWeight: 'demibold',
     },
     flexRow: {
         flexDirection: 'row',
@@ -264,9 +260,13 @@ const mockAddresses = [
         country: 'United States',
     },
 ]
+type OrderInvoiceProps = {
+    order: Order
+    orderBreakdown: { tax: string; shipping: string; total: string }
+}
 
 console.log('order invoice')
-function OrderInvoice() {
+function OrderInvoice({ order, orderBreakdown }: OrderInvoiceProps) {
     return (
         <Document>
             <Page size='A4' style={styles.page}>
@@ -284,12 +284,14 @@ function OrderInvoice() {
                         },
                     ]}
                 >
-                    <Text>Order details for order #123456789</Text>
+                    {/* <Text>Order details for order #123456789</Text> */}
+                    <Text>Order details for order #{order.orderId}</Text>
                     <Text>Please print this document for your records.</Text>
                 </View>
                 <View style={[styles.section, { paddingBottom: 20 }]}>
                     <View style={[styles.flexRow, styles.justifySpaceBetween]}>
-                        <Text>Order reference: 123456789</Text>
+                        {/* <Text>Order reference: 123456789</Text> */}
+                        <Text>Order #{order.orderId}</Text>
                         <Text>Order date: 24/12/2022</Text>
                     </View>
                     <Text>Paypal order reference: 123456789</Text>
@@ -317,7 +319,7 @@ function OrderInvoice() {
                     <View style={styles.addressColumn}>
                         <Text
                             style={[
-                                styles.fontDemibold,
+                                styles.fontSemibold,
                                 {
                                     paddingBottom: 10,
                                 },
@@ -340,7 +342,7 @@ function OrderInvoice() {
                     <View style={[styles.flexColumn, { width: '50%' }]}>
                         <Text
                             style={[
-                                styles.fontDemibold,
+                                styles.fontSemibold,
                                 {
                                     paddingBottom: 10,
                                 },
@@ -373,7 +375,7 @@ function OrderInvoice() {
                 </View>
                 <View style={[styles.section, styles.table, styles.textSmall]}>
                     <View style={[styles.tableHeader, styles.tableRow]}>
-                        <View style={styles.tableCellFirstColumn}>
+                        <View style={[styles.tableCellFirstColumn]}>
                             <Text>Item name</Text>
                         </View>
                         <View
@@ -393,9 +395,9 @@ function OrderInvoice() {
                             <Text>Price</Text>
                         </View>
                     </View>
-                    {itemsArray.map((item, index) => (
+                    {order.productList.map((item, index) => (
                         <View
-                            key={item.name}
+                            key={item.product_id}
                             style={[
                                 styles.tableRow,
                                 index % 2 === 0
@@ -404,7 +406,7 @@ function OrderInvoice() {
                             ]}
                         >
                             <View style={styles.tableCellFirstColumn}>
-                                <Text>{item.name}</Text>
+                                <Text>{item.title}</Text>
                             </View>
                             <View
                                 style={[
@@ -412,7 +414,7 @@ function OrderInvoice() {
                                     styles.tableCellMiddleColumn,
                                 ]}
                             >
-                                <Text>{item.quantity}</Text>
+                                <Text>{item.product_quantity}</Text>
                             </View>
                             <View
                                 style={[
@@ -469,14 +471,14 @@ function OrderInvoice() {
                                 styles.textSmall,
                             ]}
                         >
-                            <Text>$90.00</Text>
-                            <Text>$10.00</Text>
-                            <Text>$10.00</Text>
+                            <Text>${order.totalPrice}</Text>
+                            <Text>${orderBreakdown.shipping}</Text>
+                            <Text>${orderBreakdown.tax}</Text>
                             <View style={styles.horizontalDivider}></View>
                             <Text
                                 style={[styles.textMedium, styles.boldHeader]}
                             >
-                                $110.00
+                                ${orderBreakdown.total}
                             </Text>
                         </View>
                     </View>

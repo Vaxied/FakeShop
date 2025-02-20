@@ -9,8 +9,16 @@ import OrderSuccess from '@pages/OrderSuccess'
 console.log('order invoice viewer')
 function OrderInvoicePDFViewer({
     setShowInvoice,
+    order,
+    orderBreakdown,
 }: {
     setShowInvoice: (boolean: boolean) => void
+    order: Order
+    orderBreakdown: {
+        tax: string
+        shipping: string
+        total: string
+    }
 }) {
     return (
         <>
@@ -29,7 +37,10 @@ function OrderInvoicePDFViewer({
                         </button>
                     </div>
                     <PDFViewer>
-                        <OrderInvoice />
+                        <OrderInvoice
+                            order={order}
+                            orderBreakdown={orderBreakdown}
+                        />
                     </PDFViewer>
                 </div>
             </div>

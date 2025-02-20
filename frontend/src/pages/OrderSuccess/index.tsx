@@ -1,24 +1,23 @@
-import { StoreContextType } from '@@types/store'
+import { Order } from '@@types/order'
 import PrimaryContainer from '@components/common/containers/PrimaryContainer'
 import SectionHeaderText from '@components/common/text/SectionHeaderText'
-import { StoreContext } from '@components/Context/context'
 import PrintIcon from '@components/icons/PrintIcon'
+import OrderInvoicePDFViewer from '@components/orders/OrderInvoicePDFViewer'
 import ProductList from '@components/product/ProductList'
-import useApi from '@hooks/useApi'
-import { useContext } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 function OrderSuccess() {
-    const api = import.meta.env.VITE_API
-    const { orders } = useContext(StoreContext) as StoreContextType
-    const { loadResource } = useApi()
-    const getOrders = async () => {
-        return await loadResource('json', '/get-orders')
-    }
+    const navigate = useNavigate()
+
+    const [showInvoice, setShowInvoice] = useState(false)
 
     const { id } = useParams()
     const location = useLocation()
     const order = location.state
+    if (!order) {
+        navigate('/')
+    }
 
     const mockAddresses = [
         {
@@ -51,7 +50,7 @@ function OrderSuccess() {
     // }
 
     console.log('state: ', order)
-    const calculateOrderData = () => {
+    const calculateOrderData = (order: Order) => {
         const tax = (Number(order.totalPrice) * 0.08).toFixed(2)
         const shipping = (Number(order.totalPrice) * 0.05).toFixed(2)
         const total = (
@@ -61,15 +60,24 @@ function OrderSuccess() {
         ).toFixed(2)
         return { tax, shipping, total }
     }
-
+    const orderBreakdown = calculateOrderData(order)
+    const key = Math.random()
     return (
         <PrimaryContainer>
             <div className='flex flex-col px-2 md:px-8 md:py-4 relative'>
                 <div className='absolute top-0 md:top-4 right-2 md:right-8'>
-                    <button className=''>
+                    <button className='' onClick={() => setShowInvoice(true)}>
                         <PrintIcon />
                     </button>
                 </div>
+                {showInvoice && (
+                    <OrderInvoicePDFViewer
+                        key={key}
+                        setShowInvoice={setShowInvoice}
+                        order={order}
+                        orderBreakdown={orderBreakdown}
+                    />
+                )}
                 <SectionHeaderText text='Order details' />
                 {/* <hr className='border-none mb-4 bg-gray-300 h-[1px]' /> */}
                 <div className='text-sm'>
@@ -153,10 +161,10 @@ function OrderSuccess() {
                         </p>
                         <p className='flex gap-2 flex-col text-end'>
                             <span>${order.totalPrice}</span>
-                            <span>${calculateOrderData().shipping}</span>
-                            <span>${calculateOrderData().tax}</span>
+                            <span>${orderBreakdown.shipping}</span>
+                            <span>${orderBreakdown.tax}</span>
                             <span className='text-base font-semibold'>
-                                ${calculateOrderData().total}
+                                ${orderBreakdown.total}
                             </span>
                         </p>
                     </div>
