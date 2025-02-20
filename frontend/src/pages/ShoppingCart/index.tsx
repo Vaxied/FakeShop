@@ -40,7 +40,6 @@ function ShoppingCart() {
                         text={'Go to checkout'}
                         type='submit'
                         route={'/checkout'}
-                        max={true}
                     />
                 </div>
             </div>
