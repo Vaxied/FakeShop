@@ -1,10 +1,11 @@
 import { Order } from '@@types/order'
+import ActionButton from '@components/common/buttons/ActionButton'
 import PrimaryContainer from '@components/common/containers/PrimaryContainer'
 import SectionHeaderText from '@components/common/text/SectionHeaderText'
 import PrintIcon from '@components/icons/PrintIcon'
 import OrderInvoicePDFViewer from '@components/orders/OrderInvoicePDFViewer'
 import ProductList from '@components/product/ProductList'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 function OrderSuccess() {
@@ -15,8 +16,15 @@ function OrderSuccess() {
     const { id } = useParams()
     const location = useLocation()
     const order = location.state
+
+    useEffect(() => {
+        if (!order) {
+            navigate('/')
+        }
+    }, [])
+
     if (!order) {
-        navigate('/')
+        return null
     }
 
     const mockAddresses = [
@@ -41,15 +49,9 @@ function OrderSuccess() {
             country: 'United States',
         },
     ]
-    // if (!params) {
-    //     try {
-    // const orderData = await getData()
-    // } catch (err) {
-    // console.log(err)
-    // }
-    // }
 
     console.log('state: ', order)
+
     const calculateOrderData = (order: Order) => {
         const tax = (Number(order.totalPrice) * 0.08).toFixed(2)
         const shipping = (Number(order.totalPrice) * 0.05).toFixed(2)
@@ -66,9 +68,12 @@ function OrderSuccess() {
         <PrimaryContainer>
             <div className='flex flex-col px-2 md:px-8 md:py-4 relative'>
                 <div className='absolute top-0 md:top-4 right-2 md:right-8'>
-                    <button className='' onClick={() => setShowInvoice(true)}>
+                    <ActionButton
+                        action={() => setShowInvoice(true)}
+                        text={'Print'}
+                    >
                         <PrintIcon />
-                    </button>
+                    </ActionButton>
                 </div>
                 {showInvoice && (
                     <OrderInvoicePDFViewer
