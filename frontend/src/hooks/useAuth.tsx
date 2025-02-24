@@ -7,8 +7,7 @@ function useAuth() {
     function isAuthenticated() {
         return loggedIn
     }
-
-    return isAuthenticated
+    return isAuthenticated()
 }
 
 export default useAuth
