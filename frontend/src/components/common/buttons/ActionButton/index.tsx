@@ -25,7 +25,7 @@ function ActionButton(props: ActionButtonProps) {
     const navigate = useNavigate()
     return (
         <button
-            className={`w-full md:${max ? 'max-w-56' : 'w-fit'} h-10 border border-gray px-4 py-2 bg-secondary
+            className={`w-full ${max ? 'md:w-full' : 'md:w-fit'} h-10 border border-gray px-4 py-2 bg-secondary
                     text-white rounded-lg`}
             type={type}
             onClick={() => handleAction()}
