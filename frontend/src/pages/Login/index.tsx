@@ -6,12 +6,14 @@ import useAuth from '@hooks/useAuth'
 function Login() {
     const isAuthenticated = useAuth()
     const navigate = useNavigate()
+
+    // Redirect to home page if user is already logged in
     React.useEffect(() => {
-        console.log('logged?', isAuthenticated())
-        if (isAuthenticated()) navigate('/')
-    }, [])
-    if (!isAuthenticated()) return <LoginForm />
-    else navigate('/')
+        console.log('isAuthenticated', isAuthenticated)
+        if (isAuthenticated) navigate('/')
+    }, [isAuthenticated])
+
+    return <LoginForm />
 }
 
 export default Login
