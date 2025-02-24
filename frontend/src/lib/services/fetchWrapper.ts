@@ -79,7 +79,7 @@ export async function deleteData(url: string, body: object) {
     return data
 }
 
-function getAccessToken() {
+export function getAccessToken() {
     return localStorage.getItem('accessToken')
 }
 
@@ -92,7 +92,39 @@ function formatRequestHeader(
         ...headerOpts,
         Authorization: '',
     }
+    if (accessToken) {
+        if (isTokenExpired(accessToken)) {
+            console.log('⚠️  Expired token')
+        } else {
+            console.log('✅  Valid token')
+        }
+    }
 
     if (accessToken) headers.Authorization = accessToken
     return headers
+}
+const parseJwt = (token: string) => {
+    try {
+        // Check part of payload
+        const base64Payload = token.split('.')[1]
+        // Decodifice to Base64 to JSON
+        const payload = JSON.parse(atob(base64Payload))
+        return payload
+    } catch (error) {
+        console.error('Error decoding JWT token: ', error)
+        return null
+    }
+}
+
+export const isTokenExpired = (token: string): boolean => {
+    const decoded = parseJwt(token)
+
+    if (!decoded || typeof decoded.exp !== 'number') {
+        console.error('Token has no "exp" field')
+        return true
+    }
+
+    // Get current time stamp
+    const now = Math.floor(Date.now() / 1000)
+    return decoded.exp < now
 }
