@@ -35,6 +35,8 @@ export type StoreContextType = {
     setPolicy: (string: string) => void
     terms: string
     setTerms: (string: string) => void
+    firstLoad: boolean
+    setFirstLoad: (boolean: boolean) => void
 }
 
 type productCategories = {

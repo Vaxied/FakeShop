@@ -18,6 +18,7 @@ function StoreProvider({ children }: Readonly<props>) {
         IProduct[] | []
     >([])
 
+    //TODO: this state is no longer needed
     const [productToShow, setProductToShow] = React.useState<IProduct | null>(
         null,
     )
@@ -33,6 +34,7 @@ function StoreProvider({ children }: Readonly<props>) {
     const [isLoading, setIsLoading] = React.useState(true)
     const [policy, setPolicy] = React.useState('')
     const [terms, setTerms] = React.useState('')
+    const [firstLoad, setFirstLoad] = React.useState(true)
 
     const productCategories = {
         men: "men's clothing",
@@ -169,6 +171,8 @@ function StoreProvider({ children }: Readonly<props>) {
         setPolicy,
         terms,
         setTerms,
+        firstLoad,
+        setFirstLoad,
     }
 
     const values = useMemo(() => value, [value])
