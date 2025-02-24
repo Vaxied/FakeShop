@@ -2,7 +2,6 @@ import React from 'react'
 import { StoreContext } from '@components/Context/context'
 import Loader from '@components/loading/Loader'
 import { StoreContextType } from '@@types/store'
-import useApi from '@hooks/useApi'
 
 type props = { children: React.ReactNode }
 
@@ -10,10 +9,10 @@ function MainContainer({ children }: Readonly<props>) {
     const { isLoading, setIsLoading } = React.useContext(
         StoreContext,
     ) as StoreContextType
-    useApi()
+
     React.useEffect(() => {
         console.log('stopped loading')
-        if (isLoading) setTimeout(() => setIsLoading(false), 1000)
+        if (isLoading) setTimeout(() => setIsLoading(false), 500)
     }, [isLoading])
 
     return (
