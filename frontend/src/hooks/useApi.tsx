@@ -128,6 +128,7 @@ function useApi() {
         headerOpts = { 'Content-type': 'application/json' },
     ) {
         const retries = 3
+        const delay = 75
         const url = endpoint ? `${API}${endpoint}` : API
         for (let i = 0; i < retries; i++) {
             try {
@@ -136,9 +137,9 @@ function useApi() {
                     return resource
                 }
             } catch (error) {
-                if (i < retries) {
+                if (i < retries - 1) {
                     console.log('Failed to load resource, retrying...')
-                    await new Promise(resolve => setTimeout(resolve, 100))
+                    await new Promise(resolve => setTimeout(resolve, delay))
                 } else {
                     throw new Error('Failed to load resource')
                 }
