@@ -29,6 +29,6 @@ export type InputErrObject = {
 export type StateProps = {
     formState: FormState
     setFormState: (formState: FormState) => void
-    showInputErr: ShowInputErr
-    setShowInputErr: (ShowInputErr: ShowInputErr) => void
+    showInputErr?: ShowInputErr
+    setShowInputErr?: (ShowInputErr: ShowInputErr) => void
 }

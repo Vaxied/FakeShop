@@ -1,11 +1,17 @@
 /* eslint-disable no-debugger */
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { postData } from '@lib/services/fetchWrapper'
 import { StoreContext } from '@components/Context/context'
 import InputError from '@components/forms/InputError'
 import { StoreContextType } from '@@types/store'
 import ActionButton from '@components/common/buttons/ActionButton'
+import useForms from '@hooks/useForms'
+import TextInputBase from '@components/forms/TextInputBase'
+import {
+    FormState,
+    ShowInputErr,
+} from '@components/forms/TextInputBase/Interfaces'
 
 function LoginForm() {
     // debugger
@@ -13,15 +19,51 @@ function LoginForm() {
         StoreContext,
     ) as StoreContextType
     const navigate = useNavigate()
-    const [formState, setFormState] = React.useState({
+    const [formState, setFormState] = React.useState<FormState>({
         username: '',
         password: '',
     })
     const [isLoginErr, setIsLoginErr] = React.useState(false)
     const API = import.meta.env.VITE_API
-    const errMsg = 'Invalid username or password.'
-    const inputStyle =
-        'border border-gray-400 rounded-lg mb-6 px-4 py-2 outline-none w-full autofill:bg-white'
+    const errMsg = 'Invalid username or password'
+
+    const labelBgStyleColor =
+        'bg-gradient-to-b from-container from-50% to-white to-50%'
+
+    const inputProps = [
+        {
+            id: 'username',
+            name: 'username',
+            label: 'username',
+            type: 'text',
+            placeholder: 'something@domain.tld',
+            value: 'username',
+            inputErr: '',
+            labelBgColor: labelBgStyleColor,
+        },
+        {
+            id: 'password',
+            name: 'password',
+            label: 'password',
+            type: 'password',
+            placeholder: '**********',
+            value: 'password',
+            inputErr: '',
+            labelBgColor: labelBgStyleColor,
+        },
+    ]
+
+    const [showInputErr, setShowInputErr] = useState<ShowInputErr>({
+        username: false,
+        password: false,
+    })
+
+    const stateProps = {
+        formState,
+        setFormState,
+        showInputErr,
+        setShowInputErr,
+    }
 
     async function handleLogin(event: React.FormEvent) {
         event.preventDefault()
@@ -47,49 +89,38 @@ function LoginForm() {
     return (
         <div className='flex flex-col items-center justify-center w-[400px] h-[calc(100vh-134px)]'>
             <form
+                id='login-form'
                 onSubmit={event => handleLogin(event)}
-                className='flex flex-col w-full justify-center rounded-lg border border-gray-300 p-8 bg-container'
+                className='flex flex-col w-full justify-center rounded-lg border border-teal-300 p-8 bg-container'
             >
-                <p className='font-bold text-lg text-center'>Sign In</p>
-                <label htmlFor='username' className='py-2 font-semibold'>
-                    username
-                </label>
-                <input
-                    id='username'
-                    type='text'
-                    name='username'
-                    value={formState.username}
-                    onChange={event =>
-                        setFormState({
-                            ...formState,
-                            username: event.target.value,
-                        })
-                    }
-                    placeholder='something@domain.tld'
-                    className={inputStyle}
-                />
-                <label htmlFor='password' className='py-2 font-semibold'>
-                    password
-                </label>
-                <input
-                    id='password'
-                    type='password'
-                    placeholder='**********'
-                    name='password'
-                    value={formState.password}
-                    onChange={event =>
-                        setFormState({
-                            ...formState,
-                            password: event.target.value,
-                        })
-                    }
-                    className={inputStyle}
-                />
-                <InputError errMsg={errMsg} condition={isLoginErr} />
-                <p className='text-end mb-6'>
+                <p className='font-bold text-lg text-center text-secondary pb-8'>
+                    Sign In
+                </p>
+
+                <div className='flex flex-col gap-8 pb-4 text-lg'>
+                    {inputProps.map((inputField: any) => {
+                        return (
+                            <TextInputBase
+                                inputProp={inputField}
+                                stateProps={stateProps}
+                                showLabel={true}
+                                labelBgColor={inputField.labelBgColor}
+                            />
+                        )
+                    })}
+                </div>
+
+                {/* <InputError errMsg={errMsg} condition={isLoginErr} /> */}
+                {isLoginErr && (
+                    <div className='text-center text-red-500 pb-4'>
+                        {errMsg}
+                    </div>
+                )}
+
+                <div className='text-secondary text-end pb-8'>
                     {/* <NavLink>Forgot password</NavLink> */}
                     <Link to={'/'}>Forgot password</Link>
-                </p>
+                </div>
                 <div className='w-full flex justify-center'>
                     <ActionButton
                         text={'Login'}
@@ -99,10 +130,12 @@ function LoginForm() {
                     />
                 </div>
             </form>
-            <p className='flex py-4 text-gray-700 font-light'>
+            <p className='flex py-4 text-gray-700'>
                 <span>Don&apos;t have an account?</span>
                 <Link to={'/sign-up'}>
-                    <span className='pl-2 font-semibold'>Sign up!</span>
+                    <span className='text-secondary pl-2 font-semibold'>
+                        Sign up!
+                    </span>
                 </Link>
             </p>
         </div>
