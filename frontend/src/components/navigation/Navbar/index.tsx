@@ -74,11 +74,11 @@ function Navbar() {
         isNotLoggedIn: [
             {
                 content: 'My Orders',
-                to: '/my-orders',
+                to: `${loggedIn ? '/my-orders' : '/login'}`,
             },
             {
                 content: 'My Account',
-                to: '/my-account',
+                to: `${loggedIn ? '/my-account' : '/login'}`,
             },
             {
                 content: 'Sign In',
