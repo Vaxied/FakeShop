@@ -16,6 +16,7 @@ function SignUpForm() {
         isEmailValid,
         isPasswordValid,
         arePasswordsEqual,
+        labelBgStyleColor,
     } = useForms()
 
     const [formState, setFormState] = React.useState<FormState>({
@@ -33,8 +34,6 @@ function SignUpForm() {
         password: false,
         diffPassword: false,
     })
-    const labelBgStyleColor =
-        'bg-gradient-to-b from-container from-50% to-white to-50%'
 
     const inputProps: InputProps = [
         {

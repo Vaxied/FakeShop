@@ -13,6 +13,9 @@ function useForms() {
     const navigate = useNavigate()
     const API = import.meta.env.VITE_API
 
+    const labelBgStyleColor =
+        'bg-gradient-to-b from-container from-55% to-white to-55%'
+
     async function handleSubmit(
         event: React.FormEvent<HTMLFormElement>,
         formState: formState,
@@ -82,6 +85,7 @@ function useForms() {
         isPasswordValid,
         arePasswordsEqual,
         isAnyFieldEmpty,
+        labelBgStyleColor,
     }
 }
 

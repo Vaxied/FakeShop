@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { postData } from '@lib/services/fetchWrapper'
 import { StoreContext } from '@components/Context/context'
-import InputError from '@components/forms/InputError'
 import { StoreContextType } from '@@types/store'
 import ActionButton from '@components/common/buttons/ActionButton'
 import useForms from '@hooks/useForms'
@@ -19,6 +18,7 @@ function LoginForm() {
         StoreContext,
     ) as StoreContextType
     const navigate = useNavigate()
+    const { labelBgStyleColor } = useForms()
     const [formState, setFormState] = React.useState<FormState>({
         username: '',
         password: '',
@@ -26,9 +26,6 @@ function LoginForm() {
     const [isLoginErr, setIsLoginErr] = React.useState(false)
     const API = import.meta.env.VITE_API
     const errMsg = 'Invalid username or password'
-
-    const labelBgStyleColor =
-        'bg-gradient-to-b from-container from-50% to-white to-50%'
 
     const inputProps = [
         {
@@ -38,7 +35,6 @@ function LoginForm() {
             type: 'text',
             placeholder: 'something@domain.tld',
             value: 'username',
-            inputErr: '',
             labelBgColor: labelBgStyleColor,
         },
         {
@@ -48,7 +44,6 @@ function LoginForm() {
             type: 'password',
             placeholder: '**********',
             value: 'password',
-            inputErr: '',
             labelBgColor: labelBgStyleColor,
         },
     ]
