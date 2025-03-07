@@ -7,10 +7,10 @@ function SignUp() {
     const isAuthenticated = useAuth()
     const navigate = useNavigate()
     React.useEffect(() => {
-        console.log('logged?', isAuthenticated())
-        if (isAuthenticated()) navigate('/')
+        console.log('logged?', isAuthenticated)
+        if (isAuthenticated) navigate('/')
     }, [])
-    if (!isAuthenticated()) return <SignUpForm />
+    return <SignUpForm />
 }
 
 export default SignUp
