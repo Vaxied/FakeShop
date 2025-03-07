@@ -25,8 +25,8 @@ function ActionButton(props: ActionButtonProps) {
     const navigate = useNavigate()
     return (
         <button
-            className={`w-full ${max ? 'md:w-full' : 'md:w-fit'} h-10 border border-gray px-4 py-2 bg-secondary
-                    text-white rounded-lg`}
+            className={`w-full flex items-center justify-center min-w-36 ${max ? 'md:w-full' : 'md:w-fit'} h-10 border border-gray px-8 py-4 bg-secondary
+                    text-white rounded-full hover:bg-accent hover:border-secondary`}
             type={type}
             onClick={() => handleAction()}
         >
