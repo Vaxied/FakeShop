@@ -14,7 +14,7 @@ function AddToCartPlusButton(
         <button
             type='button'
             onClick={event => addItemToShoppingCart(event, product)}
-            className='bg-secondary flex justify-center items-center absolute text-md w-6 h-6 top-0 right-0 mt-1 mr-1 rounded-full p-1 cursor-pointer border border-soft-accent'
+            className='bg-secondary flex justify-center items-center absolute text-md w-6 h-6 top-0 right-0 mt-1 mr-1 rounded-full p-1 cursor-pointer border border-soft-accent hover:bg-accent'
         >
             <svg
                 xmlns='http://www.w3.org/2000/svg'
