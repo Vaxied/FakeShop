@@ -104,23 +104,31 @@ function Navbar() {
     return (
         <nav className='bg-primary flex justify-between items-center fixed top-0 w-full h-16 py-5 px-8 text-sm font-light z-20'>
             <ul className='flex items-center gap-3'>
-                {navLinksLeft.map(({ content, to, className = '' }, index) => (
-                    <li key={index} className={className}>
-                        <NavLink
-                            to={to}
-                            className={({ isActive }) =>
-                                isLinkActive(isActive, content)
-                            }
-                        >
-                            {content}
-                        </NavLink>
-                    </li>
-                ))}
+                {navLinksLeft.map(
+                    (
+                        { content, to, className = 'hover:text-white' },
+                        index,
+                    ) => (
+                        <li key={index} className={className}>
+                            <NavLink
+                                to={to}
+                                className={({ isActive }) =>
+                                    isLinkActive(isActive, content)
+                                }
+                            >
+                                {content}
+                            </NavLink>
+                        </li>
+                    ),
+                )}
             </ul>
             <ul className='flex items-center gap-3'>
                 {loggedIn && <li className='text-black/80'>Hi, {username}!</li>}
                 {rightNavElements.map(
-                    ({ content, to, className = '', action }, index) => (
+                    (
+                        { content, to, className = 'hover:text-white', action },
+                        index,
+                    ) => (
                         <li
                             key={index}
                             className={className}
