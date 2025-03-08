@@ -17,14 +17,14 @@ function Card({ product }: Readonly<props>) {
     return (
         <div
             role='button'
-            className='flex flex-col bg-white w-60 aspect-[4/5] shadow-md shadow-secondary cursor-pointer rounded-lg border-2 border-accent overflow-hidden group'
+            className='flex flex-col bg-white w-60 aspect-[4/5] shadow-md shadow-secondary cursor-pointer rounded-lg border-2 border-accent hover:border-primary overflow-hidden group hover:shadow-primary'
             onClick={() =>
                 navigate(`/products/${product.product_id}`, {
                     state: product,
                 })
             }
         >
-            <figure className='relative w-full h-56 p-2 overflow-hidden'>
+            <figure className='relative w-full h-56 p-4 overflow-hidden'>
                 <img
                     className='w-full h-full object-contain transition-transform group-hover:scale-110'
                     src={product.image}
