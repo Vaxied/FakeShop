@@ -25,7 +25,7 @@ function TextInputBase(props: Readonly<props>) {
         <div className='relative'>
             <label
                 htmlFor={inputProp.id}
-                className={`${labelBgColor} block text-sm font-semibold leading-none ${showLabel ? 'px-2 absolute -translate-y-1/2 left-4 text-secondary' : 'absolute top-1/4 left-1/4 w-6'}`}
+                className={`${labelBgColor} block text-xs font-semibold leading-none ${showLabel ? 'px-2 absolute -translate-y-1/2 left-4 text-secondary' : 'absolute top-1/4 left-1/4 w-6'}`}
             >
                 {showLabel && inputProp.label}
             </label>
