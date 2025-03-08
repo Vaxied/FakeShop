@@ -1,41 +1,64 @@
 import PaymentForm from '@components/forms/PaymentForm'
-import CheckInput from '../CheckInput'
-import TextInput from '../TextInput'
+import RadioInput from '../RadioInput'
 import TextInputBase from '@components/forms/TextInputBase'
 import useForms from '@hooks/useForms'
 import { useState } from 'react'
 import {
+    AddressForm,
     FormState,
     ShowInputErr,
+    userAddress,
 } from '@components/forms/TextInputBase/Interfaces'
-
-type CustomerAddress = {
-    id?: string
-    firstName: string
-    lastName: string
-    street: string
-    city: string
-    state: string
-    zipCode: string
-    country: string
-    phone: string
-}
+import SectionHeaderText from '@components/common/text/SectionHeaderText'
 
 function CheckoutForm() {
-    const [formState, setFormState] = useState<FormState>({
-        firstName: '',
-        lastName: '',
-        street: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        country: '',
-        phone: '',
-    })
+    const mockAddresses = [
+        {
+            id: '1',
+            firstName: 'Andy',
+            lastName: 'Rocks',
+            street: '4545 1st Ave SE',
+            // suite: 'Apt. #1',
+            city: 'Cedar Rapids',
+            state: 'Iowa',
+            zipCode: '52402',
+            country: 'United States',
+            phone: '(123) 456-7890',
+        },
+        {
+            id: '2',
+            firstName: 'Sandra',
+            lastName: 'Mountain',
+            street: '1400 N La Brea Ave',
+            suite: 'Apt. #2',
+            city: 'Inglewood',
+            state: 'California',
+            zipCode: '90302',
+            country: 'United States',
+            phone: '(123) 456-7890',
+        },
+    ]
+
+    const formatFormState = (address: userAddress) => {
+        const cleanAddress = getAddressWithoutId(address)
+        console.log('address', cleanAddress)
+        if (!cleanAddress.suite) return { ...cleanAddress, suite: '' }
+        else return cleanAddress
+    }
+
+    const getAddressWithoutId = (address: userAddress): AddressForm => {
+        const { id, ...rest } = address
+        return rest
+    }
+
+    const [formState, setFormState] = useState<FormState>(
+        formatFormState(mockAddresses[0]),
+    )
     const [showInputErr, setShowInputErr] = useState<ShowInputErr>({
         firstName: false,
         lastName: false,
         street: false,
+        suite: false,
         city: false,
         state: false,
         zipCode: false,
@@ -50,42 +73,22 @@ function CheckoutForm() {
         setShowInputErr,
     }
 
-    const formatAddress = (address: CustomerAddress) => {
+    const formatAddress = (address: userAddress) => {
         let fullAddress = []
         const fullName = address.firstName + ' ' + address.lastName
-        const mainAddress = `${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`
+        const mainAddress = `${address.street}, ${address.city}`
+        const stateZip = `${address.state}, ${address.zipCode}`
         fullAddress.push(fullName)
-        fullAddress.push(address.phone)
         fullAddress.push(mainAddress)
+        fullAddress.push(stateZip)
         fullAddress.push(address.country)
-
+        fullAddress.push(address.phone)
         return fullAddress
     }
     const { isNameValid } = useForms()
-    const mockAddresses = [
-        {
-            id: '1',
-            firstName: 'Andy',
-            lastName: 'Rocks',
-            street: '4545 1st Ave SE',
-            city: 'Cedar Rapids',
-            state: 'Iowa',
-            zipCode: '52402',
-            country: 'United States',
-            phone: '(123) 456-7890',
-        },
-        {
-            id: '2',
-            firstName: 'Sandra',
-            lastName: 'Mountain',
-            street: '1400 N La Brea Ave',
-            city: 'Inglewood',
-            state: 'California',
-            zipCode: '90302',
-            country: 'United States',
-            phone: '(123) 456-7890',
-        },
-    ]
+    const [selectedAddressId, setSelectedAddressId] = useState<string>(
+        mockAddresses[0].id,
+    )
 
     const deliveryFormStructure = [
         {
@@ -111,22 +114,22 @@ function CheckoutForm() {
             validationFunc: isNameValid,
         },
         {
-            id: 'address',
-            name: 'address',
-            label: '',
+            id: 'user-address',
+            name: 'user-address',
+            label: 'address',
             type: 'text',
             placeholder: 'Address',
-            value: 'address',
+            value: 'street',
             inputErr: 'Invalid address',
             validationFunc: isNameValid,
         },
         {
-            id: 'apt-suite',
+            id: 'suite',
             name: 'appSuite',
-            label: 'appSuite',
+            label: 'app suite',
             type: 'text',
             placeholder: 'Apartment, suite, etc. (optional)',
-            value: 'appSuite',
+            value: 'suite',
             inputErr: 'Invalid address',
             validationFunc: isNameValid,
         },
@@ -138,28 +141,17 @@ function CheckoutForm() {
             placeholder: 'City',
             value: 'city',
             inputErr: 'Invalid city',
-            className: `col-span-2`,
+            className: `col-span-3`,
             validationFunc: isNameValid,
         },
         {
             id: 'code',
             name: 'zipCode',
-            label: 'ZIP code',
+            label: 'zip code',
             placeholder: 'ZIP code',
             value: 'zipCode',
             inputErr: 'Invalid ZIP code',
-            className: `col-span-2`,
-            validationFunc: isNameValid,
-        },
-        {
-            id: 'zip-code',
-            name: 'zipCode',
-            label: 'zip-code',
-            type: 'text',
-            placeholder: 'Zip code',
-            value: 'phone',
-            inputErr: 'Invalid ZIP code',
-            className: `col-span-2`,
+            className: `col-span-3`,
             validationFunc: isNameValid,
         },
         {
@@ -215,66 +207,104 @@ function CheckoutForm() {
         },
     ]
 
+    console.log('formstate: ', formState)
+    console.log(
+        'selected address',
+        getAddressWithoutId(mockAddresses[Number(selectedAddressId) - 1]),
+    )
+
+    const compareObjects = (obj1: any, obj2: any) => {
+        for (const key in obj1) {
+            if (obj1[key] !== obj2[key]) return false
+        }
+        return true
+    }
+    // TODO: Check for inputErr validations
+
     return (
-        <form action='' className='flex flex-wrap gap-3 w-full text-xs'>
-            <span className='font-semibold text-sm'>Choose your address</span>
+        <>
             <div className='w-full'>
-                <div className='flex flex-wrap gap-3'>
-                    {mockAddresses.map(
-                        (address: CustomerAddress, index: number) => (
-                            <div className='w-full flex items-center gap-3 p-3 md:gap-6 md:px-8 py-3 bg-white rounded-lg text-gray-700 border border-gray-400'>
-                                <CheckInput
-                                    id={address.id}
-                                    name={'address'}
-                                    content={formatAddress(address)}
-                                    index={index}
-                                />
-                            </div>
-                        ),
-                    )}
-                </div>
+                <SectionHeaderText text='Order summary' />
             </div>
-            <div className='w-full'>
-                <span className='block pb-2 font-semibold text-sm'>
-                    Delivery
+            <form action='' className='flex flex-wrap gap-3 w-full text-xs'>
+                <span className='font-semibold text-sm'>
+                    Choose your address
                 </span>
-                <div className='grid grid-cols-6 gap-2'>
-                    {deliveryFormStructure.map(field => {
-                        return (
-                            <div
-                                className={`relative ${
-                                    field.className ?? 'col-span-6'
-                                }`}
-                            >
-                                <TextInputBase
-                                    inputProp={field}
-                                    stateProps={stateProps}
-                                    showLabel={false}
-                                />
-                            </div>
-                        )
-                    })}
+                <div className='w-full'>
+                    <div className='flex flex-wrap gap-3 pl-4'>
+                        {mockAddresses.map(
+                            (address: userAddress, index: number) => (
+                                <div
+                                    role='button'
+                                    className='w-full border-2 hover:cursor-pointer flex items-center gap-3 p-3 md:gap-6 md:px-8 py-3 bg-white rounded-lg text-gray-700 hover:border-2 hover:border-accent has-[:checked]:bg-soft-accent has-[:checked]:text-white'
+                                    onClick={() => {
+                                        setSelectedAddressId(address.id)
+                                        setFormState(formatFormState(address))
+                                    }}
+                                >
+                                    <RadioInput
+                                        key={address.id}
+                                        id={address.id}
+                                        address={address}
+                                        name={'address'}
+                                        content={formatAddress(address)}
+                                        index={index}
+                                        checked={
+                                            address.id === selectedAddressId &&
+                                            compareObjects(
+                                                getAddressWithoutId(address),
+                                                formState,
+                                            )
+                                        }
+                                    />
+                                </div>
+                            ),
+                        )}
+                    </div>
                 </div>
-            </div>
-            <div className='w-full'>
-                <span className='block text-md font-semibold pb-2 text-sm'>
-                    Shipping method
-                </span>
-                <div className='p-3 text-xs bg-container rounded-lg'>
-                    Enter your shipping address to view available shipping
-                    methods.
+                <div className='w-full'>
+                    <span className='block pb-4 font-semibold text-sm'>
+                        Delivery
+                    </span>
+                    <div className='grid grid-cols-6 gap-3 pl-4 text-sm'>
+                        {deliveryFormStructure.map(field => {
+                            return (
+                                <div
+                                    className={`relative ${field.className ?? 'col-span-6'}`}
+                                >
+                                    <TextInputBase
+                                        inputProp={field}
+                                        stateProps={stateProps}
+                                        showLabel={true}
+                                        labelBgColor='bg-gradient-to-b from-container from-50% to-white to-50%'
+                                    />
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
-            </div>
-            {/* <div className='w-full'> */}
-            {/*     <div className='pb-2'> */}
-            {/*         <p className='font-semibold text-sm'>Payment</p> */}
-            {/*         <p className='font-light text-xs text-gray-400'> */}
-            {/*             All transations are secure and encrypted */}
-            {/*         </p> */}
-            {/*     </div> */}
-            {/* <PaymentForm paymentFormData={paymentFormData} /> */}
-            {/* </div> */}
-        </form>
+                <div className='w-full'>
+                    <span className='block text-md font-semibold pb-2 text-sm'>
+                        Shipping method
+                    </span>
+                    <div className='w-full pl-4'>
+                        <div className='p-3 text-xs bg-accent text-white rounded-lg'>
+                            Enter your shipping address to view available
+                            shipping methods.
+                        </div>
+                    </div>
+                </div>
+                {/* <div className='w-full'> */}
+                {/*     <div className='pb-2'> */}
+                {/*         <p className='font-semibold text-sm'>Payment</p> */}
+                {/*         <p className='font-light text-xs text-gray-400'> */}
+                {/*             All transations are secure and encrypted */}
+                {/*         </p> */}
+                {/*     </div> */}
+                {/* <PaymentForm paymentFormData={paymentFormData} /> */}
+                {/* </div> */}
+            </form>
+        </>
     )
 }
 
