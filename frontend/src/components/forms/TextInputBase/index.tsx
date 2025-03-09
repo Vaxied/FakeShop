@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     InputProp,
     StateProps,
@@ -7,7 +7,6 @@ import {
 type props = {
     inputProp: InputProp
     stateProps: StateProps
-    showLabel?: boolean
     labelBgColor?: labelBgColor
 }
 
@@ -19,15 +18,51 @@ function TextInputBase(props: Readonly<props>) {
         stateProps,
         labelBgColor = 'bg-gradient-to-b from-gray-100 from-55% to-white to-55%',
     } = props
-    // console.log('state props:', stateProps)
-    const [showLabel, setShowLabel] = React.useState(false)
+
+    const [moveLabel, setMoveLabel] = React.useState(false)
+    const [changeLabelBgColor, setChangeLabelBgColor] = React.useState(false)
+
+    const bgDelay = 100
+    const transitionDurationClass = 'duration-150'
+
+    const updateBgColorWithDelay = (bool: boolean, delay = 0) => {
+        setTimeout(() => {
+            setChangeLabelBgColor(bool)
+            console.log('changeLabelBgColor', bool)
+        }, delay)
+    }
+
+    const determineLabelContent = () => {
+        if (stateProps.formState[inputProp.value] && !moveLabel) {
+            return ''
+        }
+        if (
+            (stateProps.formState[inputProp.value] && moveLabel) ||
+            (!stateProps.formState[inputProp.value] && moveLabel)
+        ) {
+            return inputProp.label
+        } else if (!stateProps.formState[inputProp.value] && !moveLabel) {
+            return inputProp.placeholder ?? inputProp.label
+        } else {
+            return ''
+        }
+    }
+
+    useEffect(() => {
+        if (moveLabel && !stateProps.formState[inputProp.value])
+            updateBgColorWithDelay(true, bgDelay)
+        else if (moveLabel && stateProps.formState[inputProp.value])
+            updateBgColorWithDelay(true)
+        else updateBgColorWithDelay(false)
+    }, [moveLabel])
+
     return (
         <div className='relative'>
             <label
                 htmlFor={inputProp.id}
-                className={`${labelBgColor} block text-xs font-semibold leading-none ${showLabel ? 'px-2 absolute -translate-y-1/2 left-4 text-secondary' : 'absolute top-1/4 left-1/4 w-6'}`}
+                className={`block leading-none absolute transition-all px-2 left-4 -translate-y-1/2 ${transitionDurationClass} ${moveLabel ? 'top-0 text-secondary font-semibold text-xs' : 'text-gray-500 top-1/2 cursor-text'} ${changeLabelBgColor ? labelBgColor : ''} ${stateProps.formState[inputProp.value] ? 'transition-none' : ''}`}
             >
-                {showLabel && inputProp.label}
+                {determineLabelContent()}
             </label>
             <div>
                 <div className={`bg-white rounded-lg`}>
@@ -35,9 +70,8 @@ function TextInputBase(props: Readonly<props>) {
                         id={inputProp?.id}
                         name={inputProp?.name}
                         type={inputProp.type ?? 'text'}
-                        placeholder={showLabel ? '' : inputProp?.placeholder}
-                        onFocus={() => setShowLabel(true)}
-                        onBlur={() => setShowLabel(false)}
+                        onFocus={() => setMoveLabel(true)}
+                        onBlur={() => setMoveLabel(false)}
                         onChange={event => {
                             stateProps.setFormState({
                                 ...stateProps?.formState,
@@ -58,7 +92,7 @@ function TextInputBase(props: Readonly<props>) {
                             }
                         }}
                         value={stateProps?.formState[inputProp.value]}
-                        className={`border-2 border-white outline-none focus:border-secondary focus:border-2 rounded-lg px-4 py-2 w-full text-gray-500 ${stateProps.showInputErr && stateProps.showInputErr[inputProp.value] ? 'border-red-500' : ''} hover:border-2 hover:border-accent`}
+                        className={`border-2 border-white outline-none focus:border-secondary hover:cursor-text focus:border-2 rounded-lg px-4 py-2 w-full text-gray-500 ${stateProps.showInputErr && stateProps.showInputErr[inputProp.value] ? 'border-red-500' : ''} hover:border-2 hover:border-accent`}
                     />
                 </div>
                 {inputProp.inputErr &&

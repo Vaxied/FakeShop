@@ -98,7 +98,6 @@ function LoginForm() {
                             <TextInputBase
                                 inputProp={inputField}
                                 stateProps={stateProps}
-                                showLabel={true}
                                 labelBgColor={inputField.labelBgColor}
                             />
                         )

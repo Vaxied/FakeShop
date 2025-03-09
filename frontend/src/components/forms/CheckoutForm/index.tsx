@@ -275,7 +275,6 @@ function CheckoutForm() {
                                     <TextInputBase
                                         inputProp={field}
                                         stateProps={stateProps}
-                                        showLabel={true}
                                         labelBgColor='bg-gradient-to-b from-container from-50% to-white to-50%'
                                     />
                                 </div>

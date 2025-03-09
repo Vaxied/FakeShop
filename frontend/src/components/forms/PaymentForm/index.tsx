@@ -45,7 +45,6 @@ function PaymentForm(props: any) {
                         <TextInputBase
                             inputProp={field}
                             stateProps={stateProps}
-                            showLabel={field.showLabel ?? false}
                         />
                     </div>
                 )

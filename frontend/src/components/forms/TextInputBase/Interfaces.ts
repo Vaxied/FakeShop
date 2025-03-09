@@ -12,7 +12,6 @@ export type InputProp = {
     validationFunc: (arg1: string, arg2?: string) => boolean
     maxLength?: number
     type?: string
-    showLabel?: boolean
     className?: string
 }
 
