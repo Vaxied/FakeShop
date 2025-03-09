@@ -1,9 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { postData } from '@lib/services/fetchWrapper'
-type formState = {
-    [key: string]: string
-}
+import { FormState } from '@components/forms/TextInputBase/Interfaces'
 
 type inputErrs = {
     [key: string]: boolean
@@ -16,9 +14,10 @@ function useForms() {
     const labelBgStyleColor =
         'bg-gradient-to-b from-container from-55% to-white to-55%'
 
+    //TODO: make the api route dyanmic
     async function handleSubmit(
         event: React.FormEvent<HTMLFormElement>,
-        formState: formState,
+        formState: FormState,
         inputErrs: inputErrs,
     ) {
         event.preventDefault()
@@ -53,7 +52,7 @@ function useForms() {
         return password === confirmedPassword
     }
 
-    function isAnyFieldEmpty(formData: formState) {
+    function isAnyFieldEmpty(formData: FormState) {
         for (let key in formData) {
             console.log('Comparing', formData[key], formData[key] === '')
             if (formData[key] === '') return true
@@ -71,7 +70,7 @@ function useForms() {
         return false
     }
 
-    function isFormFilledCorrectly(formData: formState, inputErrs: inputErrs) {
+    function isFormFilledCorrectly(formData: FormState, inputErrs: inputErrs) {
         if (isAnyFieldEmpty(formData)) return false
         if (isAnyInputError(inputErrs)) return false
         console.log('form is filled correcly')
