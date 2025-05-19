@@ -3,11 +3,15 @@
 // /**
 //  * @type { Object.<string, import("knex").Knex.Config> }
 //  */
-import { config } from '../config'
 import { Knex } from 'knex'
+import 'dotenv/config'
 
-const { host, dbPort, user, database, password } = config
-const port = dbPort
+const { DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_PASSWORD } = process.env
+const host = DB_HOST
+const port = Number(DB_PORT)
+const user = DB_USER
+const database = DB_NAME
+const password = DB_PASSWORD
 
 export const knexConfig: Knex.Config = {
     client: 'pg',
