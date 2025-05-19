@@ -2,7 +2,7 @@ function CartSideMenuOpenerButton(
     props: Readonly<{
         isCartSideMenuOpen: boolean
         openCartSideMenu: (event: React.MouseEvent<HTMLButtonElement>) => void
-    }>
+    }>,
 ) {
     return (
         <div
@@ -13,7 +13,7 @@ function CartSideMenuOpenerButton(
             <span className='before:content-[""] block w-2 h-2 bg-secondary absolute top-[-8px] right-0'></span>
             <span className='before:content-[""] block w-4 h-4 bg-white absolute top-[-16px] rounded-full'></span>
             <button
-                onClick={(event) => props.openCartSideMenu(event)}
+                onClick={event => props.openCartSideMenu(event)}
                 className='absolute block top-1/2 -translate-y-1/2 h-12'
             >
                 <svg
