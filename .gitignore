@@ -25,6 +25,8 @@ dist-ssr
 
 /scripts/
 .env
+.env.development
+.env.production
 vite-env.d.ts
 *.docx
 *.vim
