@@ -116,11 +116,6 @@ app.get(routes.static.terms, (request, response, next) => {
     return getTerms(request, response)
 })
 
-app.get(routes.payment.clientId, (request, response, next) => {
-    console.log('app restarted, getting client id')
-    return response.json({ clientId: config.clientId })
-})
-
 app.listen(PORT, () => console.log(`\nListening on ${PORT}`))
 
 // module.exports = app
