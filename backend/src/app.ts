@@ -4,8 +4,10 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
-import { config } from './config'
-const PORT = config.apiPort
+import dotenv from 'dotenv'
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` })
+
+const PORT = process.env.API_PORT
 
 import { createUser, verifyUser } from './controllers/users'
 import { createOrder, getUserOrders } from './controllers/orders'
