@@ -8,7 +8,7 @@
     ],
     "scripts": {
         "dev": "concurrently \"npm run dev --workspace frontend\" \"npm run dev --workspace backend\"",
-        "build": "npm run build --workspace frontend && npm run build --workspace backend",
+        "build": "npm run build --workspace frontend --production=false && npm run build --workspace backend",
         "lint": "npm run lint --workspace frontend && npm run lint --workspace backend",
         "start": "concurrently \"npm run preview --workspace frontend\" \"npm run startJS --workspace backend\""
     },
