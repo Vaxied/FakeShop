@@ -3,12 +3,13 @@
     "private": true,
     "version": "0.0.0",
     "main": "dist/src/app.js",
+    "type": "module",
     "scripts": {
         "clean": "rimraf dist",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "dev": "nodemon -r dotenv/config src/app.ts",
-        "start": "npm run dev",
-        "startJS": "nodemon --env-file=.env dist/src/app.js",
+        "start": "nodemon -r dotenv/config dist/app.js",
+        "build": "tsc && tsc-alias",
         "knx": "knex --knexfile ./src/database/knexfile.ts",
         "knex:migrate:make": "npm run knx migrate:make -x",
         "knex:migrate:down": "npm run knx migrate:down",
@@ -45,6 +46,7 @@
         "pg": "^8.11.5",
         "rimraf": "^5.0.7",
         "ts-node": "^10.9.2",
+        "tsc-alias": "^1.8.16",
         "tsc-watch": "^6.2.0",
         "tslib": "^2.6.3",
         "typescript": "^5.5.3"
