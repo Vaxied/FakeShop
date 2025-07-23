@@ -1,4 +1,4 @@
-import routes from './routes/routes.json'
+import routes from './routes/routes.json' with { type: "json" }
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
